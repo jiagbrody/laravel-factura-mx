@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace JiagBrody\LaravelFacturaMx\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class LaravelFacturaMxCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-factura-mx';
 
     public $description = 'My command';
 
