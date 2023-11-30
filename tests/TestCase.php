@@ -3,8 +3,8 @@
 namespace JiagBrody\LaravelFacturaMx\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Orchestra\Testbench\TestCase as Orchestra;
 use JiagBrody\LaravelFacturaMx\LaravelFacturaMxServiceProvider;
+use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
