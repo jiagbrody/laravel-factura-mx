@@ -2,9 +2,9 @@
 
 namespace JiagBrody\LaravelFacturaMx;
 
+use JiagBrody\LaravelFacturaMx\Commands\LaravelFacturaMxCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use JiagBrody\LaravelFacturaMx\Commands\LaravelFacturaMxCommand;
 
 class LaravelFacturaMxServiceProvider extends PackageServiceProvider
 {
