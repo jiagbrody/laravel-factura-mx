@@ -5,7 +5,7 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/jiagbrody/laravel-factura-mx/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/jiagbrody/laravel-factura-mx/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/jiagbrody/laravel-factura-mx.svg?style=flat-square)](https://packagist.org/packages/jiagbrody/laravel-factura-mx)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+This package is used with the Laravel Framework and currently resolves billing in Mexico for CFDI version 4.0. It is likely that the documentation will be based on Spanish since it is the native language for technicalities and others according to what governs the SAT “Servicio de Administración Tributaria”.
 
 ## Support us
 
