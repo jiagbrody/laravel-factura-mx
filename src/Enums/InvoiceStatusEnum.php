@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Enums;
 
@@ -7,8 +9,8 @@ use JiagBrody\LaravelFacturaMx\Models\InvoiceStatus;
 
 enum InvoiceStatusEnum: int
 {
-    case DRAFT    = 1;
-    case VIGENT   = 2;
+    case DRAFT = 1;
+    case VIGENT = 2;
     case CANCELED = 3;
 
     public static function getCatalog(): \Illuminate\Support\Collection
