@@ -19,6 +19,7 @@ return [
      */
 
     'foreign_id_related_to_invoices' => 'statement_id',
+    'foreign_id_related_to_concepts' => 'statement_detail_id',
 
     /*
      |--------------------------------------------------------------------------
