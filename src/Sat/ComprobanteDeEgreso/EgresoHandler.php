@@ -6,14 +6,14 @@ use App\Enums\InvoiceCompanyEnum;
 use App\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\CfdiHandlerInterface;
 use JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeEgreso\Cancel\EgresoCancel;
-use JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeEgreso\Draft\EgresoDraft;
+use JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeEgreso\Create\EgresoCreate;
 use JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeEgreso\Stamp\EgresoStamp;
 
 class EgresoHandler implements CfdiHandlerInterface
 {
-    public function draft(int $invoiceCompanyId): EgresoDraft
+    public function create(): EgresoCreate
     {
-        return new EgresoDraft(InvoiceCompanyEnum::from($invoiceCompanyId));
+        // return new EgresoDraft(InvoiceCompanyEnum::from($invoiceCompanyId));
     }
 
     public function stamp(Invoice $invoice): EgresoStamp

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteRecepcionDePagos\Draft;
+namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteRecepcionDePagos\Create;
 
 use App\Enums\InvoiceTaxTypeEnum;
 use App\Helpers\Cfdi\ConvertXmlContentToObjectHelper;
@@ -14,7 +14,7 @@ use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
 use CfdiUtils\CfdiCreator40;
 use PhpCfdi\Credentials\Credential;
 
-class PagoDraftBuild extends DraftBuild
+class PagoCreateBuild extends DraftBuild
 {
     use GenerateInvoicePdfFileHelperTrait;
 

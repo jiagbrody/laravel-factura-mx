@@ -21,6 +21,21 @@ return [
     'foreign_id_related_to_invoices' => 'statement_id',
     'foreign_id_related_to_concepts' => 'statement_detail_id',
 
+
+    /*
+     |--------------------------------------------------------------------------
+     | Ruta de la carpeta para los archivos del SAT
+     |--------------------------------------------------------------------------
+     |
+     | Especifica la carpeta donde estarán los archivos de los "Emisores"
+     | estos archivos son los que proporciona el Servicio de Administración
+     | Tributaria (SAT) para poder timbrar las facturas por medio de algún PAC
+     | (servicio de terceros para timbrar facturas).
+     |
+     */
+
+    'sat_files_path' => storage_path('app/protected/sat-certificates'),
+
     /*
      |--------------------------------------------------------------------------
      | Name of the tables to migrate for the library

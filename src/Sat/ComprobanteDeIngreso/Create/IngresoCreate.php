@@ -1,23 +1,20 @@
 <?php declare(strict_types=1);
 
-namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeIngreso\Draft;
+namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeIngreso\Create;
 
 use App\Enums\InvoiceCompanyEnum;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 use JiagBrody\LaravelFacturaMx\Sat\DraftSatInterface;
 use Illuminate\Database\Eloquent\Collection;
 
-readonly class IngresoDraft implements DraftSatInterface
+readonly class IngresoCreate implements DraftSatInterface
 {
-    public function __construct(protected InvoiceCompanyEnum $invoiceCompanyEnum)
+    public function custom(InvoiceCompany $company): IngresoCreateConcrete
     {
+        return new IngresoCreateConcrete($company);
     }
 
-    public function createCustom(): IngresoDraftConcrete
-    {
-        return new IngresoDraftConcrete($this->invoiceCompanyEnum);
-    }
-
-    public function createFillDataFromComprobanteFormData(array $comprobante, Collection $products): IngresoDraftConcrete
+    public function fromComprobante(array $comprobante, Collection $products): IngresoCreateConcrete
     {
         /*foreach ($comprobante as $key => $value) {
             if ($value === null) {
@@ -25,7 +22,7 @@ readonly class IngresoDraft implements DraftSatInterface
             }
         }*/
 
-        return (new IngresoDraftConcrete($this->invoiceCompanyEnum))->addAtributos($comprobante)
+        return (new IngresoCreateConcrete($this->invoiceCompanyEnum))->addAtributos($comprobante)
             ->addReceptor($comprobante['Receptor'])
             ->addConceptos($products)
             ->addRelacionados($comprobante['CfdiRelacionados'])

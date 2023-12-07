@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeEgreso\Draft;
+namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeEgreso\Create;
 
 use JiagBrody\LaravelFacturaMx\Sat\Helper\DraftBuild;
 use JiagBrody\LaravelFacturaMx\Sat\Helper\PdfFileSatHelperBuilder;
@@ -9,7 +9,7 @@ use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
 use CfdiUtils\CfdiCreator40;
 use PhpCfdi\Credentials\Credential;
 
-class EgresoDraftBuild extends DraftBuild
+class EgresoCreateBuild extends DraftBuild
 {
     public function __construct(protected Credential $credential, protected CfdiCreator40 $creatorCfdi, protected InvoiceCompanyHelper $companyHelper)
     {

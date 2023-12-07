@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeEgreso\Draft;
+namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeEgreso\Create;
 
 use App\Enums\InvoiceCompanyEnum;
 use App\Services\CurrencyExchangeRateService;
@@ -9,7 +9,7 @@ use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ComprobanteAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoTrasladoAtributos;
 use CfdiUtils\Certificado\Certificado;
 
-class EgresoDraftConcrete extends CfdiHelperAbstract
+class EgresoCreateConcrete extends CfdiHelperAbstract
 {
     const OBJETO_IMP_VERIFY_IS_TRASLADO = '02';
     protected ComprobanteAtributos $atributos;
@@ -71,12 +71,12 @@ class EgresoDraftConcrete extends CfdiHelperAbstract
         return $this;
     }
 
-    public function build(): EgresoDraftBuild
+    public function build(): EgresoCreateBuild
     {
         $this->creatorCfdi->putCertificado(new Certificado($this->credential->certificate()->pem()), false);
         $this->creatorCfdi->addSumasConceptos(null, 2);
         $this->creatorCfdi->moveSatDefinitionsToComprobante();
 
-        return (new EgresoDraftBuild($this->credential, $this->creatorCfdi, $this->companyHelper));
+        return (new EgresoCreateBuild($this->credential, $this->creatorCfdi, $this->companyHelper));
     }
 }

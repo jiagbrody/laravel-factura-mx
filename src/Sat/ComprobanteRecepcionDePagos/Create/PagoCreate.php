@@ -1,25 +1,25 @@
 <?php declare(strict_types=1);
 
-namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteRecepcionDePagos\Draft;
+namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteRecepcionDePagos\Create;
 
 use App\Enums\InvoiceCompanyEnum;
 use JiagBrody\LaravelFacturaMx\Sat\DraftSatInterface;
 use Illuminate\Database\Eloquent\Collection;
 
-readonly class PagoDraft implements DraftSatInterface
+readonly class PagoCreate implements DraftSatInterface
 {
     public function __construct(protected InvoiceCompanyEnum $invoiceCompanyEnum)
     {
     }
 
-    public function createCustom(): PagoDraftConcrete
+    public function custom($company): PagoCreateConcrete
     {
-        return new PagoDraftConcrete($this->invoiceCompanyEnum);
+        return new PagoCreateConcrete($this->invoiceCompanyEnum);
     }
 
-    public function createFillDataFromComprobanteFormData(array $comprobante, ?Collection $products = null): PagoDraftConcrete
+    public function fromComprobante(array $comprobante, ?Collection $products = null): PagoCreateConcrete
     {
-        return (new PagoDraftConcrete($this->invoiceCompanyEnum))->addAtributos($comprobante)
+        return (new PagoCreateConcrete($this->invoiceCompanyEnum))->addAtributos($comprobante)
             ->addReceptor($comprobante['Receptor'])
             ->addConceptos()
             ->addRelacionados($comprobante['CfdiRelacionados'])

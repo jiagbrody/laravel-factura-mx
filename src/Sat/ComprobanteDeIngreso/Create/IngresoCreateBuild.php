@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeIngreso\Draft;
+namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeIngreso\Create;
 
 use App\Enums\InvoiceTaxTypeEnum;
 use App\Enums\PaymentInvoiceTypeEnum;
@@ -16,7 +16,7 @@ use CfdiUtils\CfdiCreator40;
 use Illuminate\Database\Eloquent\Collection;
 use PhpCfdi\Credentials\Credential;
 
-class IngresoDraftBuild extends DraftBuild
+class IngresoCreateBuild extends DraftBuild
 {
     protected Invoice $invoice;
 

@@ -3,16 +3,15 @@
 namespace JiagBrody\LaravelFacturaMx\Sat;
 
 use App\Enums\CfdiGenericRfcEnum;
-use App\Enums\InvoiceCompanyEnum;
 use App\Models\DataFiscal;
 use App\Models\Product;
+use CfdiUtils\CfdiCreator40;
+use Illuminate\Database\Eloquent\Collection;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ConceptoAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\EmisorAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoTrasladoAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\PatronDeDatosHelper;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ReceptorAtributos;
-use CfdiUtils\CfdiCreator40;
-use Illuminate\Database\Eloquent\Collection;
 use PhpCfdi\Credentials\Credential;
 
 abstract class CfdiHelperAbstract
@@ -31,12 +30,10 @@ abstract class CfdiHelperAbstract
 
     protected ImpuestoTrasladoAtributos $impuestoTrasladoAtributos;
 
-    public function __construct(protected InvoiceCompanyEnum $invoiceCompanyEnum)
+    public function __construct()
     {
         $this->creatorCfdi               = new CfdiCreator40();
-        $this->companyHelper             = new InvoiceCompanyHelper($invoiceCompanyEnum->value);
-        $this->credential                = Credential::openFiles($this->companyHelper->pathCertificado,
-            $this->companyHelper->pathKey, $this->companyHelper->passPhrase);
+        $this->credential                = Credential::openFiles($this->companyHelper->certificatePath, $this->companyHelper->keyPath, $this->companyHelper->passPhrase);
         $this->emisorAtributos           = new EmisorAtributos;
         $this->conceptoAtributos         = new ConceptoAtributos;
         $this->receptorAtributos         = new ReceptorAtributos;
@@ -45,7 +42,12 @@ abstract class CfdiHelperAbstract
         $this->setEmisor();
     }
 
-    public function addRelacionados(array $relacionados): static
+    public function initConfig(): self
+    {
+        return $this;
+    }
+
+    public function addRelacionados(array $relacionados): self
     {
         foreach ($relacionados as $relacionado) {
             $this->creatorCfdi->comprobante()->addCfdiRelacionados([

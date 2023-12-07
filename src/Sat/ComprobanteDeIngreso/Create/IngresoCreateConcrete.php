@@ -1,21 +1,23 @@
 <?php declare(strict_types=1);
 
-namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeIngreso\Draft;
+namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeIngreso\Create;
 
-use App\Enums\InvoiceCompanyEnum;
-use JiagBrody\LaravelFacturaMx\Sat\CfdiHelperAbstract;
-use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ComprobanteAtributos;
 use CfdiUtils\Certificado\Certificado;
 use CfdiUtils\Elements\ImpLocal10\ImpuestosLocales;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
+use JiagBrody\LaravelFacturaMx\Sat\CfdiHelperAbstract;
+use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
+use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ComprobanteAtributos;
 
-class IngresoDraftConcrete extends CfdiHelperAbstract
+class IngresoCreateConcrete extends CfdiHelperAbstract
 {
     protected ComprobanteAtributos $atributos;
 
-    public function __construct(protected InvoiceCompanyEnum $invoiceCompanyEnum)
+    public function __construct(InvoiceCompany $invoiceCompany)
     {
-        $this->atributos = new ComprobanteAtributos('I');
-        parent::__construct($invoiceCompanyEnum);
+        $this->companyHelper = new InvoiceCompanyHelper($invoiceCompany);
+        $this->atributos     = new ComprobanteAtributos('I');
+        parent::__construct();
     }
 
     public function addAtributos(array $attributes): self
@@ -117,12 +119,12 @@ class IngresoDraftConcrete extends CfdiHelperAbstract
         return $this;
     }
 
-    public function build(): IngresoDraftBuild
+    public function build(): IngresoCreateBuild
     {
         $this->creatorCfdi->putCertificado(new Certificado($this->credential->certificate()->pem()), false);
         $this->creatorCfdi->addSumasConceptos(null, 2);
         $this->creatorCfdi->moveSatDefinitionsToComprobante();
 
-        return (new IngresoDraftBuild($this->credential, $this->creatorCfdi, $this->companyHelper));
+        return (new IngresoCreateBuild($this->credential, $this->creatorCfdi, $this->companyHelper));
     }
 }

@@ -2,9 +2,7 @@
 
 namespace JiagBrody\LaravelFacturaMx\Sat;
 
-use App\Enums\InvoiceCompanyEnum;
-
-/*TODO: HACER LAS PROPIEDADES "readonly"*/
+use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 
 final readonly class InvoiceCompanyHelper
 {
@@ -16,9 +14,9 @@ final readonly class InvoiceCompanyHelper
 
     public string $facAtrAdquirente;
 
-    public string $pathCertificado;
+    public string $certificatePath;
 
-    public string $pathKey;
+    public string $keyPath;
 
     public string $passPhrase;
 
@@ -26,21 +24,18 @@ final readonly class InvoiceCompanyHelper
 
     public string $pacEnvironment;
 
-    public function __construct(public int $invoiceCompanyId)
+    public function __construct(InvoiceCompany $invoiceCompany)
     {
-        $this->pacEnvironment = env('PAC_ENVIRONMENT');
-        $enum                 = InvoiceCompanyEnum::from($invoiceCompanyId);
-        $sat                  = $enum->getSatData();
-        $certificates         = $enum->getCertificates();
+        $folder = config('factura-mx.sat_files_path');
 
-        $this->rfc              = $sat['rfc'];
-        $this->nombre           = $sat['nombre'];
-        $this->regimenFiscal    = $sat['regimen_fiscal'];
-        $this->facAtrAdquirente = $sat['fac_atr_adquirente'];
-        $this->pathCertificado  = $certificates['path_certificado'];
-        $this->pathKey          = $certificates['path_key'];
-        $this->passPhrase       = $certificates['pass_phrase'];
-        $this->serialNumber     = $certificates['serial_number'];
+        $this->pacEnvironment = 'development';
+        $this->rfc             = $invoiceCompany->rfc;
+        $this->nombre          = $invoiceCompany->nombre;
+        $this->regimenFiscal   = $invoiceCompany->regimen_fiscal;
+        $this->certificatePath = $folder . $invoiceCompany->certificate_path;
+        $this->keyPath         = $folder . $invoiceCompany->key_path;
+        $this->passPhrase      = $invoiceCompany->pass_phrase;
+        $this->serialNumber    = $invoiceCompany->serial_number;
 
         return $this;
     }

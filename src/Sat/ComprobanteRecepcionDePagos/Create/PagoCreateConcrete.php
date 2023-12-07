@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteRecepcionDePagos\Draft;
+namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteRecepcionDePagos\Create;
 
 use App\Enums\InvoiceCompanyEnum;
 use App\Helpers\GetTruncateValueFromFloatTypeNumberHelper;
@@ -20,7 +20,7 @@ use CfdiUtils\SumasPagos20\PagosWriter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
-class PagoDraftConcrete extends CfdiHelperAbstract
+class PagoCreateConcrete extends CfdiHelperAbstract
 {
     private ComprobanteAtributos $atributos;
 
@@ -75,13 +75,13 @@ class PagoDraftConcrete extends CfdiHelperAbstract
         return $this;
     }
 
-    public function build(): PagoDraftBuild
+    public function build(): PagoCreateBuild
     {
         $this->creatorCfdi->putCertificado(new Certificado($this->credential->certificate()->pem()), false);
         $this->creatorCfdi->addSumasConceptos(null, 0);
         $this->creatorCfdi->moveSatDefinitionsToComprobante();
 
-        return (new PagoDraftBuild($this->credential, $this->creatorCfdi, $this->companyHelper));
+        return (new PagoCreateBuild($this->credential, $this->creatorCfdi, $this->companyHelper));
     }
 
     private function calculateComplemento($complemento): Pagos
@@ -381,7 +381,5 @@ class PagoDraftConcrete extends CfdiHelperAbstract
         $pagosWriter = new PagosWriter($complementoPagos);
         $pagosWriter->writePago();
 
-
-        dd($result);
     }
 }

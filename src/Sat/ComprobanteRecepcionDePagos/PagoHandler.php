@@ -6,14 +6,14 @@ use App\Enums\InvoiceCompanyEnum;
 use App\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\CfdiHandlerInterface;
 use JiagBrody\LaravelFacturaMx\Sat\ComprobanteRecepcionDePagos\Cancel\PagoCancel;
-use JiagBrody\LaravelFacturaMx\Sat\ComprobanteRecepcionDePagos\Draft\PagoDraft;
+use JiagBrody\LaravelFacturaMx\Sat\ComprobanteRecepcionDePagos\Create\PagoCreate;
 use JiagBrody\LaravelFacturaMx\Sat\ComprobanteRecepcionDePagos\Stamp\PagoStamp;
 
 class PagoHandler implements CfdiHandlerInterface
 {
-    public function draft(int $invoiceCompanyId): PagoDraft
+    public function create(): PagoCreate
     {
-        return new PagoDraft(InvoiceCompanyEnum::from($invoiceCompanyId));
+        // return new PagoDraft(InvoiceCompanyEnum::from($invoiceCompanyId));
     }
 
     public function stamp(Invoice $invoice): PagoStamp

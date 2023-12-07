@@ -3,10 +3,11 @@
 namespace JiagBrody\LaravelFacturaMx\Sat;
 
 use Illuminate\Database\Eloquent\Collection;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 
 interface DraftSatInterface
 {
-    public function createCustom();
+    public function custom(InvoiceCompany $company);
 
-    public function createFillDataFromComprobanteFormData(array $comprobante, Collection $products);
+    public function fromComprobante(array $comprobante, Collection $products);
 }

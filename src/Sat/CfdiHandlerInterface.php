@@ -2,13 +2,13 @@
 
 namespace JiagBrody\LaravelFacturaMx\Sat;
 
-use App\Models\Invoice;
+use JiagBrody\LaravelFacturaMx\Models\Invoice;
 
 interface CfdiHandlerInterface
 {
-    public function draft(int $invoiceCompanyId);
+    public function create();
 
-    public function stamp(Invoice $invoice);
-
-    public function cancel(Invoice $invoice, $cfdiCancelTypeEnum, $UUID);
+    // public function stamp(Invoice $invoice);
+    //
+    // public function cancel(Invoice $invoice, $cfdiCancelTypeEnum, $UUID);
 }
