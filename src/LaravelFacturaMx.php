@@ -9,11 +9,6 @@ use JiagBrody\LaravelFacturaMx\Sat\ComprobanteRecepcionDePagos\PagoHandler;
 
 class LaravelFacturaMx implements ComprobanteCfdiInterface
 {
-    public function testing(): string
-    {
-        return 'test';
-    }
-
     public function ingreso(): IngresoHandler
     {
         return new IngresoHandler();
@@ -24,18 +19,18 @@ class LaravelFacturaMx implements ComprobanteCfdiInterface
         return new EgresoHandler();
     }
 
-    public function recepcionDePagos(): PagoHandler
-    {
-        return new PagoHandler;
-    }
+    // public function recepcionDePagos(): PagoHandler
+    // {
+    //     return new PagoHandler;
+    // }
 
-    public function traslado()
-    {
-        // TODO: Implement traslado() method.
-    }
+    // public function traslado()
+    // {
+    //     // TODO: Implement traslado() method.
+    // }
 
-    public function retencionesEInformacionDePagos()
-    {
-        // TODO: Implement retencionesEInformacionDePagos() method.
-    }
+    // public function retencionesEInformacionDePagos()
+    // {
+    //     // TODO: Implement retencionesEInformacionDePagos() method.
+    // }
 }

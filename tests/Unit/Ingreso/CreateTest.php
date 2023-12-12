@@ -4,9 +4,9 @@ use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 
 it('create object', function () {
 
-    $user = User::factory()->create();
+    // $user = User::factory()->create();
 
-    dd(auth()->id());
+    // dd(auth()->id());
 
     $facturaMx = new \JiagBrody\LaravelFacturaMx\LaravelFacturaMx;
 
@@ -43,8 +43,6 @@ it('create object', function () {
     $retencionesLocales->setImporte('3');
     $retencionesLocales = collect([$retencionesLocales]);
     $object->addComplementoImpuestosLocales($retencionesLocales, 0);
-
-    dd('Israel', $object->build()->saveInvoice('', 0));
 
     expect($object)->toBeObject();
 });
