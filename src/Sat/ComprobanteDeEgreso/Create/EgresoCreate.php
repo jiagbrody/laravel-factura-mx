@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeEgreso\Create;
 
@@ -18,7 +20,7 @@ readonly class EgresoCreate implements DraftSatInterface
 
     public function fromComprobante(array $comprobante, $products = []): EgresoCreateConcrete
     {
-        $concept = (!empty($products)) ? $products : $comprobante['Conceptos']['Concepto'][0];
+        $concept = (! empty($products)) ? $products : $comprobante['Conceptos']['Concepto'][0];
 
         return (new EgresoCreateConcrete($this->invoiceCompanyEnum))
             ->addAtributos($comprobante)

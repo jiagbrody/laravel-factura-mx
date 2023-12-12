@@ -1,13 +1,17 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData;
 
-readonly final class RetencionesLocalesAtributos
+final readonly class RetencionesLocalesAtributos
 {
     use AtributosHelperTrait;
 
     private string $ImpLocRetenido;
+
     private string $TasadeRetencion;
+
     private string $Importe;
 
     public function setImpLocRetenido(string $ImpLocRetenido): void

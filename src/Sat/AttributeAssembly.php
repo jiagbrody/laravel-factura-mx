@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat;
 
@@ -10,10 +12,14 @@ use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ReceptorAtributos;
 readonly class AttributeAssembly
 {
     protected ComprobanteAtributos $comprobanteAtributos;
-    protected EmisorAtributos      $emisorAtributos;
-    protected ReceptorAtributos    $receptorAtributos;
-    protected Collection           $conceptos;
-    protected Collection           $complementoImpuestosLocales;
+
+    protected EmisorAtributos $emisorAtributos;
+
+    protected ReceptorAtributos $receptorAtributos;
+
+    protected Collection $conceptos;
+
+    protected Collection $complementoImpuestosLocales;
 
     public function setComprobanteAtributos(ComprobanteAtributos $comprobanteAtributos): void
     {

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeIngreso\Create;
 
@@ -20,7 +22,8 @@ class IngresoCreateBuild extends DraftBuild
     protected Invoice $invoice;
 
     private bool $is_paid;
-    private int  $payment_invoice_type_id;
+
+    private int $payment_invoice_type_id;
 
     public function __construct(protected Credential $credential, protected CfdiCreator40 $creatorCfdi, protected InvoiceCompanyHelper $companyHelper, protected AttributeAssembly $attributeAssembly)
     {
@@ -28,13 +31,13 @@ class IngresoCreateBuild extends DraftBuild
 
     public function saveInvoice(string $relationshipModel, int $relationshipId): Invoice
     {
-        $invoice                     = new Invoice;
-        $invoice->user_id            = auth()->id();
-        $invoice->invoice_type_id    = InvoiceTypeEnum::INGRESO->value;
+        $invoice = new Invoice;
+        $invoice->user_id = auth()->id();
+        $invoice->invoice_type_id = InvoiceTypeEnum::INGRESO->value;
         $invoice->invoice_company_id = $this->companyHelper->id;
-        $invoice->invoice_status_id  = InvoiceStatusEnum::DRAFT->value;
-        $invoice->invoiceable_type   = $relationshipModel;
-        $invoice->invoiceable_id     = $relationshipId;
+        $invoice->invoice_status_id = InvoiceStatusEnum::DRAFT->value;
+        $invoice->invoiceable_type = $relationshipModel;
+        $invoice->invoiceable_id = $relationshipId;
 
         $invoice->save();
 
@@ -45,7 +48,7 @@ class IngresoCreateBuild extends DraftBuild
 
     public function setInvoiceBalance(bool $isPaid, PaymentInvoiceTypeEnum $paymentInvoiceTypeId): self
     {
-        $this->is_paid                 = $isPaid;
+        $this->is_paid = $isPaid;
         $this->payment_invoice_type_id = $paymentInvoiceTypeId->value;
 
         return $this;
@@ -53,17 +56,17 @@ class IngresoCreateBuild extends DraftBuild
 
     public function saveDraft(Collection $products): void
     {
-        # GUARDO DETALLES DE LA FACTURA.
+        // GUARDO DETALLES DE LA FACTURA.
         $this->saveDraftDetails();
 
-        # GUARDO VALORES DEL SISTEMA.
+        // GUARDO VALORES DEL SISTEMA.
         $this->invoice->refresh();
 
         $balance = GetBalanceProductsHelper::make($products);
 
         $this->saveBalance($balance->charges);
 
-        # GUARDO PRODUCTOS RELACIONADOS A LA FACTURA.
+        // GUARDO PRODUCTOS RELACIONADOS A LA FACTURA.
         $collection = $balance->products->keyBy('statement_detail_id')->map(function ($item) {
             $collect = collect();
             $collect->put('unit_price', $item->price_unit);
@@ -72,15 +75,16 @@ class IngresoCreateBuild extends DraftBuild
             $collect->put('sub_total', $item->sub_total);
             $collect->put('tax', $item->tax);
             $collect->put('total', $item->total);
+
             return $collect->toArray();
         });
 
         $this->invoice->statementDetails()->sync($collection->toArray());
 
-        # GUARDO LOS IMPUESTOS DECLARADOS EN LA FACTURA DE INGRESO.
+        // GUARDO LOS IMPUESTOS DECLARADOS EN LA FACTURA DE INGRESO.
         $this->saveInvoiceTax();
 
-        # GENERO DOCUMENTOS XML Y EL PDF.
+        // GENERO DOCUMENTOS XML Y EL PDF.
         $xml = (new XmlFileSatHelperBuilder($this->invoice))->generate($this->creatorCfdi->asXml());
         (new PdfFileSatHelperBuilder())
             ->setInvoiceCfdiType($this->invoice->invoice_cfdi_type_id)
@@ -93,14 +97,14 @@ class IngresoCreateBuild extends DraftBuild
     {
         $balance = $this->invoice->invoiceBalance()->firstOrNew();
 
-        $balance->gross_sub_total         = $charges->gross_sub_total;
-        $balance->sub_total               = $charges->sub_total;
-        $balance->discount                = $charges->discount;
-        $balance->tax                     = $charges->tax;
-        $balance->total                   = $charges->total;
-        $balance->local_tax               = $charges->local_tax;
-        $balance->balance_total           = $charges->balance_total;
-        $balance->is_paid                 = $this->is_paid;
+        $balance->gross_sub_total = $charges->gross_sub_total;
+        $balance->sub_total = $charges->sub_total;
+        $balance->discount = $charges->discount;
+        $balance->tax = $charges->tax;
+        $balance->total = $charges->total;
+        $balance->local_tax = $charges->local_tax;
+        $balance->balance_total = $charges->balance_total;
+        $balance->is_paid = $this->is_paid;
         $balance->payment_invoice_type_id = $this->payment_invoice_type_id;
         $balance->save();
     }
@@ -130,13 +134,13 @@ class IngresoCreateBuild extends DraftBuild
                 }
             }
 
-            $invoiceTax                              = InvoiceTax::whereInvoiceId($this->invoice->id)->firstOrNew();
-            $invoiceTax->invoice_id                  = $this->invoice->id;
+            $invoiceTax = InvoiceTax::whereInvoiceId($this->invoice->id)->firstOrNew();
+            $invoiceTax->invoice_id = $this->invoice->id;
             $invoiceTax->total_impuestos_trasladados = $totalTraslados ?? null;
-            $invoiceTax->total_impuestos_retenidos   = $totalRetenidos ?? null;
+            $invoiceTax->total_impuestos_retenidos = $totalRetenidos ?? null;
             $invoiceTax->save();
 
-            if (!empty($invoiceTaxDetails)) {
+            if (! empty($invoiceTaxDetails)) {
                 $invoiceTax->invoiceTaxDetails()->delete();
                 $invoiceTax->invoiceTaxDetails()->saveMany($invoiceTaxDetails);
             }
@@ -147,9 +151,9 @@ class IngresoCreateBuild extends DraftBuild
     {
         $collect = collect([
             'invoice_tax_type_id' => $type->value,
-            'base'                => $attributes->get('Base'),
-            'impuesto'            => $attributes->get('Impuesto'),
-            'tipo_factor'         => $attributes->get('TipoFactor'),
+            'base' => $attributes->get('Base'),
+            'impuesto' => $attributes->get('Impuesto'),
+            'tipo_factor' => $attributes->get('TipoFactor'),
         ]);
 
         if ($attributes->get('TasaOCuota')) {

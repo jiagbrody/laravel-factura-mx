@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteRecepcionDePagos\Cancel;
 
@@ -20,9 +22,10 @@ class PagoCancelConcrete
     {
         $this->cancel = $this->invoice->cfdi->cfdiCancel()->create([
             'cfdi_cancel_type_id' => $enum->value,
-            'estatus_uuid'        => $this->pacCancelResponse->estatusUUID,
+            'estatus_uuid' => $this->pacCancelResponse->estatusUUID,
             'estatus_cancelacion' => $this->pacCancelResponse->estatusCancelacion,
         ]);
+
         return $this;
     }
 
@@ -31,6 +34,7 @@ class PagoCancelConcrete
         $this->invoice->invoicePayments->each(function ($item) {
             $item->invoicePaymentDocuments()->update(['is_active' => false]);
         });
+
         return $this;
     }
 
@@ -40,10 +44,11 @@ class PagoCancelConcrete
 
             (new XmlFileSatHelperBuilder($this->invoice))
                 ->updateModel($this->cancel)
-                ->updatePath('cancels/' . date('Y') . '/' . date('m') . '/' . date('d'))
+                ->updatePath('cancels/'.date('Y').'/'.date('m').'/'.date('d'))
                 ->updateFileName($this->invoice->cfdi->uuid)
                 ->generate($this->pacCancelResponse->acuse);
         }
+
         return $this;
     }
 }

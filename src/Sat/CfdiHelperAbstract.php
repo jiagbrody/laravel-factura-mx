@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat;
 
@@ -13,6 +15,7 @@ use PhpCfdi\Credentials\Credential;
 abstract class CfdiHelperAbstract
 {
     const IMPUESTO_TRASLADO_ATRIBUTOS_KEY = 'impuestoTrasladoAtributos';
+
     protected Credential $credential;
 
     protected \CfdiUtils\CfdiCreator40 $creatorCfdi;
@@ -23,8 +26,8 @@ abstract class CfdiHelperAbstract
 
     public function __construct()
     {
-        $this->creatorCfdi       = new CfdiCreator40();
-        $this->credential        = Credential::openFiles($this->companyHelper->certificatePath, $this->companyHelper->keyPath, $this->companyHelper->passPhrase);
+        $this->creatorCfdi = new CfdiCreator40();
+        $this->credential = Credential::openFiles($this->companyHelper->certificatePath, $this->companyHelper->keyPath, $this->companyHelper->passPhrase);
         $this->attributeAssembly = new AttributeAssembly;
 
         $this->addEmisor();
@@ -67,8 +70,8 @@ abstract class CfdiHelperAbstract
         if ($products->count() > 0) {
             $products->each(function (ConceptoAtributos $item) {
                 $this->creatorCfdi->comprobante()
-                    ->addConcepto((array)$this->getConcept($item))
-                    ->addTraslado((array)$this->getTraslado($item->getImpuestoTrasladoAtributos()));
+                    ->addConcepto((array) $this->getConcept($item))
+                    ->addTraslado((array) $this->getTraslado($item->getImpuestoTrasladoAtributos()));
             });
             $this->attributeAssembly->setConceptos($products);
         }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteRecepcionDePagos;
 
@@ -9,6 +11,7 @@ use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\PatronDeDatosHelper;
 class DefineImpuestosDRProperties
 {
     private const VALUE_OBJECT_IMP_WITH_TAX = '02';
+
     public float $BaseDR;
 
     public string $ImpuestoDR;

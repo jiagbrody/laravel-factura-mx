@@ -1,8 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData;
 
-readonly final class ConceptoAtributos
+final readonly class ConceptoAtributos
 {
     use AtributosHelperTrait;
 
@@ -80,7 +82,7 @@ readonly final class ConceptoAtributos
 
     public function setValorUnitario(float $ValorUnitario): void
     {
-        $this->ValorUnitario = (string)PatronDeDatosHelper::t_import($ValorUnitario);
+        $this->ValorUnitario = (string) PatronDeDatosHelper::t_import($ValorUnitario);
     }
 
     public function getValorUnitario(): string
@@ -100,7 +102,7 @@ readonly final class ConceptoAtributos
 
     public function setImporte(float $Importe): void
     {
-        $this->Importe = (string)PatronDeDatosHelper::t_import($Importe);
+        $this->Importe = (string) PatronDeDatosHelper::t_import($Importe);
     }
 
     public function getImporte(): string
@@ -110,7 +112,7 @@ readonly final class ConceptoAtributos
 
     public function setDescuento(float $Descuento): void
     {
-        $this->Descuento = (string)PatronDeDatosHelper::t_import($Descuento);
+        $this->Descuento = (string) PatronDeDatosHelper::t_import($Descuento);
     }
 
     public function getDescuento(): string

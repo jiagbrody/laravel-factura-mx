@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Helper;
 
@@ -25,11 +27,12 @@ abstract class StampConcrete implements StampConcreteInterface
     public function createCfdi(): self
     {
         Cfdi::create([
-            'invoice_id'     => $this->invoice->id,
+            'invoice_id' => $this->invoice->id,
             'cfdi_status_id' => CfdiStatusEnum::VALID->value,
-            'uuid'           => $this->pacStampResponse->uuid,
+            'uuid' => $this->pacStampResponse->uuid,
         ]);
         $this->invoice->refresh();
+
         return $this;
     }
 
@@ -37,8 +40,8 @@ abstract class StampConcrete implements StampConcreteInterface
     {
         $xml = (new XmlFileSatHelperBuilder($this->invoice))
             ->updateModel($this->invoice->cfdi)
-            ->updatePath('/cfdis/' . $this->invoice->invoiceDetail->emisor_rfc . '/' . $this->invoice->invoiceDetail->receptor_rfc . '/' . $this->invoice->invoiceDetail->fecha->format('Y') . '/' . $this->invoice->invoiceDetail->tipo_de_comprobante . '/' . $this->invoice->invoiceDetail->fecha->format('m') . '/' . $this->invoice->invoiceDetail->fecha->format('d'))
-            ->updateFileName('invoice-' . $this->invoice->id . '-' . $this->invoice->cfdi->uuid)
+            ->updatePath('/cfdis/'.$this->invoice->invoiceDetail->emisor_rfc.'/'.$this->invoice->invoiceDetail->receptor_rfc.'/'.$this->invoice->invoiceDetail->fecha->format('Y').'/'.$this->invoice->invoiceDetail->tipo_de_comprobante.'/'.$this->invoice->invoiceDetail->fecha->format('m').'/'.$this->invoice->invoiceDetail->fecha->format('d'))
+            ->updateFileName('invoice-'.$this->invoice->id.'-'.$this->invoice->cfdi->uuid)
             ->generate($this->pacStampResponse->xml);
 
         (new PdfFileSatHelperBuilder())
@@ -47,7 +50,7 @@ abstract class StampConcrete implements StampConcreteInterface
             ->setXmlDocument($xml)
             ->build();
 
-        # BORRO LOS DOCUMENTOS DE BORRADOR.
+        // BORRO LOS DOCUMENTOS DE BORRADOR.
         if ($this->invoice->documents()->exists()) {
             $this->invoice->documents()->each(function ($document) {
                 (new DocumentDestroyService($document))->make();

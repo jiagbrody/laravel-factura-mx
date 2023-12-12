@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeIngreso\Cancel;
 
@@ -18,6 +20,7 @@ class CancelCfdi extends PacProviderHelper implements CancelCfdiInterface
     {
         $pacResponse = $this->pacProvider->cancelInvoice($this->cfdiCancelTypeEnum, $this->uuidReplace);
         $this->runConcrete($pacResponse);
+
         return $pacResponse;
     }
 

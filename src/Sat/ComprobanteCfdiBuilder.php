@@ -1,8 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat;
 
-# PARA BORRAR.
+// PARA BORRAR.
 /*Esta clase se pasó a la raíz del package*/
 
 // class ComprobanteCfdiBuilder implements ComprobanteCfdiInterface

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeIngreso\Create;
 
@@ -49,11 +51,11 @@ class IngresoCreateConcrete extends CfdiHelperAbstract
         $this->creatorCfdi->addSumasConceptos(null, 2);
         $this->creatorCfdi->moveSatDefinitionsToComprobante();
 
-        return (new IngresoCreateBuild(
+        return new IngresoCreateBuild(
             credential: $this->credential,
             creatorCfdi: $this->creatorCfdi,
             companyHelper: $this->companyHelper,
             attributeAssembly: $this->attributeAssembly
-        ));
+        );
     }
 }

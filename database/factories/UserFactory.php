@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Database\Factories;
 
@@ -9,12 +11,8 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'  => $this->faker->name,
+            'name' => $this->faker->name,
             'email' => $this->faker->email,
         ];
     }
 }
-
-
-
-
