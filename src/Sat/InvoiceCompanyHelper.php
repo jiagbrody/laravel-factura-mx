@@ -6,29 +6,23 @@ use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 
 final readonly class InvoiceCompanyHelper
 {
+    public int    $id;
     public string $rfc;
-
     public string $nombre;
-
     public string $regimenFiscal;
-
     public string $facAtrAdquirente;
-
     public string $certificatePath;
-
     public string $keyPath;
-
     public string $passPhrase;
-
     public string $serialNumber;
-
     public string $pacEnvironment;
 
     public function __construct(InvoiceCompany $invoiceCompany)
     {
         $folder = config('factura-mx.sat_files_path');
 
-        $this->pacEnvironment = 'development';
+        $this->pacEnvironment  = 'development';
+        $this->id              = $invoiceCompany->id;
         $this->rfc             = $invoiceCompany->rfc;
         $this->nombre          = $invoiceCompany->nombre;
         $this->regimenFiscal   = $invoiceCompany->regimen_fiscal;

@@ -32,9 +32,12 @@ return [
      | Tributaria (SAT) para poder timbrar las facturas por medio de algún PAC
      | (servicio de terceros para timbrar facturas).
      |
+     | Ejemplo:
+     | storage_path('app/protected/sat-certificates')
+     |
      */
 
-    'sat_files_path' => storage_path('app/protected/sat-certificates'),
+    'sat_files_path' => __dir__ . '/../storage/app/protected/sat-certificates',
 
     /*
      |--------------------------------------------------------------------------

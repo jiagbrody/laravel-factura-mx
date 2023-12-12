@@ -2,7 +2,6 @@
 
 namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeIngreso\Create;
 
-use App\Enums\InvoiceCompanyEnum;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 use JiagBrody\LaravelFacturaMx\Sat\DraftSatInterface;
 use Illuminate\Database\Eloquent\Collection;
@@ -22,7 +21,7 @@ readonly class IngresoCreate implements DraftSatInterface
             }
         }*/
 
-        return (new IngresoCreateConcrete($this->invoiceCompanyEnum))->addAtributos($comprobante)
+        return (new IngresoCreateConcrete(new InvoiceCompany))->addAtributos($comprobante)
             ->addReceptor($comprobante['Receptor'])
             ->addConceptos($products)
             ->addRelacionados($comprobante['CfdiRelacionados'])

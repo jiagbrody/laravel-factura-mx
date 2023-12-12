@@ -9,7 +9,7 @@ This package is used with the Laravel Framework and currently resolves billing i
 
 ## Support us
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/laravel-factura-mx.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/laravel-factura-mx)
+[//]: # ([<img src="https://github-ads.s3.eu-central-1.amazonaws.com/laravel-factura-mx.jpg?t=1" width="419px" />]&#40;https://spatie.be/github-ad-click/laravel-factura-mx&#41;)
 
 We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
 

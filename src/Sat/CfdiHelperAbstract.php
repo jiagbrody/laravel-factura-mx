@@ -2,49 +2,32 @@
 
 namespace JiagBrody\LaravelFacturaMx\Sat;
 
-use App\Enums\CfdiGenericRfcEnum;
-use App\Models\DataFiscal;
-use App\Models\Product;
 use CfdiUtils\CfdiCreator40;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ConceptoAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\EmisorAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoTrasladoAtributos;
-use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\PatronDeDatosHelper;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ReceptorAtributos;
 use PhpCfdi\Credentials\Credential;
 
 abstract class CfdiHelperAbstract
 {
+    const IMPUESTO_TRASLADO_ATRIBUTOS_KEY = 'impuestoTrasladoAtributos';
     protected Credential $credential;
 
     protected \CfdiUtils\CfdiCreator40 $creatorCfdi;
 
     protected InvoiceCompanyHelper $companyHelper;
 
-    protected EmisorAtributos $emisorAtributos;
-
-    protected ReceptorAtributos $receptorAtributos;
-
-    protected ConceptoAtributos $conceptoAtributos;
-
-    protected ImpuestoTrasladoAtributos $impuestoTrasladoAtributos;
+    protected AttributeAssembly $attributeAssembly;
 
     public function __construct()
     {
-        $this->creatorCfdi               = new CfdiCreator40();
-        $this->credential                = Credential::openFiles($this->companyHelper->certificatePath, $this->companyHelper->keyPath, $this->companyHelper->passPhrase);
-        $this->emisorAtributos           = new EmisorAtributos;
-        $this->conceptoAtributos         = new ConceptoAtributos;
-        $this->receptorAtributos         = new ReceptorAtributos;
-        $this->impuestoTrasladoAtributos = new ImpuestoTrasladoAtributos;
+        $this->creatorCfdi       = new CfdiCreator40();
+        $this->credential        = Credential::openFiles($this->companyHelper->certificatePath, $this->companyHelper->keyPath, $this->companyHelper->passPhrase);
+        $this->attributeAssembly = new AttributeAssembly;
 
-        $this->setEmisor();
-    }
-
-    public function initConfig(): self
-    {
-        return $this;
+        $this->addEmisor();
     }
 
     public function addRelacionados(array $relacionados): self
@@ -58,48 +41,23 @@ abstract class CfdiHelperAbstract
         return $this;
     }
 
-    private function setEmisor(): void
+    private function addEmisor(): void
     {
-        $this->emisorAtributos->Nombre        = $this->companyHelper->nombre;
-        $this->emisorAtributos->Rfc           = $this->companyHelper->rfc;
-        $this->emisorAtributos->RegimenFiscal = $this->companyHelper->regimenFiscal;
+        $emisorAtributos = new EmisorAtributos;
+        $emisorAtributos->setNombre($this->companyHelper->nombre);
+        $emisorAtributos->setRfc($this->companyHelper->rfc);
+        $emisorAtributos->setRegimenFiscal($this->companyHelper->regimenFiscal);
 
-        $this->creatorCfdi->comprobante()->addEmisor((array)$this->emisorAtributos);
+        $this->attributeAssembly->setEmisorAtributos($emisorAtributos);
+
+        $this->creatorCfdi->comprobante()->addEmisor($emisorAtributos->getCollection()->toArray());
     }
 
-    public function addReceptor(DataFiscal|array $fiscalData): self
+    public function addReceptor(ReceptorAtributos $receptor): self
     {
-        if (is_array($fiscalData)) {
-            $this->receptorAtributos->Rfc                     = $fiscalData['Rfc'] ?? '';
-            $this->receptorAtributos->Nombre                  = $fiscalData['Nombre'] ?? '';
-            $this->receptorAtributos->DomicilioFiscalReceptor = $fiscalData['DomicilioFiscalReceptor'] ?? '';
-            $this->receptorAtributos->ResidenciaFiscal        = $fiscalData['ResidenciaFiscal'] ?? '';
-            $this->receptorAtributos->NumRegIdTrib            = $fiscalData['NumRegIdTrib'] ?? '';
-            $this->receptorAtributos->RegimenFiscalReceptor   = $fiscalData['RegimenFiscalReceptor'] ?? '';
-            $this->receptorAtributos->UsoCFDI                 = $fiscalData['UsoCFDI'] ?? '';
-        } else {
-            $this->receptorAtributos->Rfc                     = (string)$fiscalData->rfc;
-            $this->receptorAtributos->Nombre                  = (string)$fiscalData->nombre;
-            $this->receptorAtributos->DomicilioFiscalReceptor = (string)$fiscalData->domicilio_fiscal_receptor;
-            $this->receptorAtributos->ResidenciaFiscal        = (string)$fiscalData->residencia_fiscal;
-            $this->receptorAtributos->NumRegIdTrib            = (string)$fiscalData->num_reg_id_trib;
-            $this->receptorAtributos->RegimenFiscalReceptor   = (string)$fiscalData->regimen_fiscal_receptor;
-            $this->receptorAtributos->UsoCFDI                 = (string)$fiscalData->uso_cfdi;
-        }
+        $this->attributeAssembly->setReceptorAtributos($receptor);
 
-        if ($this->receptorAtributos->NumRegIdTrib === '') {
-            unset($this->receptorAtributos->NumRegIdTrib);
-            unset($this->receptorAtributos->ResidenciaFiscal);
-        }
-
-        // DOMICILIO FISCAL RECEPTOR PARA EL RECEPTOR OBLIGATORIO EN RFC GENERICOS
-        switch ($this->receptorAtributos->Rfc) {
-            case CfdiGenericRfcEnum::NACIONAL->value:
-            case CfdiGenericRfcEnum::EXTRANJERO->value:
-                $this->receptorAtributos->DomicilioFiscalReceptor = $this->atributos->LugarExpedicion;
-        }
-
-        $this->creatorCfdi->comprobante()->addReceptor((array)$this->receptorAtributos);
+        $this->creatorCfdi->comprobante()->addReceptor($receptor->getCollection()->toArray());
 
         return $this;
     }
@@ -107,43 +65,27 @@ abstract class CfdiHelperAbstract
     public function addConceptos(Collection $products): self
     {
         if ($products->count() > 0) {
-            $products->each(function ($item) {
+            $products->each(function (ConceptoAtributos $item) {
                 $this->creatorCfdi->comprobante()
                     ->addConcepto((array)$this->getConcept($item))
-                    ->addTraslado((array)$this->getTraslado($item));
+                    ->addTraslado((array)$this->getTraslado($item->getImpuestoTrasladoAtributos()));
             });
+            $this->attributeAssembly->setConceptos($products);
         }
 
         return $this;
     }
 
-    private function getConcept(Product $product): \App\Services\SAT\InvoiceSatData\ConceptoAtributos
+    private function getConcept(ConceptoAtributos $product): array
     {
-        $this->conceptoAtributos->ClaveProdServ    = $product->c_clave_prod_serv;
-        $this->conceptoAtributos->NoIdentificacion = (string)$product->statement_detail_id;
-        $this->conceptoAtributos->Cantidad         = (string)$product->quantity;
-        $this->conceptoAtributos->ClaveUnidad      = $product->c_clave_unidad;
-        $this->conceptoAtributos->Descripcion      = ($product->comments) ? $product->name . ' - ' . $product->comments : $product->name;
-        $this->conceptoAtributos->ValorUnitario    = (string)PatronDeDatosHelper::t_import($product->price_unit);
-        $this->conceptoAtributos->Importe          = (string)PatronDeDatosHelper::t_import($product->gross_sub_total);
-        $this->conceptoAtributos->Descuento        = (string)PatronDeDatosHelper::t_import($product->discount);
-        $this->conceptoAtributos->ObjetoImp        = $product->c_objeto_impuesto;
+        $array = $product->getCollection();
+        $array->forget(self::IMPUESTO_TRASLADO_ATRIBUTOS_KEY);
 
-
-        return $this->conceptoAtributos;
+        return $array->toArray();
     }
 
-    private function getTraslado(Product $product): null|\App\Services\SAT\InvoiceSatData\ImpuestoTrasladoAtributos
+    private function getTraslado(ImpuestoTrasladoAtributos $traslado): array
     {
-        $this->impuestoTrasladoAtributos->Base       = (string)PatronDeDatosHelper::t_import($product->sub_total);
-        $this->impuestoTrasladoAtributos->Impuesto   = $product->c_impuesto;
-        $this->impuestoTrasladoAtributos->TipoFactor = $product->c_tipo_factor;
-
-        if ($product->c_tipo_factor !== 'Exento') {
-            $this->impuestoTrasladoAtributos->TasaOCuota = $product->c_tasa_o_cuota;
-            $this->impuestoTrasladoAtributos->Importe    = (string)PatronDeDatosHelper::t_import($product->tax);
-        }
-
-        return $this->impuestoTrasladoAtributos;
+        return $traslado->getCollection()->toArray();
     }
 }

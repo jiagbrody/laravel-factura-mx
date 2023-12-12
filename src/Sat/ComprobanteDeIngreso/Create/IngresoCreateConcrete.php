@@ -4,116 +4,40 @@ namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeIngreso\Create;
 
 use CfdiUtils\Certificado\Certificado;
 use CfdiUtils\Elements\ImpLocal10\ImpuestosLocales;
+use Illuminate\Support\Collection;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 use JiagBrody\LaravelFacturaMx\Sat\CfdiHelperAbstract;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ComprobanteAtributos;
+use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\RetencionesLocalesAtributos;
 
 class IngresoCreateConcrete extends CfdiHelperAbstract
 {
-    protected ComprobanteAtributos $atributos;
-
     public function __construct(InvoiceCompany $invoiceCompany)
     {
         $this->companyHelper = new InvoiceCompanyHelper($invoiceCompany);
-        $this->atributos     = new ComprobanteAtributos('I');
         parent::__construct();
     }
 
-    public function addAtributos(array $attributes): self
+    public function addAtributos(ComprobanteAtributos $attributes): self
     {
-        if (isset($attributes['Serie'])) {
-            $this->atributos->Serie = $attributes['Serie'];
-        }
+        $this->attributeAssembly->setComprobanteAtributos($attributes);
 
-        if (isset($attributes['Folio'])) {
-            $this->atributos->Folio = $attributes['Folio'];
-        }
-
-        if (isset($attributes['Sello'])) {
-            $this->atributos->Sello = $attributes['Sello'];
-        }
-
-        if (isset($attributes['FormaPago'])) {
-            $this->atributos->FormaPago = $attributes['FormaPago'];
-        }
-
-        if (isset($attributes['NoCertificado'])) {
-            $this->atributos->NoCertificado = $attributes['NoCertificado'];
-        }
-
-        if (isset($attributes['Certificado'])) {
-            $this->atributos->Certificado = $attributes['Certificado'];
-        }
-
-        if (isset($attributes['CondicionesDePago'])) {
-            $this->atributos->CondicionesDePago = $attributes['CondicionesDePago'];
-        }
-
-        if (isset($attributes['SubTotal'])) {
-            $this->atributos->SubTotal = $attributes['SubTotal'];
-        }
-
-        if (isset($attributes['Descuento'])) {
-            $this->atributos->Descuento = $attributes['Descuento'];
-        }
-
-        if (isset($attributes['Moneda'])) {
-            $this->atributos->Moneda = $attributes['Moneda'];
-        }
-
-        if (isset($attributes['TipoCambio'])) {
-            $this->atributos->TipoCambio = $attributes['TipoCambio'];
-        }
-
-        if (isset($attributes['Total'])) {
-            $this->atributos->Total = $attributes['Total'];
-        }
-
-        if (isset($attributes['Exportacion'])) {
-            $this->atributos->Exportacion = $attributes['Exportacion'];
-        }
-
-        if (isset($attributes['MetodoPago'])) {
-            $this->atributos->MetodoPago = $attributes['MetodoPago'];
-        }
-
-        if (isset($attributes['Confirmacion'])) {
-            $this->atributos->Confirmacion = $attributes['Confirmacion'];
-        }
-
-
-        if (empty($attributes['CondicionesDePago'])) {
-            unset($this->atributos->CondicionesDePago);
-        }
-
-        if ($this->atributos->Moneda === 'MXN' || $this->atributos->Moneda === 'XXX') {
-            unset($this->atributos->TipoCambio);
-        }
-
-        if (empty($attributes['Confirmacion'])) {
-            unset($this->atributos->Confirmacion);
-        }
-
-        $this->creatorCfdi->comprobante()->addAttributes((array)$this->atributos);
+        $this->creatorCfdi->comprobante()->addAttributes($attributes->getCollection()->toArray());
 
         return $this;
     }
 
-    public function addComplementoImpuestosLocales(array $impuestosLocales, float $total): self
+    public function addComplementoImpuestosLocales(Collection $impuestosLocales): self
     {
-        if (!empty($impuestosLocales)) {
+        if ($impuestosLocales->isNotEmpty()) {
             $impLocales = new ImpuestosLocales();
-            if (!empty($impuestosLocales['RetencionesLocales'])) {
-                foreach ($impuestosLocales['RetencionesLocales'] as $retencion) {
-                    $impLocales->addRetencionLocal([
-                        'ImpLocRetenido'  => $retencion['ImpLocRetenido'],
-                        'TasadeRetencion' => $retencion['TasadeRetencion'],
-                        'Importe'         => $retencion['Importe'],
-                    ]);
-                }
-                $this->creatorCfdi->comprobante()->addComplemento($impLocales);
-            }
+            $impuestosLocales->each(function (RetencionesLocalesAtributos $item) use ($impLocales) {
+                $impLocales->addRetencionLocal($item->getCollection()->toArray());
+            });
+            $this->attributeAssembly->setComplementoImpuestosLocales($impuestosLocales);
+
+            $this->creatorCfdi->comprobante()->addComplemento($impLocales);
         }
 
         return $this;
@@ -125,6 +49,11 @@ class IngresoCreateConcrete extends CfdiHelperAbstract
         $this->creatorCfdi->addSumasConceptos(null, 2);
         $this->creatorCfdi->moveSatDefinitionsToComprobante();
 
-        return (new IngresoCreateBuild($this->credential, $this->creatorCfdi, $this->companyHelper));
+        return (new IngresoCreateBuild(
+            credential: $this->credential,
+            creatorCfdi: $this->creatorCfdi,
+            companyHelper: $this->companyHelper,
+            attributeAssembly: $this->attributeAssembly
+        ));
     }
 }

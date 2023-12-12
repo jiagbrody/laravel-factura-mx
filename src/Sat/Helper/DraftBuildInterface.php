@@ -2,7 +2,7 @@
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Helper;
 
-use App\Models\Invoice;
+use JiagBrody\LaravelFacturaMx\Models\Invoice;
 
 interface DraftBuildInterface
 {

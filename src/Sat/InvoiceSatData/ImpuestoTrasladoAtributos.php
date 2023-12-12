@@ -1,16 +1,68 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData;
 
-class ImpuestoTrasladoAtributos
+readonly final class ImpuestoTrasladoAtributos
 {
-    public string $Base;
+    use AtributosHelperTrait;
 
-    public string $Impuesto;
+    private string $Base;
 
-    public string $TipoFactor;
+    private string $Impuesto;
 
-    public string $TasaOCuota;
+    private string $TipoFactor;
 
-    public string $Importe;
+    private string $TasaOCuota;
+
+    private string $Importe;
+
+    public function setBase(float $Base): void
+    {
+        $this->Base = (string)PatronDeDatosHelper::t_import($Base);
+    }
+
+    public function getBase(): string
+    {
+        return $this->Base;
+    }
+
+    public function setImpuesto(string $Impuesto): void
+    {
+        $this->Impuesto = $Impuesto;
+    }
+
+    public function getImpuesto(): string
+    {
+        return $this->Impuesto;
+    }
+
+    public function setTipoFactor(string $TipoFactor): void
+    {
+        $this->TipoFactor = $TipoFactor;
+    }
+
+    public function getTipoFactor(): string
+    {
+        return $this->TipoFactor;
+    }
+
+    public function setTasaOCuota(string $TasaOCuota): void
+    {
+        $this->TasaOCuota = $TasaOCuota;
+    }
+
+    public function getTasaOCuota(): string
+    {
+        return $this->TasaOCuota;
+    }
+
+    public function setImporte(float $Importe): void
+    {
+        $this->Importe = (string)PatronDeDatosHelper::t_import($Importe);
+    }
+
+    public function getImporte(): string
+    {
+        return $this->Importe;
+    }
 }

@@ -2,52 +2,241 @@
 
 namespace JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData;
 
-class ComprobanteAtributos
+readonly final class ComprobanteAtributos
 {
-    readonly public string $Version;
+    use AtributosHelperTrait;
 
-    public string $Serie;
+    private string $Version;
 
-    public string $Folio;
+    private string $Serie;
 
-    readonly public string $Fecha;
+    private string $Folio;
 
-    public string $Sello;
+    private string $Fecha;
 
-    public string $FormaPago;
+    private string $Sello;
 
-    public string $NoCertificado;
+    private string $FormaPago;
 
-    public string $Certificado;
+    private string $NoCertificado;
 
-    public string $CondicionesDePago;
+    private string $Certificado;
 
-    public string $SubTotal;
+    private string $CondicionesDePago;
 
-    public string $Descuento;
+    private string $SubTotal;
 
-    public string $Moneda;
+    private string $Descuento;
 
-    public string $TipoCambio;
+    private string $Moneda;
 
-    public string $Total;
+    private string $TipoCambio;
 
-    readonly public string $TipoDeComprobante;
+    private string $Total;
 
-    public string $Exportacion;
+    private string $TipoDeComprobante;
 
-    public string $MetodoPago;
+    private string $Exportacion;
 
-    readonly public string $LugarExpedicion;
+    private string $MetodoPago;
+
+    private string $LugarExpedicion;
 
     public string $Confirmacion;
 
-    public function __construct(string $tipoComprobante)
+    public function __construct()
     {
-        $this->Version           = '4.0';
-        $this->TipoDeComprobante = $tipoComprobante;
-        $this->LugarExpedicion   = '63732';
-        $this->Fecha             = date('Y-m-d\\TH:i:s');
-        $this->Exportacion       = '01';
+        $this->Version = '4.0';
+        $this->Fecha   = date('Y-m-d\\TH:i:s');
+    }
+
+    // public function setVersion(string $Version): void
+    // {
+    //     $this->Version = $Version;
+    // }
+
+    public function getVersion(): string
+    {
+        return $this->Version;
+    }
+
+    public function setSerie(string $Serie): void
+    {
+        $this->Serie = $Serie;
+    }
+
+    public function getSerie(): string
+    {
+        return $this->Serie;
+    }
+
+    public function setFolio(string $Folio): void
+    {
+        $this->Folio = $Folio;
+    }
+
+    public function getFolio(): string
+    {
+        return $this->Folio;
+    }
+
+    // public function setFecha(string $Fecha): void
+    // {
+    //     $this->Fecha = $Fecha;
+    // }
+
+    public function getFecha(): string
+    {
+        return $this->Fecha;
+    }
+
+    public function setSello(string $Sello): void
+    {
+        $this->Sello = $Sello;
+    }
+
+    public function getSello(): string
+    {
+        return $this->Sello;
+    }
+
+    public function setFormaPago(string $FormaPago): void
+    {
+        $this->FormaPago = $FormaPago;
+    }
+
+    public function getFormaPago(): string
+    {
+        return $this->FormaPago;
+    }
+
+    public function setNoCertificado(string $NoCertificado): void
+    {
+        $this->NoCertificado = $NoCertificado;
+    }
+
+    public function getNoCertificado(): string
+    {
+        return $this->NoCertificado;
+    }
+
+    public function setCertificado(string $Certificado): void
+    {
+        $this->Certificado = $Certificado;
+    }
+
+    public function getCertificado(): string
+    {
+        return $this->Certificado;
+    }
+
+    public function setCondicionesDePago(string $CondicionesDePago): void
+    {
+        $this->CondicionesDePago = $CondicionesDePago;
+    }
+
+    public function getCondicionesDePago(): string
+    {
+        return $this->CondicionesDePago;
+    }
+
+    public function setSubTotal(string $SubTotal): void
+    {
+        $this->SubTotal = $SubTotal;
+    }
+
+    public function getSubTotal(): string
+    {
+        return $this->SubTotal;
+    }
+
+    public function setDescuento(string $Descuento): void
+    {
+        $this->Descuento = $Descuento;
+    }
+
+    public function getDescuento(): string
+    {
+        return $this->Descuento;
+    }
+
+    public function setMoneda(string $Moneda): void
+    {
+        $this->Moneda = $Moneda;
+    }
+
+    public function getMoneda(): string
+    {
+        return $this->Moneda;
+    }
+
+    public function setTipoCambio(string $TipoCambio): void
+    {
+        $this->TipoCambio = $TipoCambio;
+    }
+
+    public function getTipoCambio(): string
+    {
+        return $this->TipoCambio;
+    }
+
+    public function setTotal(string $Total): void
+    {
+        $this->Total = $Total;
+    }
+
+    public function getTotal(): string
+    {
+        return $this->Total;
+    }
+
+    public function setTipoDeComprobante(string $TipoDeComprobante): void
+    {
+        $this->TipoDeComprobante = $TipoDeComprobante;
+    }
+
+    public function getTipoDeComprobante(): string
+    {
+        return $this->TipoDeComprobante;
+    }
+
+    public function setExportacion(string $Exportacion): void
+    {
+        $this->Exportacion = $Exportacion;
+    }
+
+    public function getExportacion(): string
+    {
+        return $this->Exportacion;
+    }
+
+    public function setMetodoPago(string $MetodoPago): void
+    {
+        $this->MetodoPago = $MetodoPago;
+    }
+
+    public function getMetodoPago(): string
+    {
+        return $this->MetodoPago;
+    }
+
+    public function setLugarExpedicion(string $LugarExpedicion): void
+    {
+        $this->LugarExpedicion = $LugarExpedicion;
+    }
+
+    public function getLugarExpedicion(): string
+    {
+        return $this->LugarExpedicion;
+    }
+
+    public function setConfirmacion(string $Confirmacion): void
+    {
+        $this->Confirmacion = $Confirmacion;
+    }
+
+    public function getConfirmacion(): string
+    {
+        return $this->Confirmacion;
     }
 }

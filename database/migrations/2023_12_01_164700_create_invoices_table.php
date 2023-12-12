@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger(config('factura-mx.foreign_id_related_to_invoices'))->nullable()->comment('estado de cuenta sobre un modelo de negocio')->index();
-            $table->foreignId('user_id')->comment('El usuario quien crea la factura')->constrained();
+            $table->foreignId('user_id')->nullable()->comment('El usuario quien crea la factura')->constrained();
             $table->foreignId('invoice_type_id')->comment('Tipo de comprobante del SAT (ingreso, egreso, traslado...)')->constrained();
             $table->foreignId('invoice_company_id')->comment('A que empresa se le factura (emisor)')->constrained();
             $table->foreignId('invoice_status_id')->default(\JiagBrody\LaravelFacturaMx\Enums\InvoiceStatusEnum::DRAFT->value);

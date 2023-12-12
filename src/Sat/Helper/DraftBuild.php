@@ -2,12 +2,8 @@
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Helper;
 
-use App\Enums\CfdiRelationTypeEnum;
-use App\Helpers\Cfdi\ConvertXmlContentToObjectHelper;
-use App\Models\Cfdi;
-use App\Models\Invoice;
-use App\Models\InvoiceDetail;
 use CfdiUtils\CfdiCreator40;
+use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use PhpCfdi\Credentials\Credential;
 
 abstract class DraftBuild implements DraftBuildInterface
@@ -21,6 +17,10 @@ abstract class DraftBuild implements DraftBuildInterface
         $this->invoice = $invoice;
 
         return $this;
+    }
+
+    public function saveInvoice(string $relationshipModel, int $relationshipId)
+    {
     }
 
     public function getObjectFromComprobanteData(): \stdClass

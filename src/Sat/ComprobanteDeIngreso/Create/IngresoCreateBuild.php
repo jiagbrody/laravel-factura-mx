@@ -2,18 +2,17 @@
 
 namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeIngreso\Create;
 
-use App\Enums\InvoiceTaxTypeEnum;
-use App\Enums\PaymentInvoiceTypeEnum;
-use App\Helpers\AccountBalance\GetBalanceProductsHelper;
-use App\Models\Invoice;
-use App\Models\InvoiceTax;
-use App\Models\InvoiceTaxDetails;
+use CfdiUtils\CfdiCreator40;
+use Illuminate\Database\Eloquent\Collection;
+use JiagBrody\LaravelFacturaMx\Enums\InvoiceStatusEnum;
+use JiagBrody\LaravelFacturaMx\Enums\InvoiceTypeEnum;
+use JiagBrody\LaravelFacturaMx\Models\Invoice;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceDetail;
+use JiagBrody\LaravelFacturaMx\Sat\AttributeAssembly;
 use JiagBrody\LaravelFacturaMx\Sat\Helper\DraftBuild;
 use JiagBrody\LaravelFacturaMx\Sat\Helper\PdfFileSatHelperBuilder;
 use JiagBrody\LaravelFacturaMx\Sat\Helper\XmlFileSatHelperBuilder;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
-use CfdiUtils\CfdiCreator40;
-use Illuminate\Database\Eloquent\Collection;
 use PhpCfdi\Credentials\Credential;
 
 class IngresoCreateBuild extends DraftBuild
@@ -23,8 +22,25 @@ class IngresoCreateBuild extends DraftBuild
     private bool $is_paid;
     private int  $payment_invoice_type_id;
 
-    public function __construct(protected Credential $credential, protected CfdiCreator40 $creatorCfdi, protected InvoiceCompanyHelper $companyHelper)
+    public function __construct(protected Credential $credential, protected CfdiCreator40 $creatorCfdi, protected InvoiceCompanyHelper $companyHelper, protected AttributeAssembly $attributeAssembly)
     {
+    }
+
+    public function saveInvoice(string $relationshipModel, int $relationshipId): Invoice
+    {
+        $invoice                     = new Invoice;
+        $invoice->user_id            = auth()->id();
+        $invoice->invoice_type_id    = InvoiceTypeEnum::INGRESO->value;
+        $invoice->invoice_company_id = $this->companyHelper->id;
+        $invoice->invoice_status_id  = InvoiceStatusEnum::DRAFT->value;
+        $invoice->invoiceable_type   = $relationshipModel;
+        $invoice->invoiceable_id     = $relationshipId;
+
+        $invoice->save();
+
+        $this->saveInvoiceDetails($invoice);
+
+        return $invoice;
     }
 
     public function setInvoiceBalance(bool $isPaid, PaymentInvoiceTypeEnum $paymentInvoiceTypeId): self
@@ -145,5 +161,11 @@ class IngresoCreateBuild extends DraftBuild
         }
 
         return new InvoiceTaxDetails($collect->toArray());
+    }
+
+    private function saveInvoiceDetails(Invoice $invoice)
+    {
+        $details = new InvoiceDetail;
+
     }
 }
