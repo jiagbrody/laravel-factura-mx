@@ -2,7 +2,6 @@
 
 namespace JiagBrody\LaravelFacturaMx;
 
-
 use JiagBrody\LaravelFacturaMx\Commands\LaravelFacturaMxCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -31,6 +30,6 @@ class LaravelFacturaMxServiceProvider extends PackageServiceProvider
         | Migrations Provider need on boot() method
         |--------------------------------------------------------------------------
         */
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 }

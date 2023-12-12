@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Enums;
 
@@ -7,11 +9,11 @@ use JiagBrody\LaravelFacturaMx\Models\InvoiceType;
 
 enum InvoiceTypeEnum: int
 {
-    case INGRESO  = 1;
-    case EGRESO   = 2;
+    case INGRESO = 1;
+    case EGRESO = 2;
     case TRASLADO = 3;
-    case NOMINA   = 4;
-    case PAGO     = 5;
+    case NOMINA = 4;
+    case PAGO = 5;
 
     public static function getCatalog(): \Illuminate\Support\Collection
     {
