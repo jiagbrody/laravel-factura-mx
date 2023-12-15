@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeIngreso\Create;
 
+use Illuminate\Database\Eloquent\Collection;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 use JiagBrody\LaravelFacturaMx\Sat\DraftSatInterface;
-use Illuminate\Database\Eloquent\Collection;
 
 readonly class IngresoCreate implements DraftSatInterface
 {

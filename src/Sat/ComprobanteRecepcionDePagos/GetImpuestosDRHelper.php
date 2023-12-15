@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteRecepcionDePagos;
 
@@ -10,7 +12,7 @@ final class GetImpuestosDRHelper
 {
     const TIPO_FACTOR_EXENTO = 'Exento';
 
-    static public function traslados(Invoice $invoice, DefineDoctoRelacionadoProperties $documentoR): \Illuminate\Support\Collection
+    public static function traslados(Invoice $invoice, DefineDoctoRelacionadoProperties $documentoR): \Illuminate\Support\Collection
     {
         $traslados = $invoice->invoiceTax?->invoiceTaxDetails->where('invoice_tax_type_id', InvoiceTaxTypeEnum::TRASLADO->value);
 
@@ -26,13 +28,13 @@ final class GetImpuestosDRHelper
                 //TODO: SACAR DE LO QUE QUEDE PENDIENTE.
                 $baseDR = ($traslado->base * $percentajePay);
 
-                $object->BaseDR       = PatronDeDatosHelper::t_import($baseDR);
-                $object->ImpuestoDR   = $traslado->impuesto;
+                $object->BaseDR = PatronDeDatosHelper::t_import($baseDR);
+                $object->ImpuestoDR = $traslado->impuesto;
                 $object->TipoFactorDR = $traslado->tipo_factor;
 
                 if ($object->TipoFactorDR !== self::TIPO_FACTOR_EXENTO) {
                     $object->TasaOCuotaDR = $traslado->tasa_o_cuota;
-                    $object->ImporteDR    = PatronDeDatosHelper::t_import(($baseDR * $traslado->tasa_o_cuota));
+                    $object->ImporteDR = PatronDeDatosHelper::t_import(($baseDR * $traslado->tasa_o_cuota));
                 }
 
                 $collect->push($object);

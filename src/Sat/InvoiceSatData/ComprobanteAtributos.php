@@ -1,8 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData;
 
-readonly final class ComprobanteAtributos
+final readonly class ComprobanteAtributos
 {
     use AtributosHelperTrait;
 
@@ -47,7 +49,7 @@ readonly final class ComprobanteAtributos
     public function __construct()
     {
         $this->Version = '4.0';
-        $this->Fecha   = date('Y-m-d\\TH:i:s');
+        $this->Fecha = date('Y-m-d\\TH:i:s');
     }
 
     // public function setVersion(string $Version): void

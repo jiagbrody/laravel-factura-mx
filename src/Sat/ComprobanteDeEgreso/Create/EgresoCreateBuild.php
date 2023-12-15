@@ -1,12 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeEgreso\Create;
 
+use CfdiUtils\CfdiCreator40;
 use JiagBrody\LaravelFacturaMx\Sat\Helper\DraftBuild;
 use JiagBrody\LaravelFacturaMx\Sat\Helper\PdfFileSatHelperBuilder;
 use JiagBrody\LaravelFacturaMx\Sat\Helper\XmlFileSatHelperBuilder;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
-use CfdiUtils\CfdiCreator40;
 use PhpCfdi\Credentials\Credential;
 
 class EgresoCreateBuild extends DraftBuild
@@ -40,17 +42,15 @@ class EgresoCreateBuild extends DraftBuild
             }
         }*/
 
-
         $this->invoice->relatedCfdis->each(function ($item) {
 
             $this->invoice->invoiceRefunds()->create([
-                'cfdi_id'  => $item->id,
+                'cfdi_id' => $item->id,
                 'subtotal' => $item->id,
-                'iva'      => $item->id,
-                'total'    => $item->id,
+                'iva' => $item->id,
+                'total' => $item->id,
             ]);
         });
-
 
         $xml = (new XmlFileSatHelperBuilder($this->invoice))->generate($this->creatorCfdi->asXml());
         (new PdfFileSatHelperBuilder())

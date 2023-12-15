@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Helper;
 
@@ -19,36 +21,39 @@ final class XmlFileSatHelperBuilder
 
     public function __construct(Invoice $invoice)
     {
-        $this->satPath  = env('SAT_FOLDER_TO_SAVE_BILLING_FILES', '');
-        $this->model    = $invoice;
-        $this->fileName = 'invoice-' . $invoice->id . '-draft';
-        $this->path     = $this->satPath . '/' . 'drafts';
+        $this->satPath = env('SAT_FOLDER_TO_SAVE_BILLING_FILES', '');
+        $this->model = $invoice;
+        $this->fileName = 'invoice-'.$invoice->id.'-draft';
+        $this->path = $this->satPath.'/'.'drafts';
     }
 
     public function updateModel($value): static
     {
         $this->model = $value;
+
         return $this;
     }
 
     public function updateFileName($value): static
     {
         $this->fileName = $value;
+
         return $this;
     }
 
     public function updatePath($value): static
     {
-        $this->path = $this->satPath . '/' . $value;
+        $this->path = $this->satPath.'/'.$value;
+
         return $this;
     }
 
     public function generate($xmlContent): Document
     {
         try {
-            return (new DocumentGenerateService(model: $this->model, path: $this->path, fileName: $this->fileName . '.xml', extension: 'xml', mimeType: 'text/xml', fileContent: $xmlContent))->make();
+            return (new DocumentGenerateService(model: $this->model, path: $this->path, fileName: $this->fileName.'.xml', extension: 'xml', mimeType: 'text/xml', fileContent: $xmlContent))->make();
         } catch (Exception $e) {
-            abort(422, "Error al generar documento XML: " . $e->getMessage());
+            abort(422, 'Error al generar documento XML: '.$e->getMessage());
         }
     }
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Helper;
 
@@ -19,17 +21,17 @@ trait GenerateInvoicePdfFileHelperTrait
 
         switch ($this->invoice->invoice_cfdi_type_id) {
             case InvoiceCfdiTypeEnum::INGRESO->value:
-                $readableText = ConvertNumberToReadableTextHelper::make(number_format((float)$comprobante['Total'], 2,
-                    '.', ''), "pesos", "con", "centavos");
-                $episode      = null;
-                $statement    = null;
-                $pdfFile      = PDF::loadView('pdf.invoices.invoice_ingreso',
+                $readableText = ConvertNumberToReadableTextHelper::make(number_format((float) $comprobante['Total'], 2,
+                    '.', ''), 'pesos', 'con', 'centavos');
+                $episode = null;
+                $statement = null;
+                $pdfFile = PDF::loadView('pdf.invoices.invoice_ingreso',
                     compact('comprobante', 'episode', 'statement', 'readableText'));
                 break;
             case InvoiceCfdiTypeEnum::PAGO->value:
-                $readableText = ConvertNumberToReadableTextHelper::make(number_format((float)$comprobante['Total'], 2,
-                    '.', ''), "pesos", "con", "centavos");
-                $pdfFile      = PDF::loadView('pdf.invoices.invoice_ingreso', compact('comprobante', 'readableText'));
+                $readableText = ConvertNumberToReadableTextHelper::make(number_format((float) $comprobante['Total'], 2,
+                    '.', ''), 'pesos', 'con', 'centavos');
+                $pdfFile = PDF::loadView('pdf.invoices.invoice_ingreso', compact('comprobante', 'readableText'));
                 break;
             default:
                 $pdfFile = null;
@@ -40,8 +42,8 @@ trait GenerateInvoicePdfFileHelperTrait
                 fileName: $xmlDocument->file_name.'.pdf', extension: 'pdf', mimeType: 'text/pdf',
                 fileContent: $pdfFile->output()))->make();
         } catch (Exception $e) {
-            (new DocumentDestroyService($xmlDocument))->make(); # Destruyo el XML generado. Ya que no se guardará nada en la base de datos.
-            abort(422, "Error al generar documento PDF: ".$e->getMessage());
+            (new DocumentDestroyService($xmlDocument))->make(); // Destruyo el XML generado. Ya que no se guardará nada en la base de datos.
+            abort(422, 'Error al generar documento PDF: '.$e->getMessage());
         }
     }
 }

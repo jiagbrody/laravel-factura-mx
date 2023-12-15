@@ -18,9 +18,8 @@ class TestCase extends Orchestra
         $this->artisan('migrate', ['--database' => 'testbench'])->run();
 
         Factory::guessFactoryNamesUsing(
-            fn(string $modelName) => 'JiagBrody\\LaravelFacturaMx\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+            fn (string $modelName) => 'JiagBrody\\LaravelFacturaMx\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
-
 
     }
 
@@ -38,12 +37,12 @@ class TestCase extends Orchestra
         // Setup default database to use sqlite :memory:
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
-            'driver'   => 'sqlite',
+            'driver' => 'sqlite',
             'database' => ':memory:',
-            'prefix'   => '',
+            'prefix' => '',
         ]);
 
-        $migration = include __DIR__ . '/../database/migrations/create_factura_mx_table.php.stub';
+        $migration = include __DIR__.'/../database/migrations/create_factura_mx_table.php.stub';
         $migration->up();
     }
 }

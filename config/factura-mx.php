@@ -21,7 +21,6 @@ return [
     'foreign_id_related_to_invoices' => 'statement_id',
     'foreign_id_related_to_concepts' => 'statement_detail_id',
 
-
     /*
      |--------------------------------------------------------------------------
      | Ruta de la carpeta para los archivos del SAT
@@ -37,7 +36,7 @@ return [
      |
      */
 
-    'sat_files_path' => __dir__ . '/../storage/app/protected/sat-certificates',
+    'sat_files_path' => __DIR__.'/../storage/app/protected/sat-certificates',
 
     /*
      |--------------------------------------------------------------------------

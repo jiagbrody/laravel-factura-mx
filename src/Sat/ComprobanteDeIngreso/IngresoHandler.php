@@ -1,8 +1,9 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeIngreso;
 
-use App\Enums\InvoiceCompanyEnum;
 use App\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\CfdiHandlerInterface;
 use JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeIngreso\Create\IngresoCreate;

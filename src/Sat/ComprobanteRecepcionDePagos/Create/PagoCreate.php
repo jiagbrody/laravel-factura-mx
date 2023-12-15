@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\ComprobanteRecepcionDePagos\Create;
 
 use App\Enums\InvoiceCompanyEnum;
-use JiagBrody\LaravelFacturaMx\Sat\DraftSatInterface;
 use Illuminate\Database\Eloquent\Collection;
+use JiagBrody\LaravelFacturaMx\Sat\DraftSatInterface;
 
 readonly class PagoCreate implements DraftSatInterface
 {

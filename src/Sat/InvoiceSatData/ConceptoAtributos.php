@@ -124,7 +124,7 @@ readonly final class ConceptoAtributos
 
     public function setImporte(float $Importe): void
     {
-        $this->Importe = (string)PatronDeDatosHelper::t_import($Importe);
+        $this->Importe = (string) PatronDeDatosHelper::t_import($Importe);
     }
 
     public function getImporte(): string
@@ -134,7 +134,7 @@ readonly final class ConceptoAtributos
 
     public function setDescuento(float $Descuento): void
     {
-        $this->Descuento = (string)PatronDeDatosHelper::t_import($Descuento);
+        $this->Descuento = (string) PatronDeDatosHelper::t_import($Descuento);
     }
 
     public function getDescuento(): string

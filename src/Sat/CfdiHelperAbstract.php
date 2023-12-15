@@ -12,6 +12,8 @@ use PhpCfdi\Credentials\Credential;
 
 abstract class CfdiHelperAbstract
 {
+    const IMPUESTO_TRASLADO_ATRIBUTOS_KEY = 'impuestoTrasladoAtributos';
+
     protected Credential $credential;
 
     protected \CfdiUtils\CfdiCreator40 $creatorCfdi;
