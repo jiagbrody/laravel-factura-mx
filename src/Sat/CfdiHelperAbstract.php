@@ -4,15 +4,14 @@ namespace JiagBrody\LaravelFacturaMx\Sat;
 
 use CfdiUtils\CfdiCreator40;
 use Illuminate\Support\Collection;
-use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ConceptoAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\EmisorAtributos;
+use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoRetenidoAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoTrasladoAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ReceptorAtributos;
 use PhpCfdi\Credentials\Credential;
 
 abstract class CfdiHelperAbstract
 {
-    const IMPUESTO_TRASLADO_ATRIBUTOS_KEY = 'impuestoTrasladoAtributos';
     protected Credential $credential;
 
     protected \CfdiUtils\CfdiCreator40 $creatorCfdi;
@@ -62,30 +61,33 @@ abstract class CfdiHelperAbstract
         return $this;
     }
 
-    public function addConceptos(Collection $products): self
+    public function addConceptos(Collection $concepts): self
     {
-        if ($products->count() > 0) {
-            $products->each(function (ConceptoAtributos $item) {
-                $this->creatorCfdi->comprobante()
-                    ->addConcepto((array)$this->getConcept($item))
-                    ->addTraslado((array)$this->getTraslado($item->getImpuestoTrasladoAtributos()));
+        if ($concepts->count() > 0) {
+            $concepts->each(function (Collection $concept) {
+
+                $item           = $concept->get('conceptSat');
+                $invoiceConcept = $this->creatorCfdi->comprobante()->addConcepto($item->getOnlySimplePropertiesCollection()->toArray());
+
+                $sumT = collect();
+                $item->getImpuestoTraslados()->each(function (ImpuestoTrasladoAtributos $transfer) use ($invoiceConcept, $sumT) {
+                    $array = $transfer->getCollection()->toArray();
+                    $sumT->push($array);
+                    $invoiceConcept->addTraslado($array);
+                });
+                $concept->put('total_transfer_taxes', $sumT->sum('Importe'));
+
+                $sumR = collect();
+                $item->getImpuestoRetenidos()->each(function (ImpuestoRetenidoAtributos $retention) use ($invoiceConcept, $sumR) {
+                    $array = $retention->getCollection()->toArray();
+                    $sumR->push($array);
+                    $invoiceConcept->addRetencion($array);
+                });
+                $concept->put('total_retention_taxes', $sumT->sum('Importe'));
             });
-            $this->attributeAssembly->setConceptos($products);
+            $this->attributeAssembly->setConceptos($concepts);
         }
 
         return $this;
-    }
-
-    private function getConcept(ConceptoAtributos $product): array
-    {
-        $array = $product->getCollection();
-        $array->forget(self::IMPUESTO_TRASLADO_ATRIBUTOS_KEY);
-
-        return $array->toArray();
-    }
-
-    private function getTraslado(ImpuestoTrasladoAtributos $traslado): array
-    {
-        return $traslado->getCollection()->toArray();
     }
 }

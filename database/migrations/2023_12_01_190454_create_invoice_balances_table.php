@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('invoice_balances', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('invoice_id')->unique()->constrained()->onDelete('cascade');
             $table->decimal('gross_sub_total', 24, 6)->nullable();
             $table->decimal('sub_total', 24, 6)->nullable();
             $table->decimal('discount', 24, 6)->nullable();

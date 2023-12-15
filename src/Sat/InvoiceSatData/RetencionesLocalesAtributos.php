@@ -7,7 +7,7 @@ readonly final class RetencionesLocalesAtributos
     use AtributosHelperTrait;
 
     private string $ImpLocRetenido;
-    private string $TasadeRetencion;
+    private string $TasaDeRetencion;
     private string $Importe;
 
     public function setImpLocRetenido(string $ImpLocRetenido): void
@@ -20,14 +20,14 @@ readonly final class RetencionesLocalesAtributos
         return $this->ImpLocRetenido;
     }
 
-    public function setTasadeRetencion(string $TasadeRetencion): void
+    public function setTasaDeRetencion(string $TasaDeRetencion): void
     {
-        $this->TasadeRetencion = $TasadeRetencion;
+        $this->TasaDeRetencion = $TasaDeRetencion;
     }
 
-    public function getTasadeRetencion(): string
+    public function getTasaDeRetencion(): string
     {
-        return $this->TasadeRetencion;
+        return $this->TasaDeRetencion;
     }
 
     public function setImporte(string $Importe): void

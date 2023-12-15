@@ -4,7 +4,10 @@ namespace JiagBrody\LaravelFacturaMx\Sat;
 
 use Illuminate\Support\Collection;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ComprobanteAtributos;
+use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ConceptoAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\EmisorAtributos;
+use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoRetenidoAtributos;
+use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoTrasladoAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ReceptorAtributos;
 
 readonly class AttributeAssembly
@@ -50,8 +53,31 @@ readonly class AttributeAssembly
         $this->conceptos = $conceptos;
     }
 
-    public function getConceptos(): Collection
+    public function getConceptos($completelyTransformIntoACollect = false): Collection
     {
+        if ($completelyTransformIntoACollect) {
+            $collect = collect();
+            $this->conceptos->each(function (ConceptoAtributos $item) use ($collect) {
+                $transfers = collect();
+                $item->getImpuestoTraslados()->each(function (ImpuestoTrasladoAtributos $traslado) use ($transfers) {
+                    $transfers->push($traslado->getCollection());
+                });
+
+                $retentions = collect();
+                $item->getImpuestoRetenidos()->each(function (ImpuestoRetenidoAtributos $retenido) use ($retentions) {
+                    $retentions->push($retenido->getCollection());
+                });
+
+                $full = $item->getOnlySimplePropertiesCollection()
+                    ->put(ConceptoAtributos::RELATED_NAME_CONCEPTO_TRASLADO, $transfers)
+                    ->put(ConceptoAtributos::RELATED_NAME_CONCEPTO_RETENIDO, $retentions);
+
+                $collect->push($full);
+            });
+
+            return $collect;
+        }
+
         return $this->conceptos;
     }
 

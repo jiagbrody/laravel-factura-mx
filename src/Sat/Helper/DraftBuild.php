@@ -8,7 +8,7 @@ use PhpCfdi\Credentials\Credential;
 
 abstract class DraftBuild implements DraftBuildInterface
 {
-    protected CfdiCreator40 $creatorCfdi;
+    /*protected CfdiCreator40 $creatorCfdi;
     protected Credential    $credential;
     protected Invoice       $invoice;
 
@@ -78,5 +78,5 @@ abstract class DraftBuild implements DraftBuildInterface
                 $this->invoice->relatedCfdis()->attach($maped);
             }
         }
-    }
+    }*/
 }

@@ -16,7 +16,7 @@ readonly final class ComprobanteAtributos
 
     private string $Sello;
 
-    private string $FormaPago;
+    protected string $FormaPago;
 
     private string $NoCertificado;
 
@@ -105,9 +105,9 @@ readonly final class ComprobanteAtributos
         $this->FormaPago = $FormaPago;
     }
 
-    public function getFormaPago(): string
+    public function getFormaPago(): null|string
     {
-        return $this->FormaPago;
+        return $this->FormaPago ?? null;
     }
 
     public function setNoCertificado(string $NoCertificado): void
@@ -135,29 +135,29 @@ readonly final class ComprobanteAtributos
         $this->CondicionesDePago = $CondicionesDePago;
     }
 
-    public function getCondicionesDePago(): string
+    public function getCondicionesDePago(): null|string
     {
-        return $this->CondicionesDePago;
+        return $this->CondicionesDePago ?? null;
     }
 
-    public function setSubTotal(string $SubTotal): void
+    public function setSubTotal(float $SubTotal): void
     {
-        $this->SubTotal = $SubTotal;
+        $this->SubTotal = (string)PatronDeDatosHelper::t_import($SubTotal);
     }
 
-    public function getSubTotal(): string
+    public function getSubTotal(): null|string
     {
-        return $this->SubTotal;
+        return $this->SubTotal ?? null;
     }
 
-    public function setDescuento(string $Descuento): void
+    public function setDescuento(float $Descuento): void
     {
-        $this->Descuento = $Descuento;
+        $this->Descuento = (string)PatronDeDatosHelper::t_import($Descuento);
     }
 
-    public function getDescuento(): string
+    public function getDescuento(): null|string
     {
-        return $this->Descuento;
+        return $this->Descuento ?? null;
     }
 
     public function setMoneda(string $Moneda): void
@@ -165,9 +165,9 @@ readonly final class ComprobanteAtributos
         $this->Moneda = $Moneda;
     }
 
-    public function getMoneda(): string
+    public function getMoneda(): null|string
     {
-        return $this->Moneda;
+        return $this->Moneda ?? null;
     }
 
     public function setTipoCambio(string $TipoCambio): void
@@ -175,19 +175,19 @@ readonly final class ComprobanteAtributos
         $this->TipoCambio = $TipoCambio;
     }
 
-    public function getTipoCambio(): string
+    public function getTipoCambio(): null|string
     {
-        return $this->TipoCambio;
+        return $this->TipoCambio ?? null;
     }
 
-    public function setTotal(string $Total): void
+    public function setTotal(float $Total): void
     {
-        $this->Total = $Total;
+        $this->Total = (string)PatronDeDatosHelper::t_import($Total);
     }
 
-    public function getTotal(): string
+    public function getTotal(): null|string
     {
-        return $this->Total;
+        return $this->Total ?? null;
     }
 
     public function setTipoDeComprobante(string $TipoDeComprobante): void
@@ -195,9 +195,9 @@ readonly final class ComprobanteAtributos
         $this->TipoDeComprobante = $TipoDeComprobante;
     }
 
-    public function getTipoDeComprobante(): string
+    public function getTipoDeComprobante(): null|string
     {
-        return $this->TipoDeComprobante;
+        return $this->TipoDeComprobante ?? null;
     }
 
     public function setExportacion(string $Exportacion): void
@@ -205,9 +205,9 @@ readonly final class ComprobanteAtributos
         $this->Exportacion = $Exportacion;
     }
 
-    public function getExportacion(): string
+    public function getExportacion(): null|string
     {
-        return $this->Exportacion;
+        return $this->Exportacion ?? null;
     }
 
     public function setMetodoPago(string $MetodoPago): void
@@ -215,9 +215,9 @@ readonly final class ComprobanteAtributos
         $this->MetodoPago = $MetodoPago;
     }
 
-    public function getMetodoPago(): string
+    public function getMetodoPago(): null|string
     {
-        return $this->MetodoPago;
+        return $this->MetodoPago ?? null;
     }
 
     public function setLugarExpedicion(string $LugarExpedicion): void
@@ -225,9 +225,9 @@ readonly final class ComprobanteAtributos
         $this->LugarExpedicion = $LugarExpedicion;
     }
 
-    public function getLugarExpedicion(): string
+    public function getLugarExpedicion(): null|string
     {
-        return $this->LugarExpedicion;
+        return $this->LugarExpedicion ?? null;
     }
 
     public function setConfirmacion(string $Confirmacion): void
@@ -239,4 +239,6 @@ readonly final class ComprobanteAtributos
     {
         return $this->Confirmacion;
     }
+
+
 }

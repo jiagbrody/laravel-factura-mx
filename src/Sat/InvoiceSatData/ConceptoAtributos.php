@@ -2,9 +2,16 @@
 
 namespace JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData;
 
+
+use Illuminate\Support\Collection;
+
 readonly final class ConceptoAtributos
 {
     use AtributosHelperTrait;
+
+    const RELATED_NAME_CONCEPTO_TRASLADO = 'impuestoTraslados';
+
+    const RELATED_NAME_CONCEPTO_RETENIDO = 'impuestoRetenidos';
 
     private string $ClaveProdServ;
 
@@ -26,7 +33,24 @@ readonly final class ConceptoAtributos
 
     private string $ObjetoImp;
 
-    private ImpuestoTrasladoAtributos $impuestoTrasladoAtributos;
+    private Collection $impuestoTraslados;
+
+    private Collection $impuestoRetenidos;
+
+    public function __construct()
+    {
+        $this->impuestoTraslados = collect();
+        $this->impuestoRetenidos = collect();
+    }
+
+    public function getOnlySimplePropertiesCollection(): Collection
+    {
+        $collect = $this->getCollection();
+        $collect->forget(self::RELATED_NAME_CONCEPTO_TRASLADO);
+        $collect->forget(self::RELATED_NAME_CONCEPTO_RETENIDO);
+
+        return $collect;
+    }
 
     public function setClaveProdServ(string $ClaveProdServ): void
     {
@@ -128,13 +152,23 @@ readonly final class ConceptoAtributos
         return $this->ObjetoImp;
     }
 
-    public function setImpuestoTrasladoAtributos(ImpuestoTrasladoAtributos $impuestoTrasladoAtributos): void
+    public function addImpuestoTraslado(ImpuestoTrasladoAtributos $impuestoTrasladoAtributos): void
     {
-        $this->impuestoTrasladoAtributos = $impuestoTrasladoAtributos;
+        $this->impuestoTraslados->push($impuestoTrasladoAtributos);
     }
 
-    public function getImpuestoTrasladoAtributos(): ImpuestoTrasladoAtributos
+    public function getImpuestoTraslados(): Collection
     {
-        return $this->impuestoTrasladoAtributos;
+        return $this->impuestoTraslados;
+    }
+
+    public function addImpuestoRetenido(ImpuestoRetenidoAtributos $impuestoRetenidoAtributos): void
+    {
+        $this->impuestoRetenidos->push($impuestoRetenidoAtributos);
+    }
+
+    public function getImpuestoRetenidos(): Collection
+    {
+        return $this->impuestoRetenidos;
     }
 }

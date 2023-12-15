@@ -15,8 +15,17 @@ it('create object', function () {
     $object = $facturaMx->ingreso()->create()->custom($company);
 
     $atributos = new \JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ComprobanteAtributos;
-    $atributos->setFolio('33829');
-    $atributos->setSerie('PACIENTE');
+    $atributos->setFolio('2');
+    $atributos->setSerie('PATIENT');
+    $atributos->setFormaPago('01');
+    $atributos->setMoneda('MXN');
+    $atributos->setTipoDeComprobante('I');
+    $atributos->setExportacion('01');
+    $atributos->setMetodoPago('PUE');
+    $atributos->setLugarExpedicion('63732');
+    $atributos->setSubTotal(6084.14);
+    $atributos->setTotal(7057.60);
+    $atributos->setDescuento(0.00);
     $object->addAtributos($atributos);
 
     $receptor = new \JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ReceptorAtributos;
@@ -24,17 +33,38 @@ it('create object', function () {
     $receptor->setRfc('XAXX010101000');
     $object->addReceptor($receptor);
 
-    $concepto = new \JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ConceptoAtributos;
-    $concepto->setCantidad('1');
-    $concepto->setClaveProdServ('882921');
-    $concepto->setDescripcion('producto de prueba');
-    $concepto->setValorUnitario(98.998);
-    $concepto->setDescuento(881.022);
-    $traslado = new \JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoTrasladoAtributos;
-    $traslado->setBase(220);
-    $traslado->setImporte(221);
-    $concepto->setImpuestoTrasladoAtributos($traslado);
-    $conceptos = collect([$concepto]);
+    $conceptos = collect();
+    for ($i = 1; $i <= 3; $i++) {
+        $concepto = new \JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ConceptoAtributos;
+        $concepto->setClaveProdServ('01010101');
+        $concepto->setNoIdentificacion('31');
+        $concepto->setCantidad('1');
+        $concepto->setClaveUnidad('H87');
+        $concepto->setDescripcion('BAUMANOMETRO DIGITAL');
+        $concepto->setValorUnitario(1360);
+        $concepto->setImporte(1360);
+        $concepto->setDescuento(0);
+        $concepto->setObjetoImp('02');
+
+        for ($j = 1; $j <= 2; $j++) {
+            $traslado = new \JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoTrasladoAtributos;
+            $traslado->setBase(1360);
+            $traslado->setImpuesto('002');
+            $traslado->setTipoFactor('0.160000');
+            $traslado->setTasaOCuota('TasaOCuota');
+            $traslado->setImporte(217.6);
+            $concepto->addImpuestoTraslado($traslado);
+
+            $retencion = new \JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoRetenidoAtributos();
+            $retencion->setBase(1360);
+            $retencion->setImpuesto('002');
+            $retencion->setTipoFactor('0.160000');
+            $retencion->setTasaOCuota('TasaOCuota');
+            $retencion->setImporte(217.6);
+            $concepto->addImpuestoRetenido($retencion);
+        }
+        $conceptos->push($concepto);
+    }
     $object->addConceptos($conceptos);
 
     $retencionesLocales = new \JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\RetencionesLocalesAtributos;
@@ -42,7 +72,10 @@ it('create object', function () {
     $retencionesLocales->setTasadeRetencion('2');
     $retencionesLocales->setImporte('3');
     $retencionesLocales = collect([$retencionesLocales]);
-    $object->addComplementoImpuestosLocales($retencionesLocales, 0);
+    $object->addComplementoImpuestosLocales($retencionesLocales);
+
+
+    dd($object->build()->saveInvoice('quickSale',999));
 
     expect($object)->toBeObject();
 });

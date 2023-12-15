@@ -6,7 +6,7 @@ use JiagBrody\LaravelFacturaMx\Models\Invoice;
 
 interface DraftBuildInterface
 {
-    public function setInvoice(Invoice $invoice): self;
-
-    public function getObjectFromComprobanteData(): \stdClass;
+    // public function setInvoice(Invoice $invoice): self;
+    //
+    // public function getObjectFromComprobanteData(): \stdClass;
 }

@@ -9,7 +9,6 @@ use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 use JiagBrody\LaravelFacturaMx\Sat\CfdiHelperAbstract;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ComprobanteAtributos;
-use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\RetencionesLocalesAtributos;
 
 class IngresoCreateConcrete extends CfdiHelperAbstract
 {
@@ -32,8 +31,8 @@ class IngresoCreateConcrete extends CfdiHelperAbstract
     {
         if ($impuestosLocales->isNotEmpty()) {
             $impLocales = new ImpuestosLocales();
-            $impuestosLocales->each(function (RetencionesLocalesAtributos $item) use ($impLocales) {
-                $impLocales->addRetencionLocal($item->getCollection()->toArray());
+            $impuestosLocales->each(function (Collection $item) use ($impLocales) {
+                $impLocales->addRetencionLocal($item->get('localTaxSat')->getCollection()->toArray());
             });
             $this->attributeAssembly->setComplementoImpuestosLocales($impuestosLocales);
 

@@ -13,22 +13,22 @@ return new class extends Migration
     {
         Schema::create('invoice_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('invoice_id')->constrained()->onDelete('cascade');
+            $table->foreignId('invoice_id')->unique()->constrained()->onDelete('cascade');
             $table->string('version');
             $table->string('serie')->nullable();
             $table->string('folio')->nullable();
             $table->dateTime('fecha');
             $table->string('forma_pago')->index()->nullable();
             $table->string('condiciones_de_pago')->nullable();
-            $table->decimal('sub_total', 24, 6);
+            $table->decimal('sub_total', 24, 6)->nullable();
             $table->decimal('descuento', 24, 6)->nullable();
-            $table->string('moneda');
+            $table->string('moneda')->nullable();
             $table->string('tipo_cambio')->nullable();
-            $table->decimal('total', 24, 6);
+            $table->decimal('total', 24, 6)->nullable();
             $table->string('tipo_de_comprobante', 5)->index();
-            $table->string('exportacion');
-            $table->string('metodo_pago')->index()->nullable();
-            $table->string('lugar_expedicion');
+            $table->string('exportacion')->nullable();
+            $table->string('metodo_pago')->index()->nullable()->nullable();
+            $table->string('lugar_expedicion')->nullable();
             $table->string('receptor_rfc', 20)->index();
             $table->timestamps();
         });
