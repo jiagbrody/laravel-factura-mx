@@ -1,11 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData;
 
-
 use Illuminate\Support\Collection;
 
-readonly final class ConceptoAtributos
+final readonly class ConceptoAtributos
 {
     use AtributosHelperTrait;
 
@@ -104,7 +105,7 @@ readonly final class ConceptoAtributos
 
     public function setValorUnitario(float $ValorUnitario): void
     {
-        $this->ValorUnitario = (string)PatronDeDatosHelper::t_import($ValorUnitario);
+        $this->ValorUnitario = (string) PatronDeDatosHelper::t_import($ValorUnitario);
     }
 
     public function getValorUnitario(): string

@@ -76,8 +76,7 @@ it('create object', function () {
     $retencionesLocales = collect([$retencionesLocales]);
     $object->addComplementoImpuestosLocales($retencionesLocales);
 
-
-    dd($object->build()->saveInvoice('quickSale',999));
+    dd($object->build()->saveInvoice('quickSale', 999));
 
     expect($object)->toBeObject();
 });
