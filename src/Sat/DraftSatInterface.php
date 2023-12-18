@@ -9,7 +9,4 @@ use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 
 interface DraftSatInterface
 {
-    public function custom(InvoiceCompany $company);
-
-    public function fromComprobante(array $comprobante, Collection $products);
 }

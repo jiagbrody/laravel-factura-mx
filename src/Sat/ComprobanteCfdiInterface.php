@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat;
 
-use JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeEgreso\EgresoHandler;
-use JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeIngreso\IngresoHandler;
-use JiagBrody\LaravelFacturaMx\Sat\ComprobanteRecepcionDePagos\PagoHandler;
+use JiagBrody\LaravelFacturaMx\Models\Invoice;
+use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeEgreso\EgresoHandler;
+use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeIngreso\IngresoHandler;
 
 interface ComprobanteCfdiInterface
 {

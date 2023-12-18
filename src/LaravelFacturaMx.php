@@ -4,22 +4,24 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx;
 
-use JiagBrody\LaravelFacturaMx\Sat\ComprobanteCfdiInterface;
-use JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeEgreso\EgresoHandler;
-use JiagBrody\LaravelFacturaMx\Sat\ComprobanteDeIngreso\IngresoHandler;
-use JiagBrody\LaravelFacturaMx\Sat\ComprobanteRecepcionDePagos\PagoHandler;
+use JiagBrody\LaravelFacturaMx\Models\Invoice;
+use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteBuilder;
 
-class LaravelFacturaMx implements ComprobanteCfdiInterface
+class LaravelFacturaMx
 {
-    public function ingreso(): IngresoHandler
+    public function create(): ComprobanteBuilder
     {
-        return new IngresoHandler();
+        return new ComprobanteBuilder();
     }
 
-    public function egreso(): EgresoHandler
+    public function stamp(Invoice $invoice)
     {
-        return new EgresoHandler();
     }
+
+    public function cancel()
+    {
+    }
+
 
     // public function recepcionDePagos(): PagoHandler
     // {

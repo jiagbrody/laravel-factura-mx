@@ -3,13 +3,13 @@
 describe('object creation', function () {
     $facturaMx = new \JiagBrody\LaravelFacturaMx\LaravelFacturaMx();
     it('ingreso', function () use ($facturaMx) {
-        $object = $facturaMx->ingreso();
+        $object = $facturaMx->create();
 
         expect($object)->toBeObject();
     });
 
     it('create', function () use ($facturaMx) {
-        $object = $facturaMx->ingreso()->create();
+        $object = $facturaMx->create()->ingreso();
 
         expect($object)->toBeObject();
     });

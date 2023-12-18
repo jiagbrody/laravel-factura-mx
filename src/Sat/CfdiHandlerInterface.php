@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat;
 
-use JiagBrody\LaravelFacturaMx\Models\Invoice;
+use Illuminate\Database\Eloquent\Collection;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 
 interface CfdiHandlerInterface
 {
-    public function create();
+    public function custom(InvoiceCompany $company);
 
-    // public function stamp(Invoice $invoice);
-    //
-    // public function cancel(Invoice $invoice, $cfdiCancelTypeEnum, $UUID);
+    public function fromComprobante(array $comprobante, Collection $products);
 }
