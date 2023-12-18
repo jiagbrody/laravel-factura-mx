@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Rules;
 
@@ -6,7 +8,7 @@ use JiagBrody\LaravelFacturaMx\Enums\InvoicePaymentTypeEnum;
 
 class ComprobanteDeIngresoRuleHelper
 {
-    static function getPaymentTypeId(string $metodoPago): int
+    public static function getPaymentTypeId(string $metodoPago): int
     {
         if (($metodoPago === 'PUE')) {
             return InvoicePaymentTypeEnum::PAGO_EN_UNA_EXHIBICION->value;
@@ -15,7 +17,7 @@ class ComprobanteDeIngresoRuleHelper
         }
     }
 
-    static function getIsPaid(string $metodoPago): bool
+    public static function getIsPaid(string $metodoPago): bool
     {
         if (($metodoPago === 'PUE')) {
             return true;

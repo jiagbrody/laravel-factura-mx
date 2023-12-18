@@ -107,7 +107,7 @@ final readonly class ComprobanteAtributos
         $this->FormaPago = $FormaPago;
     }
 
-    public function getFormaPago(): null|string
+    public function getFormaPago(): ?string
     {
         return $this->FormaPago ?? null;
     }
@@ -137,27 +137,27 @@ final readonly class ComprobanteAtributos
         $this->CondicionesDePago = $CondicionesDePago;
     }
 
-    public function getCondicionesDePago(): null|string
+    public function getCondicionesDePago(): ?string
     {
         return $this->CondicionesDePago ?? null;
     }
 
     public function setSubTotal(float $SubTotal): void
     {
-        $this->SubTotal = (string)PatronDeDatosHelper::t_import($SubTotal);
+        $this->SubTotal = (string) PatronDeDatosHelper::t_import($SubTotal);
     }
 
-    public function getSubTotal(): null|string
+    public function getSubTotal(): ?string
     {
         return $this->SubTotal ?? null;
     }
 
     public function setDescuento(float $Descuento): void
     {
-        $this->Descuento = (string)PatronDeDatosHelper::t_import($Descuento);
+        $this->Descuento = (string) PatronDeDatosHelper::t_import($Descuento);
     }
 
-    public function getDescuento(): null|string
+    public function getDescuento(): ?string
     {
         return $this->Descuento ?? null;
     }
@@ -167,7 +167,7 @@ final readonly class ComprobanteAtributos
         $this->Moneda = $Moneda;
     }
 
-    public function getMoneda(): null|string
+    public function getMoneda(): ?string
     {
         return $this->Moneda ?? null;
     }
@@ -177,17 +177,17 @@ final readonly class ComprobanteAtributos
         $this->TipoCambio = $TipoCambio;
     }
 
-    public function getTipoCambio(): null|string
+    public function getTipoCambio(): ?string
     {
         return $this->TipoCambio ?? null;
     }
 
     public function setTotal(float $Total): void
     {
-        $this->Total = (string)PatronDeDatosHelper::t_import($Total);
+        $this->Total = (string) PatronDeDatosHelper::t_import($Total);
     }
 
-    public function getTotal(): null|string
+    public function getTotal(): ?string
     {
         return $this->Total ?? null;
     }
@@ -197,7 +197,7 @@ final readonly class ComprobanteAtributos
         $this->TipoDeComprobante = $TipoDeComprobante;
     }
 
-    public function getTipoDeComprobante(): null|string
+    public function getTipoDeComprobante(): ?string
     {
         return $this->TipoDeComprobante ?? null;
     }
@@ -207,7 +207,7 @@ final readonly class ComprobanteAtributos
         $this->Exportacion = $Exportacion;
     }
 
-    public function getExportacion(): null|string
+    public function getExportacion(): ?string
     {
         return $this->Exportacion ?? null;
     }
@@ -217,7 +217,7 @@ final readonly class ComprobanteAtributos
         $this->MetodoPago = $MetodoPago;
     }
 
-    public function getMetodoPago(): null|string
+    public function getMetodoPago(): ?string
     {
         return $this->MetodoPago ?? null;
     }
@@ -227,7 +227,7 @@ final readonly class ComprobanteAtributos
         $this->LugarExpedicion = $LugarExpedicion;
     }
 
-    public function getLugarExpedicion(): null|string
+    public function getLugarExpedicion(): ?string
     {
         return $this->LugarExpedicion ?? null;
     }
@@ -241,6 +241,4 @@ final readonly class ComprobanteAtributos
     {
         return $this->Confirmacion;
     }
-
-
 }

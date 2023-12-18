@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeIngreso;
 
@@ -25,13 +27,13 @@ class SaveIngreso implements SaveIngresoInterface
 
     public function toInvoice($relationshipModel, $relationshipId, $companyHelperId): Invoice
     {
-        $invoice                     = new Invoice;
-        $invoice->user_id            = auth()->id();
-        $invoice->invoice_type_id    = InvoiceTypeEnum::INGRESO->value;
+        $invoice = new Invoice;
+        $invoice->user_id = auth()->id();
+        $invoice->invoice_type_id = InvoiceTypeEnum::INGRESO->value;
         $invoice->invoice_company_id = $companyHelperId;
-        $invoice->invoice_status_id  = InvoiceStatusEnum::DRAFT->value;
-        $invoice->invoiceable_type   = $relationshipModel;
-        $invoice->invoiceable_id     = $relationshipId;
+        $invoice->invoice_status_id = InvoiceStatusEnum::DRAFT->value;
+        $invoice->invoiceable_type = $relationshipModel;
+        $invoice->invoiceable_id = $relationshipId;
         $invoice->save();
 
         return $invoice;
@@ -39,26 +41,26 @@ class SaveIngreso implements SaveIngresoInterface
 
     public function toInvoiceDetails(Invoice $invoice): void
     {
-        $details    = new InvoiceDetail;
+        $details = new InvoiceDetail;
         $attributes = $this->attributeAssembly->getComprobanteAtributos();
 
-        $details->invoice_id          = $invoice->id;
-        $details->version             = $attributes->getVersion();
-        $details->serie               = $attributes->getSerie();
-        $details->folio               = $attributes->getFolio();
-        $details->fecha               = $attributes->getFecha();
-        $details->forma_pago          = $attributes->getFormaPago();
+        $details->invoice_id = $invoice->id;
+        $details->version = $attributes->getVersion();
+        $details->serie = $attributes->getSerie();
+        $details->folio = $attributes->getFolio();
+        $details->fecha = $attributes->getFecha();
+        $details->forma_pago = $attributes->getFormaPago();
         $details->condiciones_de_pago = $attributes->getCondicionesDePago();
-        $details->sub_total           = $attributes->getSubTotal();
-        $details->descuento           = $attributes->getDescuento();
-        $details->moneda              = $attributes->getMoneda();
-        $details->tipo_cambio         = $attributes->getTipoCambio();
-        $details->total               = $attributes->getTotal();
+        $details->sub_total = $attributes->getSubTotal();
+        $details->descuento = $attributes->getDescuento();
+        $details->moneda = $attributes->getMoneda();
+        $details->tipo_cambio = $attributes->getTipoCambio();
+        $details->total = $attributes->getTotal();
         $details->tipo_de_comprobante = $attributes->getTipoDeComprobante();
-        $details->exportacion         = $attributes->getExportacion();
-        $details->metodo_pago         = $attributes->getMetodoPago();
-        $details->lugar_expedicion    = $attributes->getLugarExpedicion();
-        $details->receptor_rfc        = $this->attributeAssembly->getReceptorAtributos()->getRfc();
+        $details->exportacion = $attributes->getExportacion();
+        $details->metodo_pago = $attributes->getMetodoPago();
+        $details->lugar_expedicion = $attributes->getLugarExpedicion();
+        $details->receptor_rfc = $this->attributeAssembly->getReceptorAtributos()->getRfc();
         $details->save();
     }
 
@@ -66,17 +68,17 @@ class SaveIngreso implements SaveIngresoInterface
     {
         $concepts = $this->attributeAssembly->getConceptos();
         $localTax = $this->attributeAssembly->getComplementoImpuestosLocales();
-        $balance  = new InvoiceBalance;
+        $balance = new InvoiceBalance;
 
-        $balance->invoice_id              = $invoice->id;
-        $balance->gross_sub_total         = $concepts->sum('gross_sub_total');
-        $balance->sub_total               = $concepts->sum('sub_total');
-        $balance->discount                = $concepts->sum('discount');
-        $balance->tax                     = $concepts->sum('tax');
-        $balance->total                   = $concepts->sum('total');
-        $balance->local_tax               = $localTax->sum('amount');
-        $balance->balance_total           = null; // TODO: ES LA RESTA DEL IMPUESTO LOCAL PERO NO SE CONTRA QUE SI TOTAL O SUBTOTAL.
-        $balance->is_paid                 = ComprobanteDeIngresoRuleHelper::getIsPaid($this->attributeAssembly->getComprobanteAtributos()->getMetodoPago());
+        $balance->invoice_id = $invoice->id;
+        $balance->gross_sub_total = $concepts->sum('gross_sub_total');
+        $balance->sub_total = $concepts->sum('sub_total');
+        $balance->discount = $concepts->sum('discount');
+        $balance->tax = $concepts->sum('tax');
+        $balance->total = $concepts->sum('total');
+        $balance->local_tax = $localTax->sum('amount');
+        $balance->balance_total = null; // TODO: ES LA RESTA DEL IMPUESTO LOCAL PERO NO SE CONTRA QUE SI TOTAL O SUBTOTAL.
+        $balance->is_paid = ComprobanteDeIngresoRuleHelper::getIsPaid($this->attributeAssembly->getComprobanteAtributos()->getMetodoPago());
         $balance->invoice_payment_type_id = ComprobanteDeIngresoRuleHelper::getPaymentTypeId($this->attributeAssembly->getComprobanteAtributos()->getMetodoPago());
         $balance->save();
     }
@@ -84,10 +86,10 @@ class SaveIngreso implements SaveIngresoInterface
     public function toInvoiceTaxes(Invoice $invoice): void
     {
         $concepts = $this->attributeAssembly->getConceptos();
-        $tax      = new InvoiceTax;
+        $tax = new InvoiceTax;
 
-        $tax->invoice_id                  = $invoice->id;
-        $tax->total_impuestos_retenidos   = $concepts->sum('total_transfer_taxes');
+        $tax->invoice_id = $invoice->id;
+        $tax->total_impuestos_retenidos = $concepts->sum('total_transfer_taxes');
         $tax->total_impuestos_trasladados = $concepts->sum('total_retention_taxes');
         $tax->save();
 
@@ -116,13 +118,13 @@ class SaveIngreso implements SaveIngresoInterface
     {
         $data = new InvoiceTaxDetail;
 
-        $data->invoice_tax_id      = $invoiceTax->id;
+        $data->invoice_tax_id = $invoiceTax->id;
         $data->invoice_tax_type_id = $enum->value;
-        $data->base                = $collect->get('Base');
-        $data->impuesto            = $collect->get('Impuesto');
-        $data->tipo_factor         = $collect->get('TipoFactor');
-        $data->tasa_o_cuota        = $collect->get('TasaOCuota');
-        $data->importe             = $collect->get('Importe');
+        $data->base = $collect->get('Base');
+        $data->impuesto = $collect->get('Impuesto');
+        $data->tipo_factor = $collect->get('TipoFactor');
+        $data->tasa_o_cuota = $collect->get('TasaOCuota');
+        $data->importe = $collect->get('Importe');
         $data->save();
     }
 }
