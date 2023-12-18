@@ -8,7 +8,6 @@ use CfdiUtils\CfdiCreator40;
 use Illuminate\Support\Facades\DB;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\AttributeAssembly;
-use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeIngreso\SaveIngreso;
 use JiagBrody\LaravelFacturaMx\Sat\Helper\DraftBuild;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
 use PhpCfdi\Credentials\Credential;

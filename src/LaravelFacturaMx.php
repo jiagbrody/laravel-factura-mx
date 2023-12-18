@@ -22,7 +22,6 @@ class LaravelFacturaMx
     {
     }
 
-
     // public function recepcionDePagos(): PagoHandler
     // {
     //     return new PagoHandler;
