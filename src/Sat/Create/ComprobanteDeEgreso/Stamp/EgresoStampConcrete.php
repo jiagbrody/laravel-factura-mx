@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeEgreso\Stamp;
 
-use App\Models\Invoice;
+use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use App\Services\PAC\Providers\PacStampResponse;
 use JiagBrody\LaravelFacturaMx\Sat\Helper\StampConcrete;
 

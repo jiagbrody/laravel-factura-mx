@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteRecepcionDePagos\Stamp;
 
-use App\Models\Invoice;
+use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\Helper\PacProviderHelper;
 use JiagBrody\LaravelFacturaMx\Sat\StampCfdiInterface;
 

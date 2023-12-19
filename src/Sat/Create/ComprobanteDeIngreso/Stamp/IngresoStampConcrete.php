@@ -9,12 +9,12 @@ use App\Enums\InvoiceTypeEnum;
 use App\Enums\SaleStatusEnum;
 use App\Enums\StatementStatusEnum;
 use App\Models\Cfdi;
-use App\Models\Invoice;
+use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use App\Models\StatementCompanyAgreement;
 use App\Services\Documentable\DocumentDestroyService;
-use App\Services\PAC\Providers\PacStampResponse;
 use JiagBrody\LaravelFacturaMx\Sat\Helper\PdfFileSatHelperBuilder;
 use JiagBrody\LaravelFacturaMx\Sat\Helper\XmlFileSatHelperBuilder;
+use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStampResponse;
 
 class IngresoStampConcrete
 {

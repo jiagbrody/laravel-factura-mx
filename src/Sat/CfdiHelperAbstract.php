@@ -14,8 +14,6 @@ use PhpCfdi\Credentials\Credential;
 
 abstract class CfdiHelperAbstract
 {
-    const IMPUESTO_TRASLADO_ATRIBUTOS_KEY = 'impuestoTrasladoAtributos';
-
     protected Credential $credential;
 
     protected \CfdiUtils\CfdiCreator40 $creatorCfdi;
@@ -26,8 +24,9 @@ abstract class CfdiHelperAbstract
 
     public function __construct()
     {
-        $this->creatorCfdi = new CfdiCreator40();
-        $this->credential = Credential::openFiles($this->companyHelper->certificatePath, $this->companyHelper->keyPath, $this->companyHelper->passPhrase);
+        $this->creatorCfdi       = new CfdiCreator40();
+        $this->credential        = Credential::openFiles($this->companyHelper->certificatePath,
+            $this->companyHelper->keyPath, $this->companyHelper->passPhrase);
         $this->attributeAssembly = new AttributeAssembly;
 
         $this->addEmisor();
@@ -70,11 +69,15 @@ abstract class CfdiHelperAbstract
         if ($concepts->count() > 0) {
             $concepts->each(function (Collection $concept) {
 
-                $item = $concept->get('conceptSat');
-                $invoiceConcept = $this->creatorCfdi->comprobante()->addConcepto($item->getOnlySimplePropertiesCollection()->toArray());
+                $item           = $concept->get('conceptSat');
+                $invoiceConcept = $this->creatorCfdi->comprobante()
+                    ->addConcepto($item->getOnlySimplePropertiesCollection()->toArray());
 
                 $sumT = collect();
-                $item->getImpuestoTraslados()->each(function (ImpuestoTrasladoAtributos $transfer) use ($invoiceConcept, $sumT) {
+                $item->getImpuestoTraslados()->each(function (ImpuestoTrasladoAtributos $transfer) use (
+                    $invoiceConcept,
+                    $sumT
+                ) {
                     $array = $transfer->getCollection()->toArray();
                     $sumT->push($array);
                     $invoiceConcept->addTraslado($array);
@@ -82,7 +85,10 @@ abstract class CfdiHelperAbstract
                 $concept->put('total_transfer_taxes', $sumT->sum('Importe'));
 
                 $sumR = collect();
-                $item->getImpuestoRetenidos()->each(function (ImpuestoRetenidoAtributos $retention) use ($invoiceConcept, $sumR) {
+                $item->getImpuestoRetenidos()->each(function (ImpuestoRetenidoAtributos $retention) use (
+                    $invoiceConcept,
+                    $sumR
+                ) {
                     $array = $retention->getCollection()->toArray();
                     $sumR->push($array);
                     $invoiceConcept->addRetencion($array);

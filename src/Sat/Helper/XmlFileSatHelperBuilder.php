@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace JiagBrody\LaravelFacturaMx\Sat\Helper;
 
 use App\Models\Document;
-use App\Models\Invoice;
+use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use App\Services\Documentable\DocumentGenerateService;
 use Exception;
 

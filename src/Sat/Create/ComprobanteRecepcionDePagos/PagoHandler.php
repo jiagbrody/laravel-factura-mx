@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteRecepcionDePagos;
 
 use App\Enums\InvoiceCompanyEnum;
-use App\Models\Invoice;
+use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use Illuminate\Database\Eloquent\Collection;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 use JiagBrody\LaravelFacturaMx\Sat\CfdiHandlerInterface;

@@ -6,7 +6,7 @@ namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeIngreso\Cancel;
 
 use App\Enums\CfdiCancelTypeEnum;
 use App\Models\CfdiCancel;
-use App\Models\Invoice;
+use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use App\Services\PAC\Providers\PacCancelResponse;
 use JiagBrody\LaravelFacturaMx\Sat\Helper\XmlFileSatHelperBuilder;
 

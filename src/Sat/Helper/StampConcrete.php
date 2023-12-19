@@ -6,7 +6,7 @@ namespace JiagBrody\LaravelFacturaMx\Sat\Helper;
 
 use App\Enums\CfdiStatusEnum;
 use App\Models\Cfdi;
-use App\Models\Invoice;
+use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use App\Services\Documentable\DocumentDestroyService;
 use App\Services\PAC\Providers\PacStampResponse;
 

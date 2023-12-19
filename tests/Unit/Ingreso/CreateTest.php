@@ -15,7 +15,7 @@ it('create object', function () {
 
     $company = InvoiceCompany::factory()->create();
 
-    $object = $facturaMx->create()->ingreso()->custom($company);
+    $voucher = $facturaMx->create()->ingreso()->custom($company);
 
     $atributos = new \JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ComprobanteAtributos;
     $atributos->setFolio('2');
@@ -29,12 +29,12 @@ it('create object', function () {
     $atributos->setSubTotal(6084.14);
     $atributos->setTotal(7057.60);
     $atributos->setDescuento(0.00);
-    $object->addAtributos($atributos);
+    $voucher->addAtributos($atributos);
 
     $receptor = new \JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ReceptorAtributos;
     $receptor->setNombre('Israel Alvarez');
     $receptor->setRfc('XAXX010101000');
-    $object->addReceptor($receptor);
+    $voucher->addReceptor($receptor);
 
     $products = getProducts();
     $products->each(function (Collection $product) {
@@ -69,7 +69,7 @@ it('create object', function () {
         $product->put('conceptSat', $concepto);
     });
 
-    $object->addConceptos($products);
+    $voucher->addConceptos($products);
 
     $localTaxes = getLocalTaxes();
     $localTaxes->each(function (Collection $tax) {
@@ -80,11 +80,11 @@ it('create object', function () {
         $tax->put('localTaxSat', $retencionesLocales);
     });
 
-    $object->addComplementoImpuestosLocales($localTaxes);
+    $voucher->addComplementoImpuestosLocales($localTaxes);
 
-    $object->build()->saveInvoice('quickSale', 999);
+    $voucher->build()->saveInvoice('quickSale', 999);
 
-    expect($object)->toBeObject();
+    expect($voucher)->toBeObject();
 });
 
 function getProducts(): Collection

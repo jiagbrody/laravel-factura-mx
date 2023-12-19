@@ -15,14 +15,8 @@ class IngresoHandler implements CfdiHandlerInterface
         return new IngresoCreateConcrete($company);
     }
 
-    public function fromComprobante(array $comprobante, Collection $products): IngresoCreateConcrete
+    public function fromComprobante($comprobante, Collection $products): IngresoCreateConcrete
     {
-        /*foreach ($comprobante as $key => $value) {
-            if ($value === null) {
-                unset($comprobante[$key]);
-            }
-        }*/
-
         return (new IngresoCreateConcrete(new InvoiceCompany))->addAtributos($comprobante)
             ->addReceptor($comprobante['Receptor'])
             ->addConceptos($products)

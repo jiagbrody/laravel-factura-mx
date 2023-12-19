@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeEgreso\Cancel;
 
-use App\Models\Invoice;
+use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use App\Services\PAC\Providers\PacCancelResponse;
 use JiagBrody\LaravelFacturaMx\Sat\Helper\CancelConcrete;
 

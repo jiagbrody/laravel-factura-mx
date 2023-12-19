@@ -8,30 +8,52 @@ use CfdiUtils\CfdiCreator40;
 use Illuminate\Support\Facades\DB;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\AttributeAssembly;
-use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeIngreso\SaveIngreso;
-use JiagBrody\LaravelFacturaMx\Sat\Helper\DraftBuild;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
+use JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok\FinkokPac;
+use JiagBrody\LaravelFacturaMx\Sat\Stamp\StampBuild;
 use PhpCfdi\Credentials\Credential;
 
-class IngresoCreateBuild extends DraftBuild
+class IngresoCreateBuild
 {
     protected Invoice $invoice;
 
-    public function __construct(protected Credential $credential, protected CfdiCreator40 $creatorCfdi, protected InvoiceCompanyHelper $companyHelper, protected AttributeAssembly $attributeAssembly)
-    {
+    protected FinkokPac $pacProvider;
+
+    public function __construct(
+        protected Credential $credential,
+        protected CfdiCreator40 $creatorCfdi,
+        protected InvoiceCompanyHelper $companyHelper,
+        protected AttributeAssembly $attributeAssembly
+    ) {
     }
 
-    public function saveInvoice(string $relationshipModel, int $relationshipId): Invoice
+    public function saveInvoice(string $relationshipModel, int $relationshipId): self
     {
-        return DB::transaction(function () use ($relationshipModel, $relationshipId) {
+        DB::transaction(function () use ($relationshipModel, $relationshipId) {
             $save = new SaveIngreso($this->attributeAssembly);
 
-            $invoice = $save->toInvoice($relationshipModel, $relationshipId, $this->companyHelper->id);
-            $save->toInvoiceDetails($invoice);
-            $save->toInvoiceBalances($invoice);
-            $save->toInvoiceTaxes($invoice);
-
-            return $invoice;
+            $this->invoice = $save->toInvoice($relationshipModel, $relationshipId, $this->companyHelper->id);
+            $save->toInvoiceDetails($this->invoice);
+            $save->toInvoiceBalances($this->invoice);
+            $save->toInvoiceTaxes($this->invoice);
         });
+
+        return $this;
+    }
+
+    public function makeStamp(): self
+    {
+        $this->pacProvider = new FinkokPac($this->invoice);
+        dd($this->pacProvider);
+        DB::transaction(function () {
+            $stamp = new StampBuild($this->invoice);
+            dd($this->pacProvider);
+        });
+
+        return $this;
+    }
+
+    public function tools()
+    {
     }
 }

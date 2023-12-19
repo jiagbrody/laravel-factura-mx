@@ -16,4 +16,19 @@ class ComprobanteBuilder implements ComprobanteInterface
     {
         return new EgresoHandler();
     }
+
+    // public function recepcionDePagos(): PagoHandler
+    // {
+    //     return new PagoHandler;
+    // }
+
+    // public function traslado()
+    // {
+    //     // TODO: Implement traslado() method.
+    // }
+
+    // public function retencionesEInformacionDePagos()
+    // {
+    //     // TODO: Implement retencionesEInformacionDePagos() method.
+    // }
 }
