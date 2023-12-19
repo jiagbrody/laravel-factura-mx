@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeEgreso;
 
 use App\Enums\InvoiceCompanyEnum;
-use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use Illuminate\Database\Eloquent\Collection;
+use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 use JiagBrody\LaravelFacturaMx\Sat\CfdiHandlerInterface;
 use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeEgreso\Cancel\EgresoCancel;

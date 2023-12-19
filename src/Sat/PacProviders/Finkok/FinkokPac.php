@@ -1,12 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok;
 
-
+use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacCancelResponse;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStampResponse;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\ProviderPacInterface;
-use JiagBrody\LaravelFacturaMx\Models\Invoice;
+
 //use PhpCfdi\Finkok\FinkokEnvironment;
 //use PhpCfdi\Finkok\FinkokSettings;
 //use PhpCfdi\Finkok\QuickFinkok;
@@ -35,11 +37,11 @@ class FinkokPac implements ProviderPacInterface
 
     public function __construct(protected Invoice $invoice)
     {
-        $this->pacEnvironment  = (string)env('PAC_ENVIRONMENT');
-        $this->usernameFinkok  = (string)env('PAC_FINKOK_USER');
-        $this->passwordFinkok  = (string)env('PAC_FINKOK_PASSWORD');
-        $this->stampUrlFinkok  = (string)env('PAC_FINKOK_STAMP_URL');
-        $this->cancelUrlFinkok = (string)env('PAC_FINKOK_CANCEL_URL');
+        $this->pacEnvironment = (string) env('PAC_ENVIRONMENT');
+        $this->usernameFinkok = (string) env('PAC_FINKOK_USER');
+        $this->passwordFinkok = (string) env('PAC_FINKOK_PASSWORD');
+        $this->stampUrlFinkok = (string) env('PAC_FINKOK_STAMP_URL');
+        $this->cancelUrlFinkok = (string) env('PAC_FINKOK_CANCEL_URL');
 
         //$settings = null;
         //if ($this->pacEnvironment === 'development') {

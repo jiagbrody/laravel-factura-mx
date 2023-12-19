@@ -6,8 +6,8 @@ namespace JiagBrody\LaravelFacturaMx\Sat\Helper;
 
 use App\Enums\CfdiCancelTypeEnum;
 use App\Models\CfdiCancel;
-use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use App\Services\PAC\Providers\PacCancelResponse;
+use JiagBrody\LaravelFacturaMx\Models\Invoice;
 
 abstract class CancelConcrete implements CancelConcreteInterface
 {

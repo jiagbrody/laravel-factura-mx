@@ -6,7 +6,6 @@ namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteRecepcionDePagos;
 
 use App\Enums\InvoiceCompanyEnum;
 use App\Helpers\GetTruncateValueFromFloatTypeNumberHelper;
-use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use App\Services\CurrencyExchangeRateService;
 use CfdiUtils\Certificado\Certificado;
 use CfdiUtils\Elements\Pagos20\Pagos;
@@ -15,6 +14,7 @@ use CfdiUtils\SumasPagos20\Currencies;
 use CfdiUtils\SumasPagos20\PagosWriter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\CfdiHelperAbstract;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ComprobanteAtributos;
 

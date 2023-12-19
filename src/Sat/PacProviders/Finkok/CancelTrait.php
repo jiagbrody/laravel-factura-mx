@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok;
 
@@ -18,37 +20,37 @@ trait CancelTrait
     private function cancel(CfdiCancelTypeEnum $cancelType, ?string $UUID): PacCancelResponse
     {
         $this->cfdiCancelTypeEnum = $cancelType;
-        $this->replace_uuid       = $UUID;
-        $this->companyHelper      = new InvoiceCompanyHelper($this->invoice->invoice_company_id);
+        $this->replace_uuid = $UUID;
+        $this->companyHelper = new InvoiceCompanyHelper($this->invoice->invoice_company_id);
 
         return $this->signCancelSoap();
 
-        #UPDATE 2022-09-27: SE VA A DEJAR DE USAR ESTE METODO YA QUE VEO COMPLICADO MANTENER ALGO QUE EN EL DEMO DEL SAT NO VA A FUNCIONAR.
-        #AUNQUE EN PRODUCCION LO IDEAL ES USAR "cancelSignature".
+        //UPDATE 2022-09-27: SE VA A DEJAR DE USAR ESTE METODO YA QUE VEO COMPLICADO MANTENER ALGO QUE EN EL DEMO DEL SAT NO VA A FUNCIONAR.
+        //AUNQUE EN PRODUCCION LO IDEAL ES USAR "cancelSignature".
         //return $this->cancelSignatureSoap();
         //return $this->cancelSignatureQuickFinkok();
     }
 
     private function signCancelSoap(): PacCancelResponse
     {
-        $uuids = ["UUID" => $this->invoice->cfdi->uuid, "Motivo" => $this->cfdiCancelTypeEnum->getSatId()];
+        $uuids = ['UUID' => $this->invoice->cfdi->uuid, 'Motivo' => $this->cfdiCancelTypeEnum->getSatId()];
         if ($this->cfdiCancelTypeEnum === CfdiCancelTypeEnum::NEW_WITH_ERRORS_RELATED && is_string($this->replace_uuid)) {
             $uuids['FolioSustitucion'] = $this->replace_uuid;
         }
 
-        $uuid_ar  = ['UUID' => $uuids];
+        $uuid_ar = ['UUID' => $uuids];
         $uuids_ar = ['UUIDS' => $uuid_ar];
-        $params   = [
-            "UUIDS"       => $uuid_ar,
-            "username"    => $this->usernameFinkok,
-            "password"    => $this->passwordFinkok,
-            "taxpayer_id" => $this->companyHelper->rfc,
-            "serial"      => $this->companyHelper->serialNumber,
+        $params = [
+            'UUIDS' => $uuid_ar,
+            'username' => $this->usernameFinkok,
+            'password' => $this->passwordFinkok,
+            'taxpayer_id' => $this->companyHelper->rfc,
+            'serial' => $this->companyHelper->serialNumber,
         ];
 
         try {
-            $client   = new SoapClient($this->cancelUrlFinkok, ['trace' => 1]);
-            $response = $client->__soapCall("sign_cancel", [$params]);
+            $client = new SoapClient($this->cancelUrlFinkok, ['trace' => 1]);
+            $response = $client->__soapCall('sign_cancel', [$params]);
 
             (new SaveSoapRequestResponseLogService)->make($client, 'Finkok:sign_cancel', 'cfdi_finkok_sign_cancel');
 
@@ -150,16 +152,16 @@ trait CancelTrait
             abort(422, $cancelResult->CodEstatus);
         }
 
-        $folio                        = $cancelResult->Folios->Folio;
-        $response                     = new PacCancelResponse;
-        $response->uuid               = $folio->UUID;
-        $response->estatusUUID        = $folio->EstatusUUID;
+        $folio = $cancelResult->Folios->Folio;
+        $response = new PacCancelResponse;
+        $response->uuid = $folio->UUID;
+        $response->estatusUUID = $folio->EstatusUUID;
         $response->estatusCancelacion = $folio->EstatusCancelacion;
 
-        if ($folio->EstatusUUID === "201" || $folio->EstatusUUID === "202") {
-            if ($folio->EstatusCancelacion === "Petición de cancelación realizada exitosamente") {
+        if ($folio->EstatusUUID === '201' || $folio->EstatusUUID === '202') {
+            if ($folio->EstatusCancelacion === 'Petición de cancelación realizada exitosamente') {
                 $response->checkProcess = true;
-                $response->acuse        = $cancelResult->Acuse;
+                $response->acuse = $cancelResult->Acuse;
 
                 return $response;
             }

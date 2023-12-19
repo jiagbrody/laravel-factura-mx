@@ -19,7 +19,7 @@ class IngresoStamp extends PacProviderHelper implements StampCfdiInterface
 
     public function getPacResponse(): \JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStampResponse
     {
-        $pacResponse    = $this->pacProvider->stampInvoice();
+        $pacResponse = $this->pacProvider->stampInvoice();
         $this->concrete = new IngresoStampConcrete($this->invoice, $pacResponse);
         $this->runConcrete($pacResponse);
 

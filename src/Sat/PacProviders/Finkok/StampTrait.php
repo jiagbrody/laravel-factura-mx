@@ -1,7 +1,8 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok;
-
 
 use App\Services\Logs\SaveSoapRequestResponseLogService;
 use App\Services\PAC\Providers\PacStampResponse;
@@ -14,18 +15,18 @@ trait StampTrait
     {
         $this->detectLogicErrorInStamp();
 
-        $xmlFile   = $this->invoice->xmlInvoiceDocument;
+        $xmlFile = $this->invoice->xmlInvoiceDocument;
         $draftCfdi = Document::obtainDocumentContent($xmlFile);
 
         $params = [
-            "xml"      => $draftCfdi,
-            "username" => $this->usernameFinkok,
-            "password" => $this->passwordFinkok,
+            'xml' => $draftCfdi,
+            'username' => $this->usernameFinkok,
+            'password' => $this->passwordFinkok,
         ];
 
         try {
-            $client   = new SoapClient($this->stampUrlFinkok, ['trace' => 1]);
-            $response = $client->__soapCall("quick_stamp", [$params]);
+            $client = new SoapClient($this->stampUrlFinkok, ['trace' => 1]);
+            $response = $client->__soapCall('quick_stamp', [$params]);
 
             (new SaveSoapRequestResponseLogService)->make($client, 'Finkok:quick_stamp', 'cfdi_finkok_quick_stamp');
 
@@ -37,23 +38,23 @@ trait StampTrait
 
     private function getPacStampResponse($responsePac): PacStampResponse
     {
-        $result          = $responsePac->quick_stampResult;
-        $res             = new PacStampResponse;
-        $res->uuid       = $result->UUID ?? "";
-        $res->codEstatus = $result->CodEstatus ?? "";
+        $result = $responsePac->quick_stampResult;
+        $res = new PacStampResponse;
+        $res->uuid = $result->UUID ?? '';
+        $res->codEstatus = $result->CodEstatus ?? '';
 
         if (isset($result->CodEstatus) && ($result->CodEstatus === 'Comprobante timbrado satisfactoriamente')) {
             $res->checkProcess = true;
-            $res->xml          = $result->xml;
+            $res->xml = $result->xml;
 
             return $res;
         }
 
-        $incidencia                  = $result->Incidencias->Incidencia;
+        $incidencia = $result->Incidencias->Incidencia;
         $res->incidenciaIdIncidencia = $incidencia->IdIncidencia;
-        $res->incidenciaMensaje      = $incidencia->MensajeIncidencia;
+        $res->incidenciaMensaje = $incidencia->MensajeIncidencia;
         if ($incidencia->MensajeIncidencia) {
-            $res->incidenciaMensaje .= " - ".$incidencia->ExtraInfo;
+            $res->incidenciaMensaje .= ' - '.$incidencia->ExtraInfo;
         }
         $res->incidenciaCodigoError = $incidencia->CodigoError;
 
@@ -64,7 +65,7 @@ trait StampTrait
     private function detectLogicErrorInStamp(): void
     {
         if ($this->invoice->cfdi) {
-            abort(403, "Esta factura ya se encuentra timbrada!");
+            abort(403, 'Esta factura ya se encuentra timbrada!');
         }
     }
 }

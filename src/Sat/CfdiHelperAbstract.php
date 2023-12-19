@@ -24,8 +24,8 @@ abstract class CfdiHelperAbstract
 
     public function __construct()
     {
-        $this->creatorCfdi       = new CfdiCreator40();
-        $this->credential        = Credential::openFiles($this->companyHelper->certificatePath,
+        $this->creatorCfdi = new CfdiCreator40();
+        $this->credential = Credential::openFiles($this->companyHelper->certificatePath,
             $this->companyHelper->keyPath, $this->companyHelper->passPhrase);
         $this->attributeAssembly = new AttributeAssembly;
 
@@ -69,7 +69,7 @@ abstract class CfdiHelperAbstract
         if ($concepts->count() > 0) {
             $concepts->each(function (Collection $concept) {
 
-                $item           = $concept->get('conceptSat');
+                $item = $concept->get('conceptSat');
                 $invoiceConcept = $this->creatorCfdi->comprobante()
                     ->addConcepto($item->getOnlySimplePropertiesCollection()->toArray());
 
