@@ -16,10 +16,6 @@ use CfdiUtils\SumasPagos20\PagosWriter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use JiagBrody\LaravelFacturaMx\Sat\CfdiHelperAbstract;
-use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteRecepcionDePagos\DefineDoctoRelacionadoProperties;
-use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteRecepcionDePagos\DefineImpuestosDRProperties;
-use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteRecepcionDePagos\DefinePagoProperties;
-use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteRecepcionDePagos\GetImpuestosDRHelper;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ComprobanteAtributos;
 
 class PagoCreateConcrete extends CfdiHelperAbstract
