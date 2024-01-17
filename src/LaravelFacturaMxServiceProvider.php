@@ -17,7 +17,7 @@ class LaravelFacturaMxServiceProvider extends PackageServiceProvider
          */
         $package
             ->name('laravel-factura-mx')
-            ->hasConfigFile()
+            ->hasConfigFile('factura-mx')
             ->hasViews()
             ->hasMigration('create_laravel-factura-mx_table')
             ->hasCommand(LaravelFacturaMxCommand::class);
@@ -30,6 +30,7 @@ class LaravelFacturaMxServiceProvider extends PackageServiceProvider
         | Migrations Provider need on boot() method
         |--------------------------------------------------------------------------
         */
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->publishes([__DIR__ . '/../config/factura-mx.php' => config_path('factura-mx.php')], 'config');
     }
 }

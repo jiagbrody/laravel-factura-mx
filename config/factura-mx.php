@@ -31,12 +31,42 @@ return [
      | Tributaria (SAT) para poder timbrar las facturas por medio de algún PAC
      | (servicio de terceros para timbrar facturas).
      |
+     | NOTA: Esta ubicación tiene que estar protegida o no tener acceso
+     | público por internet.
+     |
      | Ejemplo:
      | storage_path('app/protected/sat-certificates')
      |
      */
 
-    'sat_files_path' => __DIR__.'/../storage/app/protected/sat-certificates',
+    'sat_files_path' => __DIR__ . '/../storage/app/protected/sat-certificates',
+
+
+    /*
+     |--------------------------------------------------------------------------
+     | Ruta de la carpeta para los archivos de las facturas
+     |--------------------------------------------------------------------------
+     |
+     | Especifica la carpeta donde estarán los archivos de las facturas
+     | archivos XML (CFDI) y PDF (formato legible del CFDI)
+     |
+     */
+
+    'invoices_files_path' => __DIR__ . '/../storage/app/public',
+
+
+    /*
+     |--------------------------------------------------------------------------
+     | Ruta de la carpeta para los archivos de las facturas
+     |--------------------------------------------------------------------------
+     |
+     | Especifica la carpeta donde estarán los archivos de las facturas
+     | archivos XML (CFDI) y PDF (formato legible del CFDI)
+     |
+     */
+
+    'default_timezone' => 'America/Mexico_City',
+
 
     /*
      |--------------------------------------------------------------------------

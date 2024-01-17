@@ -1,6 +1,8 @@
 <?php
 
-namespace Database\Factories;
+declare(strict_types=1);
+
+namespace JiagBrody\LaravelFacturaMx\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 

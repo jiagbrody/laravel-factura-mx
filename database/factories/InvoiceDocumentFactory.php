@@ -7,9 +7,9 @@ namespace JiagBrody\LaravelFacturaMx\Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\InvoiceBalance>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\InvoiceDocument>
  */
-class InvoiceBalanceFactory extends Factory
+class InvoiceDocumentFactory extends Factory
 {
     /**
      * Define the model's default state.
