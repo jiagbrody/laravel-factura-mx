@@ -39,8 +39,7 @@ return [
      |
      */
 
-    'sat_files_path' => __DIR__ . '/../storage/app/protected/sat-certificates',
-
+    'sat_files_path' => __DIR__.'/../storage/app/protected/sat-certificates',
 
     /*
      |--------------------------------------------------------------------------
@@ -52,8 +51,7 @@ return [
      |
      */
 
-    'invoices_files_path' => __DIR__ . '/../storage/app/public',
-
+    'invoices_files_path' => __DIR__.'/../storage/app/public',
 
     /*
      |--------------------------------------------------------------------------
@@ -66,7 +64,6 @@ return [
      */
 
     'default_timezone' => 'America/Mexico_City',
-
 
     /*
      |--------------------------------------------------------------------------

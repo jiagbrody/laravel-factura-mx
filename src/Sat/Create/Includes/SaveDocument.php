@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Create\Includes;
 
@@ -20,8 +22,7 @@ final class SaveDocument implements SaveDocumentInterface
         protected string $extension,
         protected string $storage,
         protected string $fileContent
-    )
-    {
+    ) {
         date_default_timezone_set(config('factura-mx.default_timezone'));
         $this->exists = InvoiceDocument::where([
             ['documentable_type', $this->relationshipModel],
@@ -43,16 +44,15 @@ final class SaveDocument implements SaveDocumentInterface
             return $this->exists;
         }
 
-        $archive         = $this->filePath . '/' . $this->fileName . '.' . $this->extension;
+        $archive = $this->filePath.'/'.$this->fileName.'.'.$this->extension;
         $documentCreated = new InvoiceDocument;
-
 
         if (Storage::disk($this->storage)->put($archive, $this->fileContent)) {
             try {
                 $documentCreated = $this->saveDocumentInstance();
             } catch (Exception $e) {
                 Storage::disk($this->storage)->delete($archive);
-                abort(403, 'Error al generar el archivo: ' . $e->getMessage());
+                abort(403, 'Error al generar el archivo: '.$e->getMessage());
             }
         }
 
@@ -63,14 +63,14 @@ final class SaveDocument implements SaveDocumentInterface
     {
         $document = new InvoiceDocument;
 
-        $document->document_type_id  = $this->documentTypeId;
+        $document->document_type_id = $this->documentTypeId;
         $document->documentable_type = $this->relationshipModel;
-        $document->documentable_id   = $this->relationshipId;
-        $document->file_name         = $this->fileName;
-        $document->file_path         = $this->filePath;
-        $document->mime_type         = $this->mimeType;
-        $document->extension         = $this->extension;
-        $document->storage           = $this->storage;
+        $document->documentable_id = $this->relationshipId;
+        $document->file_name = $this->fileName;
+        $document->file_path = $this->filePath;
+        $document->mime_type = $this->mimeType;
+        $document->extension = $this->extension;
+        $document->storage = $this->storage;
         $document->save();
 
         return $document;

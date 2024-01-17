@@ -18,8 +18,10 @@ use PhpCfdi\Credentials\Credential;
 
 class IngresoCreateBuild
 {
-    protected         $relationshipModel;
-    protected         $relationshipId;
+    protected $relationshipModel;
+
+    protected $relationshipId;
+
     protected Invoice $invoice;
 
     protected FinkokPac $pacProvider;
@@ -29,14 +31,14 @@ class IngresoCreateBuild
         protected CfdiCreator40 $creatorCfdi,
         protected InvoiceCompanyHelper $companyHelper,
         protected AttributeAssembly $attributeAssembly
-    )
-    {
+    ) {
     }
 
     public function setRelationshipModel($model): self
     {
         $this->detectLogicError($model);
         $this->relationshipModel = $model;
+
         return $this;
     }
 
@@ -52,7 +54,7 @@ class IngresoCreateBuild
         });
     }
 
-    public function saveDocument(null|string $fileName = null): void
+    public function saveDocument(?string $fileName = null): void
     {
         $save = new SaveDocument(
             relationshipModel: $this->relationshipModel->getMorphClass(),
@@ -82,7 +84,7 @@ class IngresoCreateBuild
 
     private function detectLogicError($model): void
     {
-        if (!$model instanceof Model) {
+        if (! $model instanceof Model) {
             abort(422, 'La instancia no es Modelo Eloquent correcto.');
         }
     }
