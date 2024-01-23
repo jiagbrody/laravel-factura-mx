@@ -7,10 +7,12 @@ namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeIngreso;
 use CfdiUtils\CfdiCreator40;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceDocumentTypeEnum;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\AttributeAssembly;
-use JiagBrody\LaravelFacturaMx\Sat\Create\Includes\SaveDocument;
+use JiagBrody\LaravelFacturaMx\Sat\Document\SaveDocument;
+use JiagBrody\LaravelFacturaMx\Sat\Helper\PacProviderHelper;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok\FinkokPac;
 use JiagBrody\LaravelFacturaMx\Sat\Stamp\StampBuild;
@@ -18,17 +20,18 @@ use PhpCfdi\Credentials\Credential;
 
 class IngresoCreateBuild
 {
-    protected         $relationshipModel;
-    protected         $relationshipId;
+    // MODELO ELOQUENT A RELACIONAR CON EL CLIENTE
+    protected mixed $relationshipModel;
+
     protected Invoice $invoice;
 
-    protected FinkokPac $pacProvider;
+    public FinkokPac $pacProvider;
 
     public function __construct(
-        protected Credential $credential,
-        protected CfdiCreator40 $creatorCfdi,
+        protected Credential           $credential,
+        protected CfdiCreator40        $creatorCfdi,
         protected InvoiceCompanyHelper $companyHelper,
-        protected AttributeAssembly $attributeAssembly
+        protected AttributeAssembly    $attributeAssembly
     )
     {
     }
@@ -49,32 +52,36 @@ class IngresoCreateBuild
             $save->toInvoiceDetails($this->invoice);
             $save->toInvoiceBalances($this->invoice);
             $save->toInvoiceTaxes($this->invoice);
+
+            // Declaro el proveedor del pac de acuerdo a los parámetros de configuración.
+            $this->pacProvider = (new PacProviderHelper())($this->invoice);
         });
     }
 
     public function saveDocument(null|string $fileName = null): void
     {
-        $save = new SaveDocument(
-            relationshipModel: $this->relationshipModel->getMorphClass(),
-            relationshipId: $this->relationshipModel->id,
+        if ($fileName === null) {
+            $fileName = 'invoice-' . $this->invoice->id . '_' . Str::slug($this->attributeAssembly->getComprobanteAtributos()->getFecha());
+        }
+
+        (new SaveDocument(
+            relationshipModel: $this->invoice->getMorphClass(),
+            relationshipId: $this->invoice->id,
             documentTypeId: InvoiceDocumentTypeEnum::XML_FILE->value,
-            fileName: 'mi nombre de archivo',
-            filePath: 'test',
+            fileName: $fileName,
+            filePath: config('factura-mx.invoices_files_path'),
             mimeType: 'xml',
             extension: 'xml',
-            storage: 'public',
+            storage: config('factura-mx.filesystem_disk'),
             fileContent: $this->creatorCfdi->asXml()
-        );
-
-        $save->make();
+        ))->create();
     }
 
     public function makeStamp(): self
     {
-        $this->pacProvider = new FinkokPac($this->invoice);
-
         DB::transaction(function () {
             $stamp = new StampBuild($this->invoice);
+            dd('test', $this);
         });
 
         return $this;

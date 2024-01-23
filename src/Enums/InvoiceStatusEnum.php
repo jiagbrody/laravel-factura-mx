@@ -12,6 +12,7 @@ enum InvoiceStatusEnum: int
     case DRAFT = 1;
     case VIGENT = 2;
     case CANCELED = 3;
+    case PRIOR_CANCELLATION = 4;
 
     public static function getCatalog(): \Illuminate\Support\Collection
     {
@@ -24,6 +25,7 @@ enum InvoiceStatusEnum: int
             self::DRAFT => 'Borrador',
             self::VIGENT => 'Vigente',
             self::CANCELED => 'Cancelado',
+            self::PRIOR_CANCELLATION => 'Pre cancelación',
         };
     }
 }

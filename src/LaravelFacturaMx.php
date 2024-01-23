@@ -10,6 +10,7 @@ class LaravelFacturaMx
 {
     public function create(): ComprobanteBuilder
     {
+        date_default_timezone_set(config('factura-mx.default_timezone'));
         return new ComprobanteBuilder();
     }
 

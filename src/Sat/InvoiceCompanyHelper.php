@@ -26,19 +26,19 @@ final readonly class InvoiceCompanyHelper
 
     public string $serialNumber;
 
-    public string $pacEnvironment;
+    public bool $pacEnvironmentProduction;
 
     public function __construct(InvoiceCompany $invoiceCompany)
     {
         $folder = config('factura-mx.sat_files_path');
 
-        $this->pacEnvironment = 'development';
+        $this->pacEnvironmentProduction = config('factura-mx.pac_environment_production');
         $this->id = $invoiceCompany->id;
         $this->rfc = $invoiceCompany->rfc;
         $this->nombre = $invoiceCompany->nombre;
         $this->regimenFiscal = $invoiceCompany->regimen_fiscal;
-        $this->certificatePath = $folder.$invoiceCompany->certificate_path;
-        $this->keyPath = $folder.$invoiceCompany->key_path;
+        $this->certificatePath = $folder . $invoiceCompany->certificate_path;
+        $this->keyPath = $folder . $invoiceCompany->key_path;
         $this->passPhrase = $invoiceCompany->pass_phrase;
         $this->serialNumber = $invoiceCompany->serial_number;
 

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeIngreso\Stamp;
 
-use App\Enums\CfdiStatusEnum;
-use App\Enums\InvoiceTypeEnum;
-use App\Enums\SaleStatusEnum;
-use App\Enums\StatementStatusEnum;
+use JiagBrody\LaravelFacturaMx\Enums\InvoiceStatusEnum;
+use JiagBrody\LaravelFacturaMx\Enums\InvoiceTypeEnum;
+use JiagBrody\LaravelFacturaMx\Enums\SaleStatusEnum;
+use JiagBrody\LaravelFacturaMx\Enums\StatementStatusEnum;
 use App\Models\Cfdi;
 use App\Models\StatementCompanyAgreement;
 use App\Services\Documentable\DocumentDestroyService;

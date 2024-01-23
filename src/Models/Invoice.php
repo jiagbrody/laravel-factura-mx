@@ -6,6 +6,7 @@ namespace JiagBrody\LaravelFacturaMx\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use JiagBrody\LaravelFacturaMx\Enums\InvoiceDocumentTypeEnum;
 
 class Invoice extends Model
 {
@@ -31,11 +32,28 @@ class Invoice extends Model
         return $this->hasOne(InvoiceTax::class);
     }
 
-    /**
-     * Ver de qué manera relaciono los "invoices" con los "statement_details" de la relación de productos.
-     */
-    // public function statementDetails()
-    // {
-    //     return $this->belongsToMany('');
-    // }
+    public function documents(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    {
+        return $this->morphMany(InvoiceDocument::class, 'documentable');
+    }
+
+    public function pdfInvoiceDocument(): \Illuminate\Database\Eloquent\Relations\MorphOne
+    {
+        return $this->morphOne(InvoiceDocument::class, 'documentable')->ofMany([
+            'created_at' => 'max',
+            'id'         => 'max',
+        ], function ($query) {
+            $query->where('document_type_id', '=', InvoiceDocumentTypeEnum::PDF_FILE->value);
+        });
+    }
+
+    public function xmlInvoiceDocument(): \Illuminate\Database\Eloquent\Relations\MorphOne
+    {
+        return $this->morphOne(InvoiceDocument::class, 'documentable')->ofMany([
+            'created_at' => 'max',
+            'id'         => 'max',
+        ], function ($query) {
+            $query->where('document_type_id', '=', InvoiceDocumentTypeEnum::XML_FILE->value);
+        });
+    }
 }

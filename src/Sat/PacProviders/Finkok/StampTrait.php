@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok;
 
-use App\Services\Logs\SaveSoapRequestResponseLogService;
-use App\Services\PAC\Providers\PacStampResponse;
+
 use Exception;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceDocument;
+use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStampResponse;
+use JiagBrody\LaravelFacturaMx\Services\SaveSoapRequestResponseLogService;
 use SoapClient;
 
 trait StampTrait
@@ -16,7 +18,7 @@ trait StampTrait
         $this->detectLogicErrorInStamp();
 
         $xmlFile = $this->invoice->xmlInvoiceDocument;
-        $draftCfdi = Document::obtainDocumentContent($xmlFile);
+        $draftCfdi = InvoiceDocument::obtainDocumentContent($xmlFile);
 
         $params = [
             'xml' => $draftCfdi,
@@ -29,6 +31,7 @@ trait StampTrait
             $response = $client->__soapCall('quick_stamp', [$params]);
 
             (new SaveSoapRequestResponseLogService)->make($client, 'Finkok:quick_stamp', 'cfdi_finkok_quick_stamp');
+            dd($response);
 
             return $this->getPacStampResponse($response);
         } catch (exception $e) {

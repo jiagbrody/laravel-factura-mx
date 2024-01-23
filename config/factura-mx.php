@@ -48,11 +48,18 @@ return [
      |--------------------------------------------------------------------------
      |
      | Especifica la carpeta donde estarán los archivos de las facturas
-     | archivos XML (CFDI) y PDF (formato legible del CFDI)
+     | archivos XML (CFDI) y PDF (formato legible del CFDI).
+     |
+     | "filesystem_disk" es el sistema nativo de Laravel el cual se puede
+     | configurar en "config/filesystems.php".
+     | Nativos default Laravel: "local", "ftp", "sftp", "s3", "public"
+     |
+     | "invoices_files_path" es la carpeta dentro del storage donde se
+     | almacenaran los archivos y facturas de la librería.
      |
      */
-
-    'invoices_files_path' => __DIR__ . '/../storage/app/public',
+    'filesystem_disk' => 'public',
+    'invoices_files_path' => 'files/invoices',
 
 
     /*
@@ -66,6 +73,43 @@ return [
      */
 
     'default_timezone' => 'America/Mexico_City',
+
+
+    /*
+     |--------------------------------------------------------------------------
+     | Proveedores de PACS
+     |--------------------------------------------------------------------------
+     |
+     | Especifica el proveedor para timbrar factura y su entorno.
+     |
+     | "pac_environment_production": Declara si el entorno es para ambiente de
+     | producción, si es falso entonces será de entorno de pruebas.
+     | 2 valores posibles: true, false.
+     |
+     | "pac_chosen": Elección de la lista de proveedores, actualmente solo está
+     | disponible "finkok".
+     |
+     | "pac_providers": De momento solo está desarrollado con el proveedor Finkok,
+     | ya que la mayoría de personas de la comunidad que conozco es el que usan
+     | y el que menos falla. Es muy común que cada PAC haga sus propias reglas y
+     | validaciones para timbrar. He visto demasiados PACS que el problema
+     | de timbrar está de su lado por no estar actualizado con las últimas
+     | modificaciones del SAT y esto es un error gravísimo.
+     |
+     | https://www.finkok.com
+     |
+     | Aquí es sumamente importante haber generado su cuenta con el proveedor.
+     |
+     */
+
+    'pac_environment_production' => false,
+    'pac_chosen' => 'finkok',
+    'pac_providers' => [
+        'finkok' => [
+            'user' => 'israel.alvarez@hospitalcmq.com',
+            'password' => '0o$69Uh06o*r',
+        ],
+    ],
 
 
     /*

@@ -1,6 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
-namespace JiagBrody\LaravelFacturaMx\Sat\Create\Includes;
+declare(strict_types=1);
+
+namespace JiagBrody\LaravelFacturaMx\Sat\Document;
 
 use Exception;
 use Illuminate\Support\Facades\Storage;
@@ -22,7 +24,6 @@ final class SaveDocument implements SaveDocumentInterface
         protected string $fileContent
     )
     {
-        date_default_timezone_set(config('factura-mx.default_timezone'));
         $this->exists = InvoiceDocument::where([
             ['documentable_type', $this->relationshipModel],
             ['documentable_id', $this->relationshipId],
@@ -34,7 +35,7 @@ final class SaveDocument implements SaveDocumentInterface
         ])->first();
     }
 
-    public function make(): InvoiceDocument
+    public function create(): InvoiceDocument
     {
         //NOTA: SI EXISTE UN ARCHIVO CON EL MISMO NOMBRE, MODELO Y ID SIMPLEMENTE REGENERO EL ARCHIVO SIN GUARDAR OTRO REGISTRO EN LA BASE DE DATOS.
         if ($this->exists) {

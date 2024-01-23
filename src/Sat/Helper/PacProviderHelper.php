@@ -9,13 +9,15 @@ use JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok\FinkokPac;
 
 class PacProviderHelper
 {
-    protected FinkokPac $pacProvider;
-
     /*
      * SELECCIÓN DEL PAC A USAR ESTE PODRIA SER CAMBIADO DINAMICAMENTE
      */
-    public function __construct(Invoice $invoice)
+    public function __invoke(Invoice $invoice): ?FinkokPac
     {
-        $this->pacProvider = new FinkokPac($invoice);
+        if (config('factura-mx.pac_chosen') === 'finkok') {
+            return new FinkokPac($invoice);
+        }
+
+        return null;
     }
 }
