@@ -37,8 +37,8 @@ final readonly class InvoiceCompanyHelper
         $this->rfc = $invoiceCompany->rfc;
         $this->nombre = $invoiceCompany->nombre;
         $this->regimenFiscal = $invoiceCompany->regimen_fiscal;
-        $this->certificatePath = $folder . $invoiceCompany->certificate_path;
-        $this->keyPath = $folder . $invoiceCompany->key_path;
+        $this->certificatePath = $folder.$invoiceCompany->certificate_path;
+        $this->keyPath = $folder.$invoiceCompany->key_path;
         $this->passPhrase = $invoiceCompany->pass_phrase;
         $this->serialNumber = $invoiceCompany->serial_number;
 

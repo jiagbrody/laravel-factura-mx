@@ -41,7 +41,7 @@ class Invoice extends Model
     {
         return $this->morphOne(InvoiceDocument::class, 'documentable')->ofMany([
             'created_at' => 'max',
-            'id'         => 'max',
+            'id' => 'max',
         ], function ($query) {
             $query->where('document_type_id', '=', InvoiceDocumentTypeEnum::PDF_FILE->value);
         });
@@ -51,7 +51,7 @@ class Invoice extends Model
     {
         return $this->morphOne(InvoiceDocument::class, 'documentable')->ofMany([
             'created_at' => 'max',
-            'id'         => 'max',
+            'id' => 'max',
         ], function ($query) {
             $query->where('document_type_id', '=', InvoiceDocumentTypeEnum::XML_FILE->value);
         });

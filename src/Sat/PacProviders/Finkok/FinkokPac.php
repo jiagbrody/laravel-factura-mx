@@ -38,8 +38,8 @@ class FinkokPac implements ProviderPacInterface
     public function __construct(protected Invoice $invoice)
     {
 
-        $this->usernameFinkok = (string)config('factura-mx.pac_providers.finkok.user');
-        $this->passwordFinkok = (string)config('factura-mx.pac_providers.finkok.password');
+        $this->usernameFinkok = (string) config('factura-mx.pac_providers.finkok.user');
+        $this->passwordFinkok = (string) config('factura-mx.pac_providers.finkok.password');
 
         if (config('factura-mx.pac_environment_production')) {
             $this->pacEnvironment = 'production';
@@ -50,7 +50,6 @@ class FinkokPac implements ProviderPacInterface
             $this->stampUrlFinkok = 'https://demo-facturacion.finkok.com/servicios/soap/stamp.wsdl';
             $this->cancelUrlFinkok = 'https://demo-facturacion.finkok.com/servicios/soap/cancel.wsdl';
         }
-
 
         //$settings = null;
         //if ($this->pacEnvironment === 'development') {

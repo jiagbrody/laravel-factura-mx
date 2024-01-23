@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok;
 
-
 use Exception;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceDocument;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStampResponse;

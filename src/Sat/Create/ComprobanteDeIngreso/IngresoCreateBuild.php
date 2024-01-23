@@ -28,12 +28,11 @@ class IngresoCreateBuild
     public FinkokPac $pacProvider;
 
     public function __construct(
-        protected Credential           $credential,
-        protected CfdiCreator40        $creatorCfdi,
+        protected Credential $credential,
+        protected CfdiCreator40 $creatorCfdi,
         protected InvoiceCompanyHelper $companyHelper,
-        protected AttributeAssembly    $attributeAssembly
-    )
-    {
+        protected AttributeAssembly $attributeAssembly
+    ) {
     }
 
     public function setRelationshipModel($model): self
@@ -62,7 +61,7 @@ class IngresoCreateBuild
     public function saveDocument(?string $fileName = null): void
     {
         if ($fileName === null) {
-            $fileName = 'invoice-' . $this->invoice->id . '_' . Str::slug($this->attributeAssembly->getComprobanteAtributos()->getFecha());
+            $fileName = 'invoice-'.$this->invoice->id.'_'.Str::slug($this->attributeAssembly->getComprobanteAtributos()->getFecha());
         }
 
         (new SaveDocument(
