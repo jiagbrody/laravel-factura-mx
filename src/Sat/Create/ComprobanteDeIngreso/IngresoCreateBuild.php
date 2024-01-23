@@ -40,6 +40,7 @@ class IngresoCreateBuild
     {
         $this->detectLogicError($model);
         $this->relationshipModel = $model;
+
         return $this;
     }
 
@@ -58,7 +59,7 @@ class IngresoCreateBuild
         });
     }
 
-    public function saveDocument(null|string $fileName = null): void
+    public function saveDocument(?string $fileName = null): void
     {
         if ($fileName === null) {
             $fileName = 'invoice-' . $this->invoice->id . '_' . Str::slug($this->attributeAssembly->getComprobanteAtributos()->getFecha());
@@ -89,7 +90,7 @@ class IngresoCreateBuild
 
     private function detectLogicError($model): void
     {
-        if (!$model instanceof Model) {
+        if (! $model instanceof Model) {
             abort(422, 'La instancia no es Modelo Eloquent correcto.');
         }
     }

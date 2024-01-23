@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('file_path');
             $table->string('mime_type');
             $table->string('extension');
-            $table->string('storage')->comment("localización del disco donde se guarda");
+            $table->string('storage')->comment('localización del disco donde se guarda');
             $table->morphs('documentable');
             $table->timestamps();
         });
