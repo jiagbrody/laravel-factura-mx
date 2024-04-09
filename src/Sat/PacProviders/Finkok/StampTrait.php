@@ -41,6 +41,7 @@ trait StampTrait
     private function setAndGetResponse($pacResponse): PacStampResponse
     {
         $response = new PacStampResponse;
+
         return $response->setFullResponse($pacResponse);
     }
 

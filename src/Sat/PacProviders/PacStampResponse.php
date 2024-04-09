@@ -107,7 +107,7 @@ final readonly class PacStampResponse
         $this->setIncidenciaIdIncidencia($incidencia->IdIncidencia);
         $message = $incidencia->MensajeIncidencia;
         if ($incidencia->MensajeIncidencia) {
-            $message .= ' - ' . $incidencia->ExtraInfo;
+            $message .= ' - '.$incidencia->ExtraInfo;
         }
         $this->setIncidenciaMensaje($message);
         $this->setIncidenciaCodigoError($incidencia->CodigoError);
