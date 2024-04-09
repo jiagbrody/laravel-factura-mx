@@ -7,11 +7,11 @@ namespace JiagBrody\LaravelFacturaMx\Sat\Helper;
 use App\Enums\InvoiceCfdiTypeEnum;
 use App\Helpers\Cfdi\ConvertXmlContentToObjectHelper;
 use App\Helpers\ConvertNumberToReadableTextHelper;
-use JiagBrody\LaravelFacturaMx\Models\Document;
 use App\Services\Documentable\DocumentDestroyService;
 use App\Services\Documentable\DocumentGenerateService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
+use JiagBrody\LaravelFacturaMx\Models\Document;
 
 final class PdfFileSatHelperBuilder
 {
