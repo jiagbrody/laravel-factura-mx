@@ -25,7 +25,7 @@ class InvoiceController extends Controller
             'invoiceDetail',
             'invoiceTaxes',
             'invoiceTax',
-            'documents'
+            'documents',
         ])->whereId($invoiceId)->firstOrFail();
 
         return view('factura-mx::invoices.show', ['invoice' => $invoice]);
@@ -35,7 +35,7 @@ class InvoiceController extends Controller
     {
         // Let's assume we need to be authenticated
         // to create a new post
-        if (!auth()->check()) {
+        if (! auth()->check()) {
             abort(403, 'Only authenticated users can create new posts.');
         }
 

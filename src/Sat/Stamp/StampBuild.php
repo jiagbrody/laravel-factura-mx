@@ -55,7 +55,7 @@ class StampBuild implements StampBuildInterface
         (new DocumentHandler())->update(
             relationshipModel: $this->invoice->getMorphClass(),
             relationshipId: $this->invoice->id,
-            fileName: ($fileName === null) ? "" : $fileName,
+            fileName: ($fileName === null) ? '' : $fileName,
             fileContent: $this->response->getXml()
         );
     }

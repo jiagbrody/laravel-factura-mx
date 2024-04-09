@@ -4,14 +4,20 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok\ExampleData;
 
-readonly final class FinkokTestDataSuccess
+final readonly class FinkokTestDataSuccess
 {
     public string $xml;
+
     public string $UUID;
+
     public string $Fecha;
+
     public string $CodEstatus;
+
     public string $SatSeal;
+
     public array $Incidencias;
+
     public string $NoCertificadoSAT;
 
     public function __invoke(): self

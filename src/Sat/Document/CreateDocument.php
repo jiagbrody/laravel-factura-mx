@@ -14,8 +14,8 @@ final class CreateDocument
 
     public function __construct(
         protected string $relationshipModel,
-        protected int    $relationshipId,
-        protected        $documentTypeId,
+        protected int $relationshipId,
+        protected $documentTypeId,
         protected string $fileName,
         protected string $filePath,
         protected string $mimeType,
@@ -43,7 +43,7 @@ final class CreateDocument
             return $this->exists;
         }
 
-        $archive = $this->filePath . '/' . $this->fileName . '.' . $this->extension;
+        $archive = $this->filePath.'/'.$this->fileName.'.'.$this->extension;
         $documentCreated = new InvoiceDocument;
 
         if (Storage::disk($this->storage)->put($archive, $this->fileContent)) {
@@ -51,7 +51,7 @@ final class CreateDocument
                 $documentCreated = $this->saveDocumentInstance();
             } catch (Exception $e) {
                 Storage::disk($this->storage)->delete($archive);
-                abort(403, 'Error al generar el archivo: ' . $e->getMessage());
+                abort(403, 'Error al generar el archivo: '.$e->getMessage());
             }
         }
 

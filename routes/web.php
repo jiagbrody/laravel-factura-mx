@@ -5,7 +5,6 @@ use JiagBrody\LaravelFacturaMx\Http\Controllers\InvoiceController;
 
 // Route::get('laravel-factura-mx', [\App\Http\Controllers\TestController::class, 'testing']);
 
-
 // Route::group(['namespace' => 'laravel-factura-mx\Controllers'], function () {
 //     Route::get('stuff', ['uses' => 'StuffController@index']);
 // });
