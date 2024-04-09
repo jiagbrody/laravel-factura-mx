@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok;
 
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
+use JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok\ExampleData\FinkokTestDataResponse;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacCancelResponse;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStampResponse;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\ProviderPacInterface;
 
-//use PhpCfdi\Finkok\FinkokEnvironment;
-//use PhpCfdi\Finkok\FinkokSettings;
-//use PhpCfdi\Finkok\QuickFinkok;
+
+// use PhpCfdi\Finkok\FinkokEnvironment;
+// use PhpCfdi\Finkok\FinkokSettings;
+// use PhpCfdi\Finkok\QuickFinkok;
 
 /*
  * https://wiki.finkok.com/doku.php?id=Inicio
@@ -33,11 +35,11 @@ class FinkokPac implements ProviderPacInterface
 
     protected string $cancelUrlFinkok;
 
-    protected QuickFinkok $quickFinkok;
+    protected PacStampResponse $response;
 
     public function __construct(protected Invoice $invoice)
     {
-
+        $this->response = new PacStampResponse();
         $this->usernameFinkok = (string)config('factura-mx.pac_providers.finkok.user');
         $this->passwordFinkok = (string)config('factura-mx.pac_providers.finkok.password');
 
@@ -52,15 +54,14 @@ class FinkokPac implements ProviderPacInterface
         }
 
 
-        //$settings = null;
-        //if ($this->pacEnvironment === 'development') {
-        //    $settings = new FinkokSettings($this->usernameFinkok, $this->passwordFinkok,
-        //        FinkokEnvironment::makeDevelopment());
-        //} elseif ($this->pacEnvironment === 'production') {
-        //    $settings = new FinkokSettings($this->usernameFinkok, $this->passwordFinkok,
-        //        FinkokEnvironment::makeProduction());
-        //}
-        //$this->quickFinkok = new QuickFinkok($settings);
+        // $settings = new FinkokSettings($this->usernameFinkok, $this->passwordFinkok,
+        // FinkokEnvironment::makeDevelopment());
+        // $this->quickFinkok = new QuickFinkok($settings);
+    }
+
+    public function getStampTestData(): FinkokTestDataResponse
+    {
+        return new FinkokTestDataResponse();
     }
 
     /*
@@ -68,6 +69,7 @@ class FinkokPac implements ProviderPacInterface
      *
      * https://wiki.finkok.com/doku.php?id=metodo_quick_stamp
      * https://wiki.finkok.com/doku.php?id=php#consumir_metodo_quick_stamp_del_web_service_de_timbrado_en_php
+     * Validador de Cfdi: https://validador.finkok.com
      */
     public function stampInvoice(): PacStampResponse
     {

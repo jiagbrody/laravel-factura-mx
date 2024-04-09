@@ -10,7 +10,7 @@ final readonly class RetencionesLocalesAtributos
 
     private string $ImpLocRetenido;
 
-    private string $TasaDeRetencion;
+    private string $TasadeRetencion; // asi está declarado el nombre para el SAT
 
     private string $Importe;
 
@@ -26,12 +26,12 @@ final readonly class RetencionesLocalesAtributos
 
     public function setTasaDeRetencion(string $TasaDeRetencion): void
     {
-        $this->TasaDeRetencion = $TasaDeRetencion;
+        $this->TasadeRetencion = $TasaDeRetencion;
     }
 
     public function getTasaDeRetencion(): string
     {
-        return $this->TasaDeRetencion;
+        return $this->TasadeRetencion;
     }
 
     public function setImporte(string $Importe): void

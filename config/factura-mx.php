@@ -18,7 +18,6 @@ return [
      |
      */
 
-    'foreign_id_related_to_invoices' => 'statement_id',
     'foreign_id_related_to_concepts' => 'statement_detail_id',
 
     /*
@@ -34,12 +33,34 @@ return [
      | NOTA: Esta ubicación tiene que estar protegida o no tener acceso
      | público por internet.
      |
-     | Ejemplo:
-     | storage_path('app/protected/sat-certificates')
+     */
+
+    'sat_files_path' => __DIR__ . '/../storage/app/protected/sat-certificates',
+
+    /*
+     |--------------------------------------------------------------------------
+     | Almacenamiento local de recursos del SAT, archivos XSD y XSLT
+     |--------------------------------------------------------------------------
+     |
+     | El SAT publica diferentes recursos para diferentes tareas,
+     | los recursos más usuales son:
+     |
+     | Archivos XSD: Son archivos de esquemas XML y sirven para comprobar que
+     | un archivo es correcto con respecto a ciertas reglas.
+     | Archivos XSLT: Son archivos de transformaciones XML y sirven para
+     | transformar el contenido de un archivo XML en otro contenido.
+     | El SAT los utiliza para generar cadenas de origen.
+     | Archivos CER: Son archivos de certificado comúnmente utilizados para
+     | verificar que una firma es válida con respecto a un emisor. La firma es
+     | lo que el sat llama sello y el emisor se distingue por un certificado.
+     |
+     | Estos recursos están disponibles en internet, pero son grandes y tienen
+     | cambios esporádicos. Por ejemplo, el archivo de catálogos del SAT
+     | mide 6.3 MB. Por ello es conveniente tener una copia local de los recursos.
      |
      */
 
-    'sat_files_path' => __DIR__.'/../storage/app/protected/sat-certificates',
+    'sat_local_resource_path' => __DIR__ . '/../storage/app/protected/sat-resources',
 
     /*
      |--------------------------------------------------------------------------
@@ -71,7 +92,6 @@ return [
      */
 
     'default_timezone' => 'America/Mexico_City',
-
 
     /*
      |--------------------------------------------------------------------------
@@ -109,6 +129,16 @@ return [
         ],
     ],
 
+    /*
+     |--------------------------------------------------------------------------
+     | Prefijo para los archivos timbrados
+     |--------------------------------------------------------------------------
+     |
+     | Coloca un prefijo al principio del nombre del archivo timbrado.
+     |
+     */
+
+    'prefix_for_stamped_files' => 'cfdi-',
 
     /*
      |--------------------------------------------------------------------------

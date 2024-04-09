@@ -39,7 +39,7 @@ class SaveIngreso implements SaveIngresoInterface
         return $invoice;
     }
 
-    public function toInvoiceDetails(Invoice $invoice): void
+    public function toInvoiceDetail(Invoice $invoice): void
     {
         $details = new InvoiceDetail;
         $attributes = $this->attributeAssembly->getComprobanteAtributos();

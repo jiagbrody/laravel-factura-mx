@@ -30,7 +30,9 @@ class LaravelFacturaMxServiceProvider extends PackageServiceProvider
         | Migrations Provider need on boot() method
         |--------------------------------------------------------------------------
         */
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        $this->publishes([__DIR__.'/../config/factura-mx.php' => config_path('factura-mx.php')], 'config');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'factura-mx');
+        $this->publishes([__DIR__ . '/../config/factura-mx.php' => config_path('factura-mx.php')], 'config');
     }
 }

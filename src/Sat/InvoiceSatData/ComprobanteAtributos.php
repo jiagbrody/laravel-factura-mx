@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData;
 
+use CfdiUtils\Elements\Cfdi40\Comprobante;
+
 final readonly class ComprobanteAtributos
 {
     use AtributosHelperTrait;
@@ -44,7 +46,7 @@ final readonly class ComprobanteAtributos
 
     private string $LugarExpedicion;
 
-    public string $Confirmacion;
+    private string $Confirmacion;
 
     public function __construct()
     {
@@ -142,9 +144,9 @@ final readonly class ComprobanteAtributos
         return $this->CondicionesDePago ?? null;
     }
 
-    public function setSubTotal(float $SubTotal): void
+    private function setSubTotal(float $SubTotal): void
     {
-        $this->SubTotal = (string) PatronDeDatosHelper::t_import($SubTotal);
+        $this->SubTotal = (string)PatronDeDatosHelper::t_import($SubTotal);
     }
 
     public function getSubTotal(): ?string
@@ -152,9 +154,9 @@ final readonly class ComprobanteAtributos
         return $this->SubTotal ?? null;
     }
 
-    public function setDescuento(float $Descuento): void
+    private function setDescuento(float $Descuento): void
     {
-        $this->Descuento = (string) PatronDeDatosHelper::t_import($Descuento);
+        $this->Descuento = (string)PatronDeDatosHelper::t_import($Descuento);
     }
 
     public function getDescuento(): ?string
@@ -182,9 +184,9 @@ final readonly class ComprobanteAtributos
         return $this->TipoCambio ?? null;
     }
 
-    public function setTotal(float $Total): void
+    private function setTotal(float $Total): void
     {
-        $this->Total = (string) PatronDeDatosHelper::t_import($Total);
+        $this->Total = (string)PatronDeDatosHelper::t_import($Total);
     }
 
     public function getTotal(): ?string
@@ -240,5 +242,14 @@ final readonly class ComprobanteAtributos
     public function getConfirmacion(): string
     {
         return $this->Confirmacion;
+    }
+
+    // Guardo los valores mutados por la librería (phpcfdi) para obtener "total, subtotal, descuento" de acuerdo a lo que exista en el CFDI.
+    // Por ejemplo: Cuando se agrega el complemento de "Impuesto Local" se realiza el descuento sobre el total.
+    public function setInternallyAddTotalSubtotalDiscountValues(Comprobante $comprobante): void
+    {
+        $this->setTotal((float)$comprobante->attributes()->get('Total'));
+        $this->setSubTotal((float)$comprobante->attributes()->get('SubTotal'));
+        $this->setDescuento((float)$comprobante->attributes()->get('Descuento'));
     }
 }

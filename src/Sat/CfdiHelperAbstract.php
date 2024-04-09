@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat;
 
+use CfdiUtils\Certificado\Certificado;
 use CfdiUtils\CfdiCreator40;
+use CfdiUtils\XmlResolver\XmlResolver;
 use Illuminate\Support\Collection;
-use JiagBrody\LaravelFacturaMx\Sat\Helper\PacProviderHelper;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\EmisorAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoRetenidoAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoTrasladoAtributos;
@@ -25,9 +26,10 @@ abstract class CfdiHelperAbstract
 
     public function __construct()
     {
+        $this->credential = Credential::openFiles($this->companyHelper->certificatePath, $this->companyHelper->keyPath, $this->companyHelper->passPhrase);
         $this->creatorCfdi = new CfdiCreator40();
-        $this->credential = Credential::openFiles($this->companyHelper->certificatePath,
-            $this->companyHelper->keyPath, $this->companyHelper->passPhrase);
+        $this->creatorCfdi->putCertificado(new Certificado($this->credential->certificate()->pem()), false);
+        $this->creatorCfdi->setXmlResolver(new XmlResolver(config('factura-mx.sat_local_resource_path')));
         $this->attributeAssembly = new AttributeAssembly;
 
         $this->addEmisor();

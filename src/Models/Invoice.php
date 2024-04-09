@@ -6,18 +6,24 @@ namespace JiagBrody\LaravelFacturaMx\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceDocumentTypeEnum;
 
 class Invoice extends Model
 {
     use HasFactory;
 
+    public function invoiceCfdi(): HasOne
+    {
+        return $this->hasOne(InvoiceCfdi::class);
+    }
+
     public function invoiceBalance(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(InvoiceBalance::class);
     }
 
-    public function invoiceDetails(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function invoiceDetail(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(InvoiceDetail::class);
     }
@@ -32,6 +38,21 @@ class Invoice extends Model
         return $this->hasOne(InvoiceTax::class);
     }
 
+    public function invoiceType(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(InvoiceType::class);
+    }
+
+    public function invoiceCompany(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(InvoiceCompany::class);
+    }
+
+    public function invoiceStatus(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(InvoiceStatus::class);
+    }
+
     public function documents(): \Illuminate\Database\Eloquent\Relations\MorphMany
     {
         return $this->morphMany(InvoiceDocument::class, 'documentable');
@@ -41,7 +62,7 @@ class Invoice extends Model
     {
         return $this->morphOne(InvoiceDocument::class, 'documentable')->ofMany([
             'created_at' => 'max',
-            'id'         => 'max',
+            'id' => 'max',
         ], function ($query) {
             $query->where('document_type_id', '=', InvoiceDocumentTypeEnum::PDF_FILE->value);
         });
@@ -51,7 +72,7 @@ class Invoice extends Model
     {
         return $this->morphOne(InvoiceDocument::class, 'documentable')->ofMany([
             'created_at' => 'max',
-            'id'         => 'max',
+            'id' => 'max',
         ], function ($query) {
             $query->where('document_type_id', '=', InvoiceDocumentTypeEnum::XML_FILE->value);
         });

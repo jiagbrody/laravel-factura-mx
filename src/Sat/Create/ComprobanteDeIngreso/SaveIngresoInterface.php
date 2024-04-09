@@ -10,7 +10,7 @@ interface SaveIngresoInterface
 {
     public function toInvoice(string $relationshipModel, int $relationshipId, int $companyHelperId);
 
-    public function toInvoiceDetails(Invoice $invoice);
+    public function toInvoiceDetail(Invoice $invoice);
 
     public function toInvoiceBalances(Invoice $invoice);
 

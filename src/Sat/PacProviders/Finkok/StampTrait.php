@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok;
 
-
 use Exception;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceDocument;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStampResponse;
@@ -31,38 +30,18 @@ trait StampTrait
             $response = $client->__soapCall('quick_stamp', [$params]);
 
             (new SaveSoapRequestResponseLogService)->make($client, 'Finkok:quick_stamp', 'cfdi_finkok_quick_stamp');
-            dd($response);
 
-            return $this->getPacStampResponse($response);
+            return $this->setAndGetResponse($response);
+
         } catch (exception $e) {
             abort(422, $e->getMessage());
         }
     }
 
-    private function getPacStampResponse($responsePac): PacStampResponse
+    private function setAndGetResponse($pacResponse): PacStampResponse
     {
-        $result = $responsePac->quick_stampResult;
-        $res = new PacStampResponse;
-        $res->uuid = $result->UUID ?? '';
-        $res->codEstatus = $result->CodEstatus ?? '';
-
-        if (isset($result->CodEstatus) && ($result->CodEstatus === 'Comprobante timbrado satisfactoriamente')) {
-            $res->checkProcess = true;
-            $res->xml = $result->xml;
-
-            return $res;
-        }
-
-        $incidencia = $result->Incidencias->Incidencia;
-        $res->incidenciaIdIncidencia = $incidencia->IdIncidencia;
-        $res->incidenciaMensaje = $incidencia->MensajeIncidencia;
-        if ($incidencia->MensajeIncidencia) {
-            $res->incidenciaMensaje .= ' - '.$incidencia->ExtraInfo;
-        }
-        $res->incidenciaCodigoError = $incidencia->CodigoError;
-
-        return $res;
-        //abort(403, $incidencia->MensajeIncidencia.' - '.$incidencia->ExtraInfo);
+        $response = new PacStampResponse;
+        return $response->setFullResponse($pacResponse);
     }
 
     private function detectLogicErrorInStamp(): void
