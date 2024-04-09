@@ -22,8 +22,7 @@ final class CreateDocument
         protected string $extension,
         protected string $storage,
         protected string $fileContent
-    )
-    {
+    ) {
         $this->exists = InvoiceDocument::where([
             ['documentable_type', $this->relationshipModel],
             ['documentable_id', $this->relationshipId],

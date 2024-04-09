@@ -43,19 +43,19 @@ class InvoiceDocument extends Model
     /*
      * Genero el nombre del archivo que se va a guardar.
      */
-    static public function getInitialFileName($model, string $fileExtension, ?string $addMoreToName = null): string
+    public static function getInitialFileName($model, string $fileExtension, ?string $addMoreToName = null): string
     {
-        return Str::slug(class_basename($model) . '-' . $model->id . ($model?->document_name ? '-' . $model->document_name : '')) . ($addMoreToName ? '-' . $addMoreToName : '') . '.' . $fileExtension;
+        return Str::slug(class_basename($model).'-'.$model->id.($model?->document_name ? '-'.$model->document_name : '')).($addMoreToName ? '-'.$addMoreToName : '').'.'.$fileExtension;
     }
 
     /*
      * Genero la ruta donde se guardaran los archivos
      */
-    static public function getInitialFilePathUsingModel($model): string
+    public static function getInitialFilePathUsingModel($model): string
     {
-        $folder = self::FOLDER_NAME . '/' . (strtolower(class_basename($model)));
+        $folder = self::FOLDER_NAME.'/'.(strtolower(class_basename($model)));
 
-        return $folder . '/' . now()->format('Y') . '/' . now()->format('m');
+        return $folder.'/'.now()->format('Y').'/'.now()->format('m');
     }
 
     /*
@@ -63,7 +63,7 @@ class InvoiceDocument extends Model
      */
     public function getFileAttribute(): string
     {
-        return $this->file_path . '/' . $this->file_name . '.' . $this->extension;
+        return $this->file_path.'/'.$this->file_name.'.'.$this->extension;
     }
 
     /*
@@ -83,13 +83,13 @@ class InvoiceDocument extends Model
     {
         $file = $this->file;
 
-        return (Storage::disk($this->storage)->exists($file)) ? storage_path('app/' . $this->storage . '/' . $file) : 'The file does not exists';
+        return (Storage::disk($this->storage)->exists($file)) ? storage_path('app/'.$this->storage.'/'.$file) : 'The file does not exists';
     }
 
     /*
      * Obtiene el documento en lectura (string) para trabajarlo.
      */
-    static public function obtainDocumentContent(InvoiceDocument $document): ?string
+    public static function obtainDocumentContent(InvoiceDocument $document): ?string
     {
         if (Storage::disk($document->storage)->exists($document->file)) {
             return Storage::disk($document->storage)->get($document->file);
@@ -101,14 +101,13 @@ class InvoiceDocument extends Model
     /*
      * Leer el XML en formato
      */
-    static public function xmlDocumentReadingConverter(InvoiceDocument $document, $associative = null, $depth = 512, $flags = 0)
+    public static function xmlDocumentReadingConverter(InvoiceDocument $document, $associative = null, $depth = 512, $flags = 0)
     {
         $contents = InvoiceDocument::obtainDocumentContent($document);
 
         if ($contents === null) {
             return false;
         }
-
 
         return ConvertXmlContentToObjectHelper::make($contents, $associative);
     }

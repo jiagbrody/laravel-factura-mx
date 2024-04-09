@@ -12,9 +12,9 @@ class SaveSoapRequestResponseLogService
     {
         Log::build([
             'driver' => 'single',
-            'path'   => storage_path("logs/{$logName}.log"),
+            'path' => storage_path("logs/{$logName}.log"),
         ])->info($title, [
-            'request'  => $client->__getLastRequest(),
+            'request' => $client->__getLastRequest(),
             'response' => $client->__getLastResponse(),
         ]);
     }
