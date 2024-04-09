@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Enums;
 
-use App\Models\InvoicePaymentType;
 use Illuminate\Support\Facades\DB;
+use JiagBrody\LaravelFacturaMx\Models\InvoicePaymentType;
 
 enum InvoicePaymentTypeEnum: int
 {

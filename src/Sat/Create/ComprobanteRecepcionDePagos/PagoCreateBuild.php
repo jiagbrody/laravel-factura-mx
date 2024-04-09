@@ -6,8 +6,8 @@ namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteRecepcionDePagos;
 
 use App\Enums\InvoiceTaxTypeEnum;
 use App\Helpers\Cfdi\ConvertXmlContentToObjectHelper;
-use App\Models\Cfdi;
-use App\Models\InvoicePayment;
+use JiagBrody\LaravelFacturaMx\Models\Cfdi;
+use JiagBrody\LaravelFacturaMx\Models\InvoicePayment;
 use CfdiUtils\CfdiCreator40;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\Helper\DraftBuild;
