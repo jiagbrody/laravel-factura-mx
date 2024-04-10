@@ -35,7 +35,7 @@ class InvoiceController extends Controller
     {
         // Let's assume we need to be authenticated
         // to create a new post
-        if (!auth()->check()) {
+        if (! auth()->check()) {
             abort(403, 'Only authenticated users can create new posts.');
         }
 
@@ -62,7 +62,7 @@ class InvoiceController extends Controller
         $invoice->delete();
 
         return response()->json([
-            'status' => true
+            'status' => true,
         ]);
     }
 }
