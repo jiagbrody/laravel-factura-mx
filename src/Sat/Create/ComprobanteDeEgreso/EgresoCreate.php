@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeEgreso;
 
 use App\Enums\InvoiceCompanyEnum;
-use JiagBrody\LaravelFacturaMx\Sat\DraftSatInterface;
+use JiagBrody\LaravelFacturaMx\Sat\GettingSatCfdiInterface;
 
-readonly class EgresoCreate implements DraftSatInterface
+readonly class EgresoCreate implements GettingSatCfdiInterface
 {
     public function __construct(protected InvoiceCompanyEnum $invoiceCompanyEnum)
     {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders;
 
 use App\Enums\CfdiCancelTypeEnum;
+use JiagBrody\LaravelFacturaMx\Enums\InvoiceCfdiCancelTypeEnum;
 
 interface ProviderPacInterface
 {
@@ -17,7 +18,7 @@ interface ProviderPacInterface
      * Solicitud de cancelar factura.
      * $type = 01, 02, 03, 04
      */
-    public function cancelInvoice(CfdiCancelTypeEnum $cfdiCancelTypeEnum, ?string $UUID): PacCancelResponse;
+    public function cancelInvoice(InvoiceCfdiCancelTypeEnum $cfdiCancelTypeEnum, ?string $replacementUUID): PacCancelResponse;
 
     /*
      * Checar estatus de la factura que se hizo solicitud de cancelar.

@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx;
 
+use JiagBrody\LaravelFacturaMx\Sat\Cancel\CancelarBuilder;
 use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteBuilder;
 
 class LaravelFacturaMx
 {
-    public function create(): ComprobanteBuilder
+    public function __construct()
     {
         date_default_timezone_set(config('factura-mx.default_timezone'));
+    }
 
+    public function create(): ComprobanteBuilder
+    {
         return new ComprobanteBuilder();
     }
 
@@ -22,7 +26,14 @@ class LaravelFacturaMx
     //{
     //}
     //
-    public function cancel()
+
+    public function cancel(): CancelarBuilder
     {
+        return new CancelarBuilder();
+    }
+
+    public function status()
+    {
+
     }
 }

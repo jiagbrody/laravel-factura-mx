@@ -6,7 +6,7 @@ namespace JiagBrody\LaravelFacturaMx\Sat;
 
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 
-final readonly class InvoiceCompanyHelper
+class InvoiceCompanyHelper
 {
     public int $id;
 
@@ -37,8 +37,8 @@ final readonly class InvoiceCompanyHelper
         $this->rfc = $invoiceCompany->rfc;
         $this->nombre = $invoiceCompany->nombre;
         $this->regimenFiscal = $invoiceCompany->regimen_fiscal;
-        $this->certificatePath = $folder.$invoiceCompany->certificate_path;
-        $this->keyPath = $folder.$invoiceCompany->key_path;
+        $this->certificatePath = $folder . $invoiceCompany->certificate_path;
+        $this->keyPath = $folder . $invoiceCompany->key_path;
         $this->passPhrase = $invoiceCompany->pass_phrase;
         $this->serialNumber = $invoiceCompany->serial_number;
 

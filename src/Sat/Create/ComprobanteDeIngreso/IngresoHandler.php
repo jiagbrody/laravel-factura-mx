@@ -7,6 +7,7 @@ namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeIngreso;
 use Illuminate\Database\Eloquent\Collection;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 use JiagBrody\LaravelFacturaMx\Sat\CfdiHandlerInterface;
+use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ComprobanteAtributos;
 
 class IngresoHandler implements CfdiHandlerInterface
 {
@@ -15,9 +16,10 @@ class IngresoHandler implements CfdiHandlerInterface
         return new IngresoCreateConcrete($company);
     }
 
-    public function fromComprobante($comprobante, Collection $products): IngresoCreateConcrete
+    public function fromComprobante(ComprobanteAtributos|array $comprobante, Collection $products): IngresoCreateConcrete
     {
-        return (new IngresoCreateConcrete(new InvoiceCompany))->addAtributos($comprobante)
+        return (new IngresoCreateConcrete(new InvoiceCompany))
+            ->addAtributos($comprobante)
             ->addReceptor($comprobante['Receptor'])
             ->addConceptos($products)
             ->addRelacionados($comprobante['CfdiRelacionados'])

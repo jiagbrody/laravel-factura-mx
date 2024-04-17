@@ -12,7 +12,7 @@ use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\AttributeAssembly;
 use JiagBrody\LaravelFacturaMx\Sat\Document\DocumentHandler;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
-use JiagBrody\LaravelFacturaMx\Sat\Stamp\StampBuild;
+use JiagBrody\LaravelFacturaMx\Sat\Stamp\StampBuilder;
 use PhpCfdi\Credentials\Credential;
 
 readonly class IngresoCreateBuild
@@ -22,16 +22,17 @@ readonly class IngresoCreateBuild
 
     protected Invoice $invoice;
 
-    public StampBuild $pacProvider;
+    public StampBuilder $pacProvider;
 
     protected DocumentHandler $documentHandler;
 
     public function __construct(
-        protected Credential $credential,
-        protected CfdiCreator40 $creatorCfdi,
+        protected Credential           $credential,
+        protected CfdiCreator40        $creatorCfdi,
         protected InvoiceCompanyHelper $companyHelper,
-        protected AttributeAssembly $attributeAssembly
-    ) {
+        protected AttributeAssembly    $attributeAssembly
+    )
+    {
         $this->documentHandler = new DocumentHandler;
     }
 
@@ -53,7 +54,7 @@ readonly class IngresoCreateBuild
         $save->toInvoiceTaxes($this->invoice);
 
         // Declaro el proveedor del pac de acuerdo a los parámetros de configuración.
-        $this->pacProvider = (new StampBuild($this->invoice));
+        $this->pacProvider = (new StampBuilder($this->invoice));
 
         return $this->invoice;
     }
@@ -75,7 +76,7 @@ readonly class IngresoCreateBuild
 
     private function detectLogicError($model): void
     {
-        if (! $model instanceof Model) {
+        if (!$model instanceof Model) {
             abort(422, 'La instancia no es Modelo Eloquent correcto.');
         }
     }
@@ -83,7 +84,7 @@ readonly class IngresoCreateBuild
     private function getFileName(?string $fileName): string
     {
         if ($fileName === null) {
-            $fileName = 'invoice-'.$this->invoice->id.'_'.Str::slug($this->attributeAssembly->getComprobanteAtributos()->getFecha());
+            $fileName = 'invoice-' . $this->invoice->id . '_' . Str::slug($this->attributeAssembly->getComprobanteAtributos()->getFecha());
         }
 
         return $fileName;

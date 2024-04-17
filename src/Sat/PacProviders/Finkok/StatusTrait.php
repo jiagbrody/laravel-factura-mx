@@ -15,7 +15,7 @@ trait StatusTrait
 {
     private function getStatusCfdiSat(): array
     {
-        if (! $this->invoice->cfdi->xmlInvoiceDocument) {
+        if (!$this->invoice->cfdi->xmlInvoiceDocument) {
             abort(403, 'Cfdi timbrado pero no estan generados los documentos. Es necesario generarlos.');
         }
 
@@ -73,7 +73,7 @@ trait StatusTrait
                     $this->invoice->statementDetails()->detach();
                 }
 
-                //TODO: CHECAR ESTA PARTE COMO SE DEBE QUEDAR BIEN LA CANCELACION DEL PAGO, SE SUPONE QUE SOLO ES UN CAMBI DE REGISTRO, NO RECUERDO POR QUE EL "LOOP" PARA ACTUALIZAR
+                //TODO: CHECAR ESTA PARTE COMO SE DEBE QUEDAR BIEN LA CANCELACION DEL PAGO, SE SUPONE QUE SOLO ES UN CAMBIO DE REGISTRO, NO RECUERDO POR QUE EL "LOOP" PARA ACTUALIZAR
                 if ($this->invoice->invoice_cfdi_type_id === InvoiceCfdiTypeEnum::PAGO->value) {
                     $this->invoice->invoicePayments->each(function ($item) {
                         $item->invoicePaymentDocuments()->update(['is_active' => false]);

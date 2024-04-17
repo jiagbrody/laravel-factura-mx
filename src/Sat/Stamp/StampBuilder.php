@@ -6,12 +6,12 @@ namespace JiagBrody\LaravelFacturaMx\Sat\Stamp;
 
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\Document\DocumentHandler;
-use JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok\FinkokPac;
+use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacHelper;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStampResponse;
 
-class StampBuild implements StampBuildInterface
+class StampBuilder implements StampBuilderInterface
 {
-    protected FinkokPac $pac;
+    protected PacHelper $pacHelper;
 
     protected readonly PacStampResponse $response;
 
@@ -19,16 +19,14 @@ class StampBuild implements StampBuildInterface
 
     public function __construct(protected Invoice $invoice)
     {
-        if (config('factura-mx.pac_chosen') === 'finkok') {
-            $this->pac = new FinkokPac($invoice);
-        }
+        $this->pacHelper = (new PacHelper)($invoice);
     }
 
     public function sendRequestToStamp(): void
     {
-        // TODO: CAMBIAR ESTE PROCESO POR "$this->pac->stampInvoice()". Y NO USAR DATOS DE PRUEBA.
-        // $this->response = $this->pac->getStampTestData()->success()->getResponse();
-        $this->response = $this->pac->stampInvoice();
+        // TODO: CAMBIAR ESTE PROCESO POR "$this->pacHelper->pac->stampInvoice()". Y NO USAR DATOS DE PRUEBA.
+        // $this->response = $this->pacHelper->pac->getStampTestData()->success()->getResponse();
+        $this->response = $this->pacHelper->pac->stampInvoice();
         if ($this->response->getCheckProcess()) {
 
             $this->concrete = new CreateStampConcrete(

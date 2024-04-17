@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use JiagBrody\LaravelFacturaMx\Http\Controllers\InvoiceController;
+use JiagBrody\LaravelFacturaMx\Http\Middleware\HandleInertiaRequests;
 
 // Route::get('laravel-factura-mx', [\App\Http\Controllers\TestController::class, 'testing']);
 
@@ -12,10 +13,11 @@ use JiagBrody\LaravelFacturaMx\Http\Controllers\InvoiceController;
 //
 // });
 
-Route::prefix('laravel-factura-mx')->name('laravel-factura-mx.')->group(function () {
+Route::middleware(['web', HandleInertiaRequests::class])->prefix('laravel-factura-mx')->name('laravel-factura-mx.')->group(function () {
     // Route::group(['namespace' => 'laravel-factura-mx\Controllers'], function () {
     // Route::get('invoices', [InvoiceController::class, 'index'])->name('invoices.index');
     Route::resource('invoices', InvoiceController::class);
+    Route::post('invoices/{invoice}/get-status', [InvoiceController::class, 'getStatus'])->name('invoices.status');
     // Route::get('laravel-factura-mx', ['uses' => 'StuffController@index']);
     // });
 });

@@ -1,17 +1,22 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Http\Controllers;
 
+use Inertia\Inertia;
+use JiagBrody\LaravelFacturaMx\Enums\InvoiceCfdiCancelTypeEnum;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 
 class InvoiceController extends Controller
 {
     public function index()
     {
-        $invoices = Invoice::all();
+        $invoices = Invoice::with([
+            'invoiceType',
+            'invoiceCompany',
+            'invoiceStatus',
+        ])->get();
 
-        // return view('laravel-factura-mx::invoices.index', ['invoices' => $invoices]);
-        return view('factura-mx::invoices.index', ['invoices' => $invoices]);
+        return Inertia::render('laravel-factura-mx/Invoices/Index', ['invoices' => $invoices]);
     }
 
     public function show($invoiceId)
@@ -28,41 +33,35 @@ class InvoiceController extends Controller
             'documents',
         ])->whereId($invoiceId)->firstOrFail();
 
-        return view('factura-mx::invoices.show', ['invoice' => $invoice]);
+        return Inertia::render('laravel-factura-mx/Invoices/Show', ['invoice' => $invoice]);
     }
 
-    public function store()
+    public function destroy(Invoice $invoice)
     {
-        // Let's assume we need to be authenticated
-        // to create a new post
-        if (!auth()->check()) {
-            abort(403, 'Only authenticated users can create new posts.');
+        $invoice->load('invoiceCfdi');
+        $response = null;
+
+        if ($invoice->invoiceCfdi) {
+            $facturaMx = new \JiagBrody\LaravelFacturaMx\LaravelFacturaMx;
+
+            $response = $facturaMx->cancel()
+                ->setInvoice($invoice)
+                ->setPacProvider()
+                ->setCancelTypeEnum(InvoiceCfdiCancelTypeEnum::NEW_NOT_EXECUTED)
+                ->build();
+
+            if ($response->checkProcess === false) {
+                dd($response);
+            }
         }
 
-        dd(auth()->user());
-
-        // request()->validate([
-        //     'title' => 'required',
-        //     'body'  => 'required',
-        // ]);
-
-        // $author = auth()->user();
-
-        // $post = $author->posts()->create([
-        //     'title'     => request('title'),
-        //     'body'      => request('body'),
-        // ]);
-
-        // return redirect(route('posts.show', $post));
+        return back()->with(['response' => $response->estatusCancelacion]);
     }
 
-    public function destroy($id)
+    public function getStatus()
     {
-        $invoice = Invoice::whereId($id)->firstOrFail();
-        $invoice->delete();
+        $facturaMx = new \JiagBrody\LaravelFacturaMx\LaravelFacturaMx;
 
-        return response()->json([
-            'status' => true
-        ]);
+        $facturaMx;
     }
 }

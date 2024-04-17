@@ -4,24 +4,22 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok;
 
-use App\Enums\CfdiCancelTypeEnum;
-use App\Services\Logs\SaveSoapRequestResponseLogService;
-use App\Services\PAC\Providers\PacCancelResponse;
-use App\Services\SAT\InvoiceCompanyHelper;
 use Exception;
+use JiagBrody\LaravelFacturaMx\Enums\InvoiceCfdiCancelTypeEnum;
+use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacCancelResponse;
+use JiagBrody\LaravelFacturaMx\Services\SaveSoapRequestResponseLogService;
 use SoapClient;
 
 trait CancelTrait
 {
-    private CfdiCancelTypeEnum $cfdiCancelTypeEnum;
+    private InvoiceCfdiCancelTypeEnum $cfdiCancelTypeEnum;
 
     private ?string $replace_uuid;
 
-    private function cancel(CfdiCancelTypeEnum $cancelType, ?string $UUID): PacCancelResponse
+    private function cancel(InvoiceCfdiCancelTypeEnum $cancelType, ?string $replacementUUID): PacCancelResponse
     {
         $this->cfdiCancelTypeEnum = $cancelType;
-        $this->replace_uuid = $UUID;
-        $this->companyHelper = new InvoiceCompanyHelper($this->invoice->invoice_company_id);
+        $this->replace_uuid = $replacementUUID;
 
         return $this->signCancelSoap();
 
@@ -33,8 +31,8 @@ trait CancelTrait
 
     private function signCancelSoap(): PacCancelResponse
     {
-        $uuids = ['UUID' => $this->invoice->cfdi->uuid, 'Motivo' => $this->cfdiCancelTypeEnum->getSatId()];
-        if ($this->cfdiCancelTypeEnum === CfdiCancelTypeEnum::NEW_WITH_ERRORS_RELATED && is_string($this->replace_uuid)) {
+        $uuids = ['UUID' => $this->invoice->invoiceCfdi->uuid, 'Motivo' => $this->cfdiCancelTypeEnum->getSatId()];
+        if ($this->cfdiCancelTypeEnum === InvoiceCfdiCancelTypeEnum::NEW_WITH_ERRORS_RELATED && is_string($this->replace_uuid)) {
             $uuids['FolioSustitucion'] = $this->replace_uuid;
         }
 
@@ -44,8 +42,8 @@ trait CancelTrait
             'UUIDS' => $uuid_ar,
             'username' => $this->usernameFinkok,
             'password' => $this->passwordFinkok,
-            'taxpayer_id' => $this->companyHelper->rfc,
-            'serial' => $this->companyHelper->serialNumber,
+            'taxpayer_id' => $this->invoiceCompanyHelper->rfc,
+            'serial' => $this->invoiceCompanyHelper->serialNumber,
         ];
 
         try {
@@ -64,8 +62,8 @@ trait CancelTrait
     {
         $documentToCancel = CancelDocument::newNotExecuted($this->invoice->cfdi->uuid);
 
-        $credential           = Credential::openFiles($this->companyHelper->pathCertificado,
-            $this->companyHelper->pathKey, $this->companyHelper->passPhrase);
+        $credential           = Credential::openFiles($this->invoiceCompanyHelper->pathCertificado,
+            $this->invoiceCompanyHelper->pathKey, $this->invoiceCompanyHelper->passPhrase);
         $credentials          = Credentials::createWithPhpCfdiCredential($credential);
         $xmlCancelacion       = new XmlCancelacionHelper($credentials);
         $uuid                 = $this->invoice->cfdi->uuid;
@@ -90,8 +88,8 @@ trait CancelTrait
     {
         $documentToCancel = CancelDocument::newNotExecuted($this->invoice->cfdi->uuid);
 
-        $credential = Credential::openFiles($this->companyHelper->pathCertificado, $this->companyHelper->pathKey,
-            $this->companyHelper->passPhrase);
+        $credential = Credential::openFiles($this->invoiceCompanyHelper->pathCertificado, $this->invoiceCompanyHelper->pathKey,
+            $this->invoiceCompanyHelper->passPhrase);
 
         $result       = $this->quickFinkok->cancel($credential, $documentToCancel);
         $documentInfo = $result->documents()->first();
@@ -148,7 +146,7 @@ trait CancelTrait
 
     private function getResponsePac($cancelResult): PacCancelResponse
     {
-        if (! isset($cancelResult->Folios->Folio)) {
+        if (!isset($cancelResult->Folios->Folio)) {
             abort(422, $cancelResult->CodEstatus);
         }
 

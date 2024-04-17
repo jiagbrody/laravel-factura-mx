@@ -6,9 +6,9 @@ namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteRecepcionDePagos;
 
 use App\Enums\InvoiceCompanyEnum;
 use Illuminate\Database\Eloquent\Collection;
-use JiagBrody\LaravelFacturaMx\Sat\DraftSatInterface;
+use JiagBrody\LaravelFacturaMx\Sat\GettingSatCfdiInterface;
 
-readonly class PagoCreate implements DraftSatInterface
+readonly class PagoCreate implements GettingSatCfdiInterface
 {
     public function __construct(protected InvoiceCompanyEnum $invoiceCompanyEnum)
     {

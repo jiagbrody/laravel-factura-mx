@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok;
 
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
+use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok\ExampleData\FinkokTestDataResponse;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacCancelResponse;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStampResponse;
@@ -24,6 +26,8 @@ class FinkokPac implements ProviderPacInterface
 {
     use CancelTrait, StampTrait, StatusTrait;
 
+    public readonly InvoiceCompanyHelper $invoiceCompanyHelper;
+
     protected string $pacEnvironment;
 
     protected string $usernameFinkok;
@@ -39,8 +43,8 @@ class FinkokPac implements ProviderPacInterface
     public function __construct(protected Invoice $invoice)
     {
         $this->response = new PacStampResponse();
-        $this->usernameFinkok = (string) config('factura-mx.pac_providers.finkok.user');
-        $this->passwordFinkok = (string) config('factura-mx.pac_providers.finkok.password');
+        $this->usernameFinkok = (string)config('factura-mx.pac_providers.finkok.user');
+        $this->passwordFinkok = (string)config('factura-mx.pac_providers.finkok.password');
 
         if (config('factura-mx.pac_environment_production')) {
             $this->pacEnvironment = 'production';
@@ -55,6 +59,11 @@ class FinkokPac implements ProviderPacInterface
         // $settings = new FinkokSettings($this->usernameFinkok, $this->passwordFinkok,
         // FinkokEnvironment::makeDevelopment());
         // $this->quickFinkok = new QuickFinkok($settings);
+    }
+
+    public function setInvoiceCompanyHelper(InvoiceCompany $company): void
+    {
+        $this->invoiceCompanyHelper = new InvoiceCompanyHelper($company);
     }
 
     public function getStampTestData(): FinkokTestDataResponse
@@ -84,9 +93,9 @@ class FinkokPac implements ProviderPacInterface
      * https://wiki.finkok.com/doku.php?id=php#consumir_web_service_de_cancel_signature
      * https://wiki.finkok.com/doku.php?id=errores-cancelacion
      */
-    public function cancelInvoice($cfdiCancelTypeEnum, $UUID): PacCancelResponse
+    public function cancelInvoice($cfdiCancelTypeEnum, $replacementUUID = null): PacCancelResponse
     {
-        return $this->cancel($cfdiCancelTypeEnum, $UUID);
+        return $this->cancel($cfdiCancelTypeEnum, $replacementUUID);
     }
 
     /*
@@ -98,6 +107,7 @@ class FinkokPac implements ProviderPacInterface
      */
     public function checkStatusInvoice(): array
     {
+
         return $this->getStatusCfdiSat();
     }
 }

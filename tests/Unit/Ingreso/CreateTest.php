@@ -26,9 +26,9 @@ it('create object', function () {
     $atributos->setExportacion('01');
     $atributos->setMetodoPago('PUE');
     $atributos->setLugarExpedicion('63732');
-    $atributos->setSubTotal(6084.14);
-    $atributos->setTotal(7057.60);
-    $atributos->setDescuento(0.00);
+    // $atributos->setSubTotal(6084.14);
+    // $atributos->setTotal(7057.60);
+    // $atributos->setDescuento(0.00);
     $voucher->addAtributos($atributos);
 
     $receptor = new \JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ReceptorAtributos;

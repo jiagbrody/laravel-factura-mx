@@ -14,4 +14,20 @@ enum InvoiceDocumentTypeEnum: int
             self::PDF_FILE => 'Archivo PDF',
         };
     }
+
+    public function getMimeType(): string
+    {
+        return match ($this) {
+            self::XML_FILE => 'xml',
+            self::PDF_FILE => 'pdf',
+        };
+    }
+
+    public function getExtension(): string
+    {
+        return match ($this) {
+            self::XML_FILE => 'xml',
+            self::PDF_FILE => 'pdf',
+        };
+    }
 }
