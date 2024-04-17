@@ -13,12 +13,11 @@ use JiagBrody\LaravelFacturaMx\Sat\Document\DocumentHandler;
 class UpdateRecordsIfTheInvoiceHasBeenSentByThePacToCancelAction
 {
     public function __invoke(
-        InvoiceCfdi               $invoiceCfdi,
+        InvoiceCfdi $invoiceCfdi,
         InvoiceCfdiCancelTypeEnum $cancelTypeEnum,
-        string                    $xmlFile,
-        ?string                   $fileName = null
-    ): void
-    {
+        string $xmlFile,
+        ?string $fileName = null
+    ): void {
         DB::transaction(function () use ($invoiceCfdi, $cancelTypeEnum, $xmlFile, $fileName) {
             //Guardo los registros de que procedió la cancelación
             //NOTA: Aunque procede el acuse no significa que ya esté cancelada la factura. Hay que

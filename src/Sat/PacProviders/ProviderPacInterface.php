@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders;
 
-use App\Enums\CfdiCancelTypeEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceCfdiCancelTypeEnum;
 
 interface ProviderPacInterface

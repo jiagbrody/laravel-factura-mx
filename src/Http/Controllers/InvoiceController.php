@@ -64,6 +64,5 @@ class InvoiceController extends Controller
     {
         $facturaMx = new \JiagBrody\LaravelFacturaMx\LaravelFacturaMx;
 
-        $facturaMx;
     }
 }

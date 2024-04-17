@@ -34,12 +34,12 @@ class LaravelFacturaMxServiceProvider extends PackageServiceProvider
         / List all: php artisan vendor:publish
         /
         */
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'factura-mx');
-        $this->loadViewsFrom(__DIR__ . '/../resources/js/Pages', 'factura-mx-2');
-        $this->publishes([__DIR__ . '/../config/factura-mx.php' => config_path('factura-mx.php')], 'laravel-factura-mx-config');
-        $this->publishes([__DIR__ . '/../resources/js/Pages/laravel-factura-mx' => resource_path('js/Pages/laravel-factura-mx')], 'laravel-factura-mx-views');
-        $this->publishes([__DIR__ . '/../resources/css/laravel-factura-mx' => resource_path('css/laravel-factura-mx')], 'laravel-factura-mx-styles');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'factura-mx');
+        $this->loadViewsFrom(__DIR__.'/../resources/js/Pages', 'factura-mx-2');
+        $this->publishes([__DIR__.'/../config/factura-mx.php' => config_path('factura-mx.php')], 'laravel-factura-mx-config');
+        $this->publishes([__DIR__.'/../resources/js/Pages/laravel-factura-mx' => resource_path('js/Pages/laravel-factura-mx')], 'laravel-factura-mx-views');
+        $this->publishes([__DIR__.'/../resources/css/laravel-factura-mx' => resource_path('css/laravel-factura-mx')], 'laravel-factura-mx-styles');
     }
 }

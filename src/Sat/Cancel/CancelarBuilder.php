@@ -34,7 +34,6 @@ final class CancelarBuilder
         return $this;
     }
 
-
     public function setPacProvider(): self
     {
         $this->pacProvider = new FinkokPac($this->invoice);
@@ -64,7 +63,7 @@ final class CancelarBuilder
                 invoiceCfdi: $this->invoice->invoiceCfdi,
                 cancelTypeEnum: $this->cancelTypeEnum,
                 xmlFile: $this->cancelResponse->acuse,
-                fileName: 'invoice-cfdi' . '_' . $this->invoice->invoiceCfdi->id . '_' . date('Y-m-d\tHis')
+                fileName: 'invoice-cfdi'.'_'.$this->invoice->invoiceCfdi->id.'_'.date('Y-m-d\tHis')
             );
         }
 

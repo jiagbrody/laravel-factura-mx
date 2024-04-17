@@ -7,7 +7,7 @@ use JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok\FinkokPac;
 
 final readonly class PacHelper
 {
-    public null|FinkokPac $pac;
+    public ?FinkokPac $pac;
 
     public function __invoke(): self
     {

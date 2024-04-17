@@ -15,7 +15,7 @@ trait StatusTrait
 {
     private function getStatusCfdiSat(): array
     {
-        if (!$this->invoice->cfdi->xmlInvoiceDocument) {
+        if (! $this->invoice->cfdi->xmlInvoiceDocument) {
             abort(403, 'Cfdi timbrado pero no estan generados los documentos. Es necesario generarlos.');
         }
 
