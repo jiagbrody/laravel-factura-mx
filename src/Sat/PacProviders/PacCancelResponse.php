@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders;
 
-class PacCancelResponse
+readonly class PacCancelResponse
 {
     public bool $checkProcess;
 
@@ -16,8 +16,28 @@ class PacCancelResponse
 
     public string $acuse;
 
-    public function __construct()
+    public function setCheckProcess(bool $checkProcess): void
     {
-        $this->checkProcess = false;
+        $this->checkProcess = $checkProcess;
+    }
+
+    public function setUuid(string $uuid): void
+    {
+        $this->uuid = $uuid;
+    }
+
+    public function setEstatusUUID(string $estatusUUID): void
+    {
+        $this->estatusUUID = $estatusUUID;
+    }
+
+    public function setEstatusCancelacion(string $estatusCancelacion): void
+    {
+        $this->estatusCancelacion = $estatusCancelacion;
+    }
+
+    public function setAcuse(string $acuse): void
+    {
+        $this->acuse = $acuse;
     }
 }

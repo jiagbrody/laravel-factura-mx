@@ -82,7 +82,7 @@ it('create object', function () {
 
     $voucher->addComplementoImpuestosLocales($localTaxes);
 
-    $voucher->build()->saveInvoice('quickSale', 999);
+    $voucher->build()->saveInvoice();
 
     expect($voucher)->toBeObject();
 });

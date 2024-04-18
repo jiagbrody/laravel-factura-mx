@@ -60,9 +60,19 @@ class InvoiceController extends Controller
         return back()->with(['response' => $response->estatusCancelacion]);
     }
 
-    public function getStatus()
+    public function getStatus(Invoice $invoice)
     {
         $facturaMx = new \JiagBrody\LaravelFacturaMx\LaravelFacturaMx;
 
+        $response = $facturaMx->status()
+            ->setInvoice($invoice)
+            ->setPacProvider()
+            ->build();
+
+        if ($response->checkProcess === false) {
+            dd($response);
+        }
+
+        return back()->with(['response' => $response->estatusCancelacion]);
     }
 }

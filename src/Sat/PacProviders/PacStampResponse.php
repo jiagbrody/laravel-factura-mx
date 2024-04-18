@@ -20,7 +20,7 @@ final readonly class PacStampResponse
 
     private string $incidenciaMensaje;
 
-    private function setCheckProcess(bool $checkProcess): void
+    public function setCheckProcess(bool $checkProcess): void
     {
         $this->checkProcess = $checkProcess;
     }
@@ -30,7 +30,7 @@ final readonly class PacStampResponse
         return $this->checkProcess;
     }
 
-    private function setXml(string $xml): void
+    public function setXml(string $xml): void
     {
         $this->xml = $xml;
     }
@@ -40,7 +40,7 @@ final readonly class PacStampResponse
         return $this->xml;
     }
 
-    private function setUuid(string $uuid): void
+    public function setUuid(string $uuid): void
     {
         $this->uuid = $uuid;
     }
@@ -50,7 +50,7 @@ final readonly class PacStampResponse
         return $this->uuid;
     }
 
-    private function setCodEstatus(string $codEstatus): void
+    public function setCodEstatus(string $codEstatus): void
     {
         $this->codEstatus = $codEstatus;
     }
@@ -60,7 +60,7 @@ final readonly class PacStampResponse
         return $this->codEstatus;
     }
 
-    private function setIncidenciaCodigoError(string $incidenciaCodigoError): void
+    public function setIncidenciaCodigoError(string $incidenciaCodigoError): void
     {
         $this->incidenciaCodigoError = $incidenciaCodigoError;
     }
@@ -70,7 +70,7 @@ final readonly class PacStampResponse
         return $this->incidenciaCodigoError;
     }
 
-    private function setIncidenciaMensaje(string $incidenciaMensaje): void
+    public function setIncidenciaMensaje(string $incidenciaMensaje): void
     {
         $this->incidenciaMensaje = $incidenciaMensaje;
     }
@@ -80,7 +80,7 @@ final readonly class PacStampResponse
         return $this->incidenciaMensaje;
     }
 
-    private function setIncidenciaIdIncidencia(string $incidenciaIdIncidencia): void
+    public function setIncidenciaIdIncidencia(string $incidenciaIdIncidencia): void
     {
         $this->incidenciaIdIncidencia = $incidenciaIdIncidencia;
     }
@@ -92,25 +92,9 @@ final readonly class PacStampResponse
 
     public function setFullResponse($pacResponse)
     {
-        $result = $pacResponse->quick_stampResult;
-        $this->setUuid($result->UUID ?? '');
-        $this->setCodEstatus($result->CodEstatus ?? '');
 
-        if (isset($result->CodEstatus) && ($result->CodEstatus === 'Comprobante timbrado satisfactoriamente')) {
-            $this->setCheckProcess(true);
-            $this->setXml($result->xml);
 
-            return $this;
-        }
 
-        $incidencia = $result->Incidencias->Incidencia;
-        $this->setIncidenciaIdIncidencia($incidencia->IdIncidencia);
-        $message = $incidencia->MensajeIncidencia;
-        if ($incidencia->MensajeIncidencia) {
-            $message .= ' - '.$incidencia->ExtraInfo;
-        }
-        $this->setIncidenciaMensaje($message);
-        $this->setIncidenciaCodigoError($incidencia->CodigoError);
 
         return $result;
     }

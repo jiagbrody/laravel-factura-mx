@@ -10,7 +10,7 @@ use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok\FinkokPac;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacCancelResponse;
 
-final class CancelarBuilder
+final class CancelInvoiceBuilder
 {
     protected readonly Invoice $invoice;
 

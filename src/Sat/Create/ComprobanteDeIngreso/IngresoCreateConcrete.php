@@ -40,7 +40,7 @@ class IngresoCreateConcrete extends CfdiHelperAbstract
         return $this;
     }
 
-    public function build(): IngresoCreateBuild
+    public function build(): IngresoCreateBuilder
     {
         $this->creatorCfdi->addSumasConceptos(null, 2);
         $this->creatorCfdi->moveSatDefinitionsToComprobante();
@@ -50,7 +50,7 @@ class IngresoCreateConcrete extends CfdiHelperAbstract
         // Por ejemplo: Cuando se agrega el complemento de "Impuesto Local" se realiza el descuento sobre el total.
         $this->attributeAssembly->getComprobanteAtributos()->setInternallyAddTotalSubtotalDiscountValues($this->creatorCfdi->comprobante());
 
-        return new IngresoCreateBuild(
+        return new IngresoCreateBuilder(
             credential: $this->credential,
             creatorCfdi: $this->creatorCfdi,
             companyHelper: $this->companyHelper,

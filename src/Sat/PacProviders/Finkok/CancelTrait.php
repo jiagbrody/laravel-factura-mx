@@ -146,24 +146,26 @@ trait CancelTrait
 
     private function getResponsePac($cancelResult): PacCancelResponse
     {
-        if (! isset($cancelResult->Folios->Folio)) {
+        if (!isset($cancelResult->Folios->Folio)) {
             abort(422, $cancelResult->CodEstatus);
         }
 
         $folio = $cancelResult->Folios->Folio;
         $response = new PacCancelResponse;
-        $response->uuid = $folio->UUID;
-        $response->estatusUUID = $folio->EstatusUUID;
-        $response->estatusCancelacion = $folio->EstatusCancelacion;
+        $response->setUuid($folio->UUID);
+        $response->setEstatusUUID($folio->EstatusUUID);
+        $response->setEstatusCancelacion($folio->EstatusCancelacion);
 
         if ($folio->EstatusUUID === '201' || $folio->EstatusUUID === '202') {
             if ($folio->EstatusCancelacion === 'Petición de cancelación realizada exitosamente') {
-                $response->checkProcess = true;
-                $response->acuse = $cancelResult->Acuse;
+                $response->setCheckProcess(true);
+                $response->setAcuse($cancelResult->Acuse);
 
                 return $response;
             }
         }
+
+        $response->setCheckProcess(false);
 
         return $response;
     }

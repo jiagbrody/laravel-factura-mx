@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx;
 
-use JiagBrody\LaravelFacturaMx\Sat\Cancel\CancelarBuilder;
+use JiagBrody\LaravelFacturaMx\Sat\Cancel\CancelInvoiceBuilder;
 use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteBuilder;
+use JiagBrody\LaravelFacturaMx\Sat\Stamp\StampInvoiceBuilder;
+use JiagBrody\LaravelFacturaMx\Sat\Status\StatusInvoiceBuilder;
 
 class LaravelFacturaMx
 {
@@ -27,13 +29,18 @@ class LaravelFacturaMx
     //}
     //
 
-    public function cancel(): CancelarBuilder
+    public function stamp(): StampInvoiceBuilder
     {
-        return new CancelarBuilder();
+        return new StampInvoiceBuilder();
     }
 
-    public function status()
+    public function cancel(): CancelInvoiceBuilder
     {
+        return new CancelInvoiceBuilder();
+    }
 
+    public function status(): StatusInvoiceBuilder
+    {
+        return new StatusInvoiceBuilder();
     }
 }

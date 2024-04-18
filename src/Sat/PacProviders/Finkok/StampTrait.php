@@ -17,10 +17,10 @@ trait StampTrait
         $this->detectLogicErrorInStamp();
 
         $xmlFile = $this->invoice->xmlInvoiceDocument;
-        $draftCfdi = InvoiceDocument::obtainDocumentContent($xmlFile);
+        $draftXmlDocument = InvoiceDocument::obtainDocumentContent($xmlFile);
 
         $params = [
-            'xml' => $draftCfdi,
+            'xml' => $draftXmlDocument,
             'username' => $this->usernameFinkok,
             'password' => $this->passwordFinkok,
         ];
@@ -31,18 +31,40 @@ trait StampTrait
 
             (new SaveSoapRequestResponseLogService)->make($client, 'Finkok:quick_stamp', 'cfdi_finkok_quick_stamp');
 
-            return $this->setAndGetResponse($response);
+            return $this->getStampResponse($response);
 
         } catch (exception $e) {
             abort(422, $e->getMessage());
         }
     }
 
-    private function setAndGetResponse($pacResponse): PacStampResponse
+    private function getStampResponse($pacResponse): PacStampResponse
     {
+        $result = $pacResponse->quick_stampResult;
         $response = new PacStampResponse;
+        $response->setUuid($result->UUID ?? '');
+        $response->setCodEstatus($result->CodEstatus ?? '');
 
-        return $response->setFullResponse($pacResponse);
+        //TIMBRADO
+        if (isset($result->CodEstatus) && ($result->CodEstatus === 'Comprobante timbrado satisfactoriamente')) {
+            $response->setCheckProcess(true);
+            $response->setXml($result->xml);
+
+            return $response;
+        }
+
+        //NO TRIMBRADO
+        $response->setCheckProcess(false);
+        $incidencia = $result->Incidencias->Incidencia;
+        $response->setIncidenciaIdIncidencia($incidencia->IdIncidencia);
+        $message = $incidencia->MensajeIncidencia;
+        if ($incidencia->MensajeIncidencia) {
+            $message .= ' - ' . $incidencia->ExtraInfo;
+        }
+        $response->setIncidenciaMensaje($message);
+        $response->setIncidenciaCodigoError($incidencia->CodigoError);
+
+        return $response;
     }
 
     private function detectLogicErrorInStamp(): void

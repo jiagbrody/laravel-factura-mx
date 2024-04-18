@@ -10,6 +10,7 @@ use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok\ExampleData\FinkokTestDataResponse;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacCancelResponse;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStampResponse;
+use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStatusResponse;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\ProviderPacInterface;
 
 // use PhpCfdi\Finkok\FinkokEnvironment;
@@ -38,22 +39,26 @@ class FinkokPac implements ProviderPacInterface
 
     protected string $cancelUrlFinkok;
 
+    protected string $statusUrlFinkok;
+
     protected PacStampResponse $response;
 
     public function __construct(protected Invoice $invoice)
     {
         $this->response = new PacStampResponse();
-        $this->usernameFinkok = (string) config('factura-mx.pac_providers.finkok.user');
-        $this->passwordFinkok = (string) config('factura-mx.pac_providers.finkok.password');
+        $this->usernameFinkok = (string)config('factura-mx.pac_providers.finkok.user');
+        $this->passwordFinkok = (string)config('factura-mx.pac_providers.finkok.password');
 
         if (config('factura-mx.pac_environment_production')) {
             $this->pacEnvironment = 'production';
             $this->stampUrlFinkok = '';
             $this->cancelUrlFinkok = '';
+            $this->statusUrlFinkok = '';
         } else {
             $this->pacEnvironment = 'development';
             $this->stampUrlFinkok = 'https://demo-facturacion.finkok.com/servicios/soap/stamp.wsdl';
             $this->cancelUrlFinkok = 'https://demo-facturacion.finkok.com/servicios/soap/cancel.wsdl';
+            $this->statusUrlFinkok = 'https://demo-facturacion.finkok.com/servicios/soap/cancel.wsdl';
         }
 
         // $settings = new FinkokSettings($this->usernameFinkok, $this->passwordFinkok,
@@ -105,9 +110,8 @@ class FinkokPac implements ProviderPacInterface
      * https://wiki.finkok.com/doku.php?id=status_efos
      * https://wiki.finkok.com/doku.php?id=php#consumir_metodo_get_sat_status_del_web_service_de_cancelacion_en_php
      */
-    public function checkStatusInvoice(): array
+    public function statusInvoice(): PacStatusResponse
     {
-
         return $this->getStatusCfdiSat();
     }
 }

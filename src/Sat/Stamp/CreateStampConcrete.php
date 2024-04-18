@@ -43,7 +43,6 @@ class CreateStampConcrete
 
     public function generateDocuments(): self
     {
-        dd('ok', $this);
         $xml = (new XmlFileSatHelperBuilder($this->invoice))
             ->updateModel($this->invoice->cfdi)
             ->updatePath('/cfdis/'.$this->invoice->invoiceDetail->emisor_rfc.'/'.$this->invoice->invoiceDetail->receptor_rfc.'/'.$this->invoice->invoiceDetail->fecha->format('Y').'/'.$this->invoice->invoiceDetail->tipo_de_comprobante.'/'.$this->invoice->invoiceDetail->fecha->format('m').'/'.$this->invoice->invoiceDetail->fecha->format('d'))
