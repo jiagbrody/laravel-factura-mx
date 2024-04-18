@@ -146,7 +146,7 @@ trait CancelTrait
 
     private function getResponsePac($cancelResult): PacCancelResponse
     {
-        if (!isset($cancelResult->Folios->Folio)) {
+        if (! isset($cancelResult->Folios->Folio)) {
             abort(422, $cancelResult->CodEstatus);
         }
 

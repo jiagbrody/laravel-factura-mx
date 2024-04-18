@@ -54,5 +54,4 @@ readonly class PacStatusResponse
     {
         $this->validacionEFOS = $validacionEFOS;
     }
-
 }
