@@ -15,11 +15,10 @@ class UpdateRecordsWhenStampingRevenueInvoiceAction
 {
     public function __invoke(
         Invoice $invoice,
-        string  $uuid,
-        string  $xml,
+        string $uuid,
+        string $xml,
         ?string $fileName
-    )
-    {
+    ) {
         DB::transaction(function () use ($invoice, $uuid, $xml, $fileName) {
             $this->updateInvoice(invoice: $invoice);
             $this->createCfdi(invoice: $invoice, uuid: $uuid);
@@ -51,7 +50,7 @@ class UpdateRecordsWhenStampingRevenueInvoiceAction
             relationshipModel: $invoice->invoiceCfdi->getMorphClass(),
             relationshipId: $invoice->invoiceCfdi->id,
             documentTypeId: InvoiceDocumentTypeEnum::XML_FILE->value,
-            fileName: ($fileName === null) ? 'invoice-' . $invoice->id . '-cfdi-' . $invoice->invoiceCfdi->id . '-' . $invoice->invoiceCfdi->uuid : $fileName,
+            fileName: ($fileName === null) ? 'invoice-'.$invoice->id.'-cfdi-'.$invoice->invoiceCfdi->id.'-'.$invoice->invoiceCfdi->uuid : $fileName,
             filePath: 'files/cfdis',
             mimeType: InvoiceDocumentTypeEnum::XML_FILE->getMimeType(),
             extension: InvoiceDocumentTypeEnum::XML_FILE->getExtension(),

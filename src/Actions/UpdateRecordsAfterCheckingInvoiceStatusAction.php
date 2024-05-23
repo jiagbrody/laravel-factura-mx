@@ -29,7 +29,6 @@ class UpdateRecordsAfterCheckingInvoiceStatusAction
             //     });
             // }
 
-
             // if ($invoice->invoiceCfdi->cfdiCancel && isset($sat->EstatusCancelacion)) {
             //     $invoice->invoiceCfdi->cfdiCancel->estatus_cancelacion = $sat->EstatusCancelacion;
             //     $invoice->invoiceCfdi->cfdiCancel->save();

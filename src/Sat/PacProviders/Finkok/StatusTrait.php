@@ -19,7 +19,7 @@ trait StatusTrait
             abort(403, 'Timbre no detectado.');
         }
 
-        if (!$this->invoice->invoiceCfdi->xmlInvoiceDocument) {
+        if (! $this->invoice->invoiceCfdi->xmlInvoiceDocument) {
             abort(403, 'Cfdi timbrado pero no están generados los documentos. Es necesario generarlos.');
         }
 
@@ -34,7 +34,7 @@ trait StatusTrait
 
         try {
             $client = new SoapClient($this->statusUrlFinkok, ['trace' => 1]);
-            $response = $client->__soapCall("get_sat_status", [$params]);
+            $response = $client->__soapCall('get_sat_status', [$params]);
 
             (new SaveSoapRequestResponseLogService)->make($client, 'Finkok:get_sat_status', 'cfdi_finkok_get_sat_status');
         } catch (exception $e) {

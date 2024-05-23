@@ -93,9 +93,6 @@ final readonly class PacStampResponse
     public function setFullResponse($pacResponse)
     {
 
-
-
-
         return $result;
     }
 }
