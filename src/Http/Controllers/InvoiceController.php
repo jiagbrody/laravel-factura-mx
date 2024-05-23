@@ -16,7 +16,7 @@ class InvoiceController extends Controller
             'invoiceType',
             'invoiceCompany',
             'invoiceStatus',
-            'invoiceCfdi'
+            'invoiceCfdi',
         ])->get();
 
         return Inertia::render('laravel-factura-mx/Invoices/Index', [
@@ -45,7 +45,7 @@ class InvoiceController extends Controller
     public function getCancelData()
     {
         return response()->json([
-            'cat_invoice_cfdi_cancel_types' => InvoiceCfdiCancelTypeEnum::getCatalog()
+            'cat_invoice_cfdi_cancel_types' => InvoiceCfdiCancelTypeEnum::getCatalog(),
         ]);
     }
 

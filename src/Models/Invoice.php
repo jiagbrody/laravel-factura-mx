@@ -12,7 +12,7 @@ use JiagBrody\LaravelFacturaMx\Helpers\AddReadableDatesHelperTrait;
 
 class Invoice extends Model
 {
-    use HasFactory, AddReadableDatesHelperTrait;
+    use AddReadableDatesHelperTrait, HasFactory;
 
     protected $appends = [
         'created_at_format',
