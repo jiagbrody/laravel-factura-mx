@@ -35,11 +35,11 @@ return [
      |
      */
 
-    'sat_files_path' => __DIR__.'/../storage/app/protected/sat-certificates',
+    'sat_files_path' => __DIR__ . '/../storage/app/protected/sat-certificates',
 
     /*
      |--------------------------------------------------------------------------
-     | Almacenamiento local de recursos del SAT, archivos XSD y XSLT
+     | Almacenamiento local de recursos del SAT: archivos XSLT
      |--------------------------------------------------------------------------
      |
      | El SAT publica diferentes recursos para diferentes tareas,
@@ -60,7 +60,7 @@ return [
      |
      */
 
-    'sat_local_resource_path' => __DIR__.'/../storage/app/protected/sat-resources',
+    'sat_local_resource_path' => __DIR__ . '/../storage/app/protected/sat-resources',
 
     /*
      |--------------------------------------------------------------------------
@@ -154,4 +154,6 @@ return [
     //     'invoice_table_name' => 'invoice',
     //     'cfdi_table_name'    => 'cfdi',
     // ],
+
+
 ];

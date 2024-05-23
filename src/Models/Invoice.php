@@ -8,10 +8,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceDocumentTypeEnum;
+use JiagBrody\LaravelFacturaMx\Helpers\AddReadableDatesHelperTrait;
 
 class Invoice extends Model
 {
-    use HasFactory;
+    use HasFactory, AddReadableDatesHelperTrait;
+
+    protected $appends = [
+        'created_at_format',
+        'created_at_human',
+    ];
 
     public function invoiceCfdi(): HasOne
     {

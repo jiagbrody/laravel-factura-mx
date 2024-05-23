@@ -16,9 +16,13 @@ class InvoiceController extends Controller
             'invoiceType',
             'invoiceCompany',
             'invoiceStatus',
+            'invoiceCfdi'
         ])->get();
 
-        return Inertia::render('laravel-factura-mx/Invoices/Index', ['invoices' => $invoices]);
+        return Inertia::render('laravel-factura-mx/Invoices/Index', [
+            'invoices' => $invoices,
+            'cat_invoice_cfdi_cancel_types' => InvoiceCfdiCancelTypeEnum::getCatalog(),
+        ]);
     }
 
     public function show($invoiceId)
@@ -36,6 +40,13 @@ class InvoiceController extends Controller
         ])->whereId($invoiceId)->firstOrFail();
 
         return Inertia::render('laravel-factura-mx/Invoices/Show', ['invoice' => $invoice]);
+    }
+
+    public function getCancelData()
+    {
+        return response()->json([
+            'cat_invoice_cfdi_cancel_types' => InvoiceCfdiCancelTypeEnum::getCatalog()
+        ]);
     }
 
     public function destroy(Invoice $invoice)
@@ -57,7 +68,7 @@ class InvoiceController extends Controller
             }
         }
 
-        return back()->with(['response' => $response->estatusCancelacion]);
+        return back();
     }
 
     public function getStatus(Invoice $invoice)
@@ -73,6 +84,6 @@ class InvoiceController extends Controller
             dd($response);
         }
 
-        return back()->with(['response' => $response->estatusCancelacion]);
+        return response()->json(['pac_response' => $response]);
     }
 }

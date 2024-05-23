@@ -19,7 +19,7 @@ enum InvoiceCfdiCancelTypeEnum: int
 
     public static function getCatalog(): \Illuminate\Support\Collection
     {
-        return DB::table((new InvoiceCfdiCancelType)->getTable())->get(['id', 'name', 'description']);
+        return DB::table((new InvoiceCfdiCancelType)->getTable())->get(['id', 'name']);
     }
 
     public function getSatId(): string

@@ -42,10 +42,10 @@ trait StatusTrait
         }
 
         $sat = $response->get_sat_statusResult->sat;
-        $estatusCancelacion = (isset($sat->EstatusCancelacion)) ? "<strong>EstatusCancelacion:</strong> {$sat->EstatusCancelacion}<br>" : '';
+        $estatusCancelacion = (isset($sat->EstatusCancelacion)) ? $sat->EstatusCancelacion : '';
 
         $response = new PacStatusResponse();
-        $response->setCheckProcess($sat->Estado === 'Cancelado');
+        $response->setCheckProcess(true);
         $response->setDetallesValidacionEFOS($sat->DetallesValidacionEFOS);
         $response->setValidacionEFOS($sat->ValidacionEFOS);
         $response->setEsCancelable($sat->EsCancelable);
