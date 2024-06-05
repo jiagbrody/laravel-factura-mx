@@ -20,7 +20,7 @@ trait StatusTrait
             abort(403, 'Timbre no detectado.');
         }
 
-        if (!$this->invoice->invoiceCfdi->xmlInvoiceDocument) {
+        if (! $this->invoice->invoiceCfdi->xmlInvoiceDocument) {
             abort(403, 'Cfdi timbrado pero no están generados los documentos. Es necesario generarlos.');
         }
 
