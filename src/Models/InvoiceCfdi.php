@@ -14,6 +14,11 @@ class InvoiceCfdi extends Model
 {
     use HasFactory;
 
+    public function invoiceCfdiCancels(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(InvoiceCfdiCancel::class);
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

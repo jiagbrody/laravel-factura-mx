@@ -37,7 +37,7 @@ abstract class CfdiHelperAbstract
 
     public function addRelacionados(array $relacionados): self
     {
-        foreach ($relacionados as $relacionado) {
+        foreach ($relacionados as $k => $relacionado) {
             $this->creatorCfdi->comprobante()->addCfdiRelacionados([
                 'TipoRelacion' => $relacionado['TipoRelacion'],
             ])->multiCfdiRelacionado(...$relacionado['CfdiRelacionado']);

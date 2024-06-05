@@ -19,6 +19,5 @@ Route::middleware(['web', HandleInertiaRequests::class])->prefix('laravel-factur
     Route::resource('invoices', InvoiceController::class);
     Route::post('invoices/{invoice}/get-status', [InvoiceController::class, 'getStatus'])->name('invoices.status');
     Route::get('invoices/{invoice}/get-cancel-data', [InvoiceController::class, 'getCancelData'])->name('invoices.get-cancel-data');
-    // Route::get('laravel-factura-mx', ['uses' => 'StuffController@index']);
-    // });
+    Route::delete('invoices/{invoice}/set-cancel', [InvoiceController::class, 'SetCancel'])->name('invoices.set-cancel');
 });

@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders;
 
+use JiagBrody\LaravelFacturaMx\Enums\InvoiceStatusEnum;
+
 readonly class PacStatusResponse
 {
     public bool $checkProcess;
+
+    public InvoiceStatusEnum $invoiceStatusEnum;
 
     public string $detallesValidacionEFOS;
 
@@ -23,6 +27,11 @@ readonly class PacStatusResponse
     public function setCheckProcess(bool $checkProcess): void
     {
         $this->checkProcess = $checkProcess;
+    }
+
+    public function setInvoiceStatusEnum(InvoiceStatusEnum $invoiceStatusEnum): void
+    {
+        $this->invoiceStatusEnum = $invoiceStatusEnum;
     }
 
     public function setCodigoEstatus(string $codigoEstatus): void

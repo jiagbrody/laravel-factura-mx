@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok;
 
 use Exception;
+use JiagBrody\LaravelFacturaMx\Enums\InvoiceStatusEnum;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStatusResponse;
 use JiagBrody\LaravelFacturaMx\Services\SaveSoapRequestResponseLogService;
 use SoapClient;
@@ -19,7 +20,7 @@ trait StatusTrait
             abort(403, 'Timbre no detectado.');
         }
 
-        if (! $this->invoice->invoiceCfdi->xmlInvoiceDocument) {
+        if (!$this->invoice->invoiceCfdi->xmlInvoiceDocument) {
             abort(403, 'Cfdi timbrado pero no están generados los documentos. Es necesario generarlos.');
         }
 
@@ -46,11 +47,18 @@ trait StatusTrait
 
         $response = new PacStatusResponse();
         $response->setCheckProcess(true);
+
+        $response->setEstado($sat->Estado);
+        if ($response->estado === 'Cancelado') {
+            $response->setInvoiceStatusEnum(InvoiceStatusEnum::CANCELED);
+        } elseif ($response->estado === 'Vigente') {
+            $response->setInvoiceStatusEnum(InvoiceStatusEnum::VIGENT);
+        }
+
         $response->setDetallesValidacionEFOS($sat->DetallesValidacionEFOS);
         $response->setValidacionEFOS($sat->ValidacionEFOS);
         $response->setEsCancelable($sat->EsCancelable);
         $response->setCodigoEstatus($sat->CodigoEstatus);
-        $response->setEstado($sat->Estado);
         $response->setEstatusCancelacion($estatusCancelacion);
 
         return $response;

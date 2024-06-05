@@ -63,7 +63,7 @@ final class CancelInvoiceBuilder
                 invoiceCfdi: $this->invoice->invoiceCfdi,
                 cancelTypeEnum: $this->cancelTypeEnum,
                 xmlFile: $this->cancelResponse->acuse,
-                fileName: 'invoice-cfdi'.'_'.$this->invoice->invoiceCfdi->id.'_'.date('Y-m-d\tHis')
+                fileName: 'invoice-cfdi' . '_' . $this->invoice->invoiceCfdi->id . '_' . date('Y-m-d\tHis')
             );
         }
 
