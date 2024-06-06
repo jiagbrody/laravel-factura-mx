@@ -55,7 +55,7 @@ class InvoiceController extends Controller
         $request->validate([
             'invoice_id' => ['required', 'integer'],
             'invoice_cfdi_cancel_type_id' => ['required', 'integer'],
-            'uuid' => ['required_if:cat_invoice_cfdi_cancel_type,' . InvoiceCfdiCancelTypeEnum::NEW_WITH_ERRORS_RELATED->value, 'sometimes', 'nullable'],
+            'uuid' => ['required_if:cat_invoice_cfdi_cancel_type,'.InvoiceCfdiCancelTypeEnum::NEW_WITH_ERRORS_RELATED->value, 'sometimes', 'nullable'],
         ]);
 
         $invoice->load('invoiceCfdi');
