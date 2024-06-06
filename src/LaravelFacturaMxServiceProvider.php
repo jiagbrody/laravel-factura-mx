@@ -37,7 +37,7 @@ class LaravelFacturaMxServiceProvider extends PackageServiceProvider
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-factura-mx');
         $this->loadViewsFrom(__DIR__.'/../resources/js/Pages', 'laravel-factura-mx');
-        $this->publishes([__DIR__ . '/../config/laravel-factura-mx.php' => config_path('factura-mx.php')], 'laravel-factura-mx-config');
+        $this->publishes([__DIR__.'/../config/laravel-factura-mx.php' => config_path('factura-mx.php')], 'laravel-factura-mx-config');
         $this->publishes([__DIR__.'/../resources/js/Pages/laravel-factura-mx' => resource_path('js/Pages/laravel-factura-mx')], 'laravel-factura-mx-views');
         $this->publishes([__DIR__.'/../resources/css/laravel-factura-mx' => resource_path('css/laravel-factura-mx')], 'laravel-factura-mx-styles');
     }
