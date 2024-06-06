@@ -1,9 +1,9 @@
 <script setup>
-import LaravelFacturaMxLayout from "@/Pages/laravel-factura-mx/Layouts/LaravelFacturaMxLayout.vue";
+import LaravelFacturaMxLayout from "@/Pages/jiagbrody-laravel-factura-mx/Layouts/LaravelFacturaMxLayout.vue";
 import {useForm} from "@inertiajs/vue3";
 import {reactive} from "vue";
-import IncludeStatusModal from "@/Pages/laravel-factura-mx/Invoices/Includes/IncludeStatusModal.vue";
-import IncludeCancelModal from "@/Pages/laravel-factura-mx/Invoices/Includes/IncludeCancelModal.vue";
+import IncludeStatusModal from "@/Pages/jiagbrody-laravel-factura-mx/Invoices/Includes/IncludeStatusModal.vue";
+import IncludeCancelModal from "@/Pages/jiagbrody-laravel-factura-mx/Invoices/Includes/IncludeCancelModal.vue";
 
 defineProps({
     invoices: Object,

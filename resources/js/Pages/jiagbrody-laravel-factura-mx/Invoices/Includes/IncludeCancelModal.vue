@@ -1,9 +1,9 @@
 <script setup>
-import CompButtonSubmit from "@/Pages/laravel-factura-mx/Components/CompButtonSubmit.vue";
-import {useDeleteAjax} from "@/Pages/laravel-factura-mx/Composables/useAjax.js";
-import CompConfirmationModal from "@/Pages/laravel-factura-mx/Components/CompConfirmationModal.vue";
-import CompFormTextInput from "@/Pages/laravel-factura-mx/Components/Form/CompFormTextInput.vue";
-import CompFormSelectInput from "@/Pages/laravel-factura-mx/Components/Form/CompFormSelectInput.vue";
+import CompButtonSubmit from "@/Pages/jiagbrody-laravel-factura-mx/Components/CompButtonSubmit.vue";
+import {useDeleteAjax} from "@/Pages/jiagbrody-laravel-factura-mx/Composables/useAjax.js";
+import CompConfirmationModal from "@/Pages/jiagbrody-laravel-factura-mx/Components/CompConfirmationModal.vue";
+import CompFormTextInput from "@/Pages/jiagbrody-laravel-factura-mx/Components/Form/CompFormTextInput.vue";
+import CompFormSelectInput from "@/Pages/jiagbrody-laravel-factura-mx/Components/Form/CompFormSelectInput.vue";
 
 
 const props = defineProps({

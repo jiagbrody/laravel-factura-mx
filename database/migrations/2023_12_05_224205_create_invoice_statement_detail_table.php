@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('invoice_statement_detail', function (Blueprint $table) {
             $table->id();
             $table->foreignId('invoice_id')->constrained()->onDelete('cascade');
-            $table->unsignedBigInteger(config('factura-mx.foreign_id_related_to_concepts'))->nullable()->comment('conceptos de la factura relacionados sobre un modelo de negocio')->index();
+            $table->unsignedBigInteger(config('jiagbrody-laravel-factura-mx.foreign_id_related_to_concepts'))->nullable()->comment('conceptos de la factura relacionados sobre un modelo de negocio')->index();
             $table->unsignedSmallInteger('quantity')->default(0);
             $table->decimal('unit_price', 24, 6)->default(0);
             $table->decimal('gross_sub_total', 24, 6)->default(0);

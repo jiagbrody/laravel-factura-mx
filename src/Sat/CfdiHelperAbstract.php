@@ -29,7 +29,7 @@ abstract class CfdiHelperAbstract
         $this->credential = Credential::openFiles($this->companyHelper->certificatePath, $this->companyHelper->keyPath, $this->companyHelper->passPhrase);
         $this->creatorCfdi = new CfdiCreator40();
         $this->creatorCfdi->putCertificado(new Certificado($this->credential->certificate()->pem()), false);
-        $this->creatorCfdi->setXmlResolver(new XmlResolver(config('factura-mx.sat_local_resource_path')));
+        $this->creatorCfdi->setXmlResolver(new XmlResolver(config('jiagbrody-laravel-factura-mx.sat_local_resource_path')));
         $this->attributeAssembly = new AttributeAssembly;
 
         $this->addEmisor();

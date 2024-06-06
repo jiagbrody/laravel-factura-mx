@@ -17,8 +17,8 @@
                         place-holder="Texto default del campo"/>
                         -->
 <script setup>
-import {useFormInputProperties} from "@/Pages/laravel-factura-mx/Composables/useFormatInputProperties.js";
-import {useExtendedProperties} from "@/Pages/laravel-factura-mx/Composables/useExtendedProperties.js";
+import {useFormInputProperties} from "@/Pages/jiagbrody-laravel-factura-mx/Composables/useFormatInputProperties.js";
+import {useExtendedProperties} from "@/Pages/jiagbrody-laravel-factura-mx/Composables/useExtendedProperties.js";
 
 const props = defineProps({
     modelValue: {

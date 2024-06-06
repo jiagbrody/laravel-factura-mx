@@ -65,10 +65,10 @@ readonly class IngresoCreateBuilder
             relationshipId: $this->invoice->id,
             documentTypeId: InvoiceDocumentTypeEnum::XML_FILE->value,
             fileName: $this->getFileName($fileName),
-            filePath: config('factura-mx.invoices_files_path'),
+            filePath: config('jiagbrody-laravel-factura-mx.invoices_files_path'),
             mimeType: 'xml',
             extension: 'xml',
-            storage: config('factura-mx.filesystem_disk'),
+            storage: config('jiagbrody-laravel-factura-mx.filesystem_disk'),
             fileContent: $this->creatorCfdi->asXml()
         );
     }

@@ -13,7 +13,7 @@ class LaravelFacturaMx
 {
     public function __construct()
     {
-        date_default_timezone_set(config('factura-mx.default_timezone'));
+        date_default_timezone_set(config('jiagbrody-laravel-factura-mx.default_timezone'));
     }
 
     public function create(): ComprobanteBuilder

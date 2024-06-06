@@ -28,7 +28,6 @@
         "ext-soap": "*",
         "eclipxe/cfdiutils": "^2.25",
         "illuminate/contracts": "^10.0",
-        "inertiajs/inertia-laravel": "^1.0",
         "phpcfdi/cfdi-to-json": "^0.3.4",
         "phpcfdi/credentials": "^1.2",
         "spatie/laravel-package-tools": "^1.14.0"

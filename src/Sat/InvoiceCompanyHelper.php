@@ -30,9 +30,9 @@ class InvoiceCompanyHelper
 
     public function __construct(InvoiceCompany $invoiceCompany)
     {
-        $folder = config('factura-mx.sat_files_path');
+        $folder = config('jiagbrody-laravel-factura-mx.sat_files_path');
 
-        $this->pacEnvironmentProduction = config('factura-mx.pac_environment_production');
+        $this->pacEnvironmentProduction = config('jiagbrody-laravel-factura-mx.pac_environment_production');
         $this->id = $invoiceCompany->id;
         $this->rfc = $invoiceCompany->rfc;
         $this->nombre = $invoiceCompany->nombre;

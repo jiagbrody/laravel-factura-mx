@@ -1,7 +1,7 @@
 <script setup>
-import CompDialogModal from "@/Pages/laravel-factura-mx/Components/CompDialogModal.vue";
-import CompButtonSubmit from "@/Pages/laravel-factura-mx/Components/CompButtonSubmit.vue";
-import {usePostAjax} from "@/Pages/laravel-factura-mx/Composables/useAjax.js";
+import CompDialogModal from "@/Pages/jiagbrody-laravel-factura-mx/Components/CompDialogModal.vue";
+import CompButtonSubmit from "@/Pages/jiagbrody-laravel-factura-mx/Components/CompButtonSubmit.vue";
+import {usePostAjax} from "@/Pages/jiagbrody-laravel-factura-mx/Composables/useAjax.js";
 
 const props = defineProps({
     status: {

@@ -1,5 +1,5 @@
 <script setup>
-import LaravelFacturaMxLayout from "@/Pages/laravel-factura-mx/Layouts/LaravelFacturaMxLayout.vue";
+import LaravelFacturaMxLayout from "@/Pages/jiagbrody-laravel-factura-mx/Layouts/LaravelFacturaMxLayout.vue";
 import {router, Link} from "@inertiajs/vue3";
 
 const props = defineProps({

@@ -46,10 +46,10 @@ class FinkokPac implements ProviderPacInterface
     public function __construct(protected Invoice $invoice)
     {
         $this->response = new PacStampResponse();
-        $this->usernameFinkok = (string) config('factura-mx.pac_providers.finkok.user');
-        $this->passwordFinkok = (string) config('factura-mx.pac_providers.finkok.password');
+        $this->usernameFinkok = (string) config('jiagbrody-laravel-factura-mx.pac_providers.finkok.user');
+        $this->passwordFinkok = (string) config('jiagbrody-laravel-factura-mx.pac_providers.finkok.password');
 
-        if (config('factura-mx.pac_environment_production')) {
+        if (config('jiagbrody-laravel-factura-mx.pac_environment_production')) {
             $this->pacEnvironment = 'production';
             $this->stampUrlFinkok = '';
             $this->cancelUrlFinkok = '';

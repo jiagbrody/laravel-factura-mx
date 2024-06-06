@@ -11,7 +11,7 @@ final readonly class PacHelper
 
     public function __invoke(): self
     {
-        if (config('factura-mx.pac_chosen') === 'finkok') {
+        if (config('jiagbrody-laravel-factura-mx.pac_chosen') === 'finkok') {
             $this->pac = new FinkokPac(new Invoice);
         }
 

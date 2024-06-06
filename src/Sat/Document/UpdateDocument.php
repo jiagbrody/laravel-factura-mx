@@ -25,7 +25,7 @@ class UpdateDocument
 
     public function update(): InvoiceDocument
     {
-        $this->invoiceDocument->file_name = config('factura-mx.prefix_for_stamped_files').((empty($this->fileName)) ? $this->invoiceDocument->file_name : $this->fileName);
+        $this->invoiceDocument->file_name = config('jiagbrody-laravel-factura-mx.prefix_for_stamped_files').((empty($this->fileName)) ? $this->invoiceDocument->file_name : $this->fileName);
         $this->invoiceDocument->save();
 
         $this->overwriteFileDocument();
