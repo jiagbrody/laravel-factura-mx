@@ -4,29 +4,30 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('invoice_companies', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('rfc', 20);
-            $table->string('nombre', 254)->comment('razon social fiscal');
-            $table->string('domicilio_fiscal_receptor', 10);
-            $table->string('residencia_fiscal', 10)->nullable();
-            $table->string('num_reg_id_trib', 10)->nullable();
-            $table->string('regimen_fiscal', 10);
-            $table->text('certificate_path')->comment('ruta del cetificado del sat para timbrar (.cer)');
-            $table->text('key_path')->comment('ruta de la llave del sat para timbrar (.key)');
-            $table->string('pass_phrase')->comment('contraseña del archivo de la llave');
-            $table->string('serial_number')->comment('numero serial del archivo de la llave');
-            $table->boolean('active')->default(true);
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('invoice_companies')) {
+            Schema::create('invoice_companies', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->string('rfc', 20);
+                $table->string('nombre', 254)->comment('razon social fiscal');
+                $table->string('domicilio_fiscal_receptor', 10);
+                $table->string('residencia_fiscal', 10)->nullable();
+                $table->string('num_reg_id_trib', 10)->nullable();
+                $table->string('regimen_fiscal', 10);
+                $table->text('certificate_path')->comment('ruta del cetificado del sat para timbrar (.cer)');
+                $table->text('key_path')->comment('ruta de la llave del sat para timbrar (.key)');
+                $table->string('pass_phrase')->comment('contraseña del archivo de la llave');
+                $table->string('serial_number')->comment('numero serial del archivo de la llave');
+                $table->boolean('active')->default(true);
+                $table->timestamps();
+            });
+        }
 
         \JiagBrody\LaravelFacturaMx\Models\InvoiceCompany::insert([
             [

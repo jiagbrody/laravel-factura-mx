@@ -35,7 +35,7 @@ return [
      |
      */
 
-    'sat_files_path' => __DIR__.'/../storage/app/protected/sat-certificates',
+    'sat_files_path' => __DIR__ . '/../storage/app/protected/sat-certificates',
 
     /*
      |--------------------------------------------------------------------------
@@ -60,7 +60,7 @@ return [
      |
      */
 
-    'sat_local_resource_path' => __DIR__.'/../storage/app/protected/sat-resources',
+    'sat_local_resource_path' => __DIR__ . '/../storage/app/protected/sat-resources',
 
     /*
      |--------------------------------------------------------------------------
@@ -154,5 +154,25 @@ return [
     //     'invoice_table_name' => 'invoice',
     //     'cfdi_table_name'    => 'cfdi',
     // ],
+
+    /*
+     |--------------------------------------------------------------------------
+     | Database name for SAT catalogs
+     |--------------------------------------------------------------------------
+     |
+     | These are the catalogs regulated by the SAT for the creation of CFDI.
+     | As is usually a very heavy and complex database. It is recommended to
+     | handle it with this type of engine (sqlite) for greater speed and reading.
+     |
+     */
+
+
+    'sqlite-sat-catalogs' => [
+        'driver' => 'sqlite',
+        'url' => '',
+        'database' => '/app/protected/sat-database-catalogs/catalogs_sat_40.db',
+        'prefix' => '',
+        'foreign_key_constraints' => true,
+    ]
 
 ];

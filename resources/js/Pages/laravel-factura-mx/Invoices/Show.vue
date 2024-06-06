@@ -1,6 +1,6 @@
 <script setup>
 import LaravelFacturaMxLayout from "@/Pages/laravel-factura-mx/Layouts/LaravelFacturaMxLayout.vue";
-import {router} from "@inertiajs/vue3";
+import {router, Link} from "@inertiajs/vue3";
 
 const props = defineProps({
     invoice: Object
@@ -19,11 +19,19 @@ const onCancel = () => {
             </h2>
         </template>
 
-        <button @click="onCancel"
-                class="lyt-button-sm lyt-button-style-primary">
-            Cancelar
-        </button>
+        <div class="flex gap-6">
+            <Link :href="route('laravel-factura-mx.invoices.index')" class="lyt-button-sm lyt-button-style-primary">
+                Todas las facturas
+            </Link>
 
-        {{ invoice }}
+            <button @click="onCancel"
+                    class="lyt-button-sm lyt-button-style-primary">
+                Cancelar
+            </button>
+        </div>
+
+        <div class="mt-6">
+            {{ invoice }}
+        </div>
     </LaravelFacturaMxLayout>
 </template>
