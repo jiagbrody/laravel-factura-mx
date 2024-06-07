@@ -29,8 +29,8 @@ class LaravelFacturaMxServiceProvider extends PackageServiceProvider
         | Migrations Provider need on boot() method
         |--------------------------------------------------------------------------
         */
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         // $this->loadViewsFrom(__DIR__ . '/../resources/views', 'laravel-factura-mx', '');
         // $this->loadViewsFrom(__DIR__ . '/../resources/js/Pages', 'laravel-factura-mx');
 
@@ -39,8 +39,8 @@ class LaravelFacturaMxServiceProvider extends PackageServiceProvider
          * Example of use for only 1 tag: php artisan vendor:publish --provider="JiagBrody\LaravelFacturaMx\LaravelFacturaMxServiceProvider" --tag="jiagbrody-laravel-factura-mx-inertia-views"
          * Example of use for copy all files: php artisan vendor:publish --provider="JiagBrody\LaravelFacturaMx\LaravelFacturaMxServiceProvider"
          */
-        $this->publishes([__DIR__ . '/../config/jiagbrody-laravel-factura-mx.php' => config_path('jiagbrody-laravel-factura-mx.php')], 'jiagbrody-laravel-factura-mx-config');
-        $this->publishes([__DIR__ . '/../resources/js/Pages/jiagbrody-laravel-factura-mx' => resource_path('js/Pages/jiagbrody-laravel-factura-mx')], 'jiagbrody-laravel-factura-mx-inertia-views');
-        $this->publishes([__DIR__ . '/../resources/css/jiagbrody-laravel-factura-mx' => resource_path('css/jiagbrody-laravel-factura-mx')], 'jiagbrody-laravel-factura-mx-tailwind-styles');
+        $this->publishes([__DIR__.'/../config/jiagbrody-laravel-factura-mx.php' => config_path('jiagbrody-laravel-factura-mx.php')], 'jiagbrody-laravel-factura-mx-config');
+        $this->publishes([__DIR__.'/../resources/js/Pages/jiagbrody-laravel-factura-mx' => resource_path('js/Pages/jiagbrody-laravel-factura-mx')], 'jiagbrody-laravel-factura-mx-inertia-views');
+        $this->publishes([__DIR__.'/../resources/css/jiagbrody-laravel-factura-mx' => resource_path('css/jiagbrody-laravel-factura-mx')], 'jiagbrody-laravel-factura-mx-tailwind-styles');
     }
 }
