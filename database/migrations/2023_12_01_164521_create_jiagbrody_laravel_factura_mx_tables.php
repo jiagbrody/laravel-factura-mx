@@ -21,7 +21,7 @@ return new class extends Migration {
             $table->string('residencia_fiscal', 10)->nullable();
             $table->string('num_reg_id_trib', 10)->nullable();
             $table->string('regimen_fiscal', 10);
-            $table->text('certificate_path')->comment('ruta del cetificado del sat para timbrar (.cer)');
+            $table->text('certificate_path')->comment('ruta del certificado del sat para timbrar (.cer)');
             $table->text('key_path')->comment('ruta de la llave del sat para timbrar (.key)');
             $table->string('pass_phrase')->comment('contraseña del archivo de la llave');
             $table->string('serial_number')->comment('numero serial del archivo de la llave');

@@ -19,6 +19,11 @@ class Invoice extends Model
         'created_at_human',
     ];
 
+    public function getTable()
+    {
+        return config('jiagbrody-laravel-factura-mx.table_names.invoices', parent::getTable());
+    }
+
     public function invoiceCfdi(): HasOne
     {
         return $this->hasOne(InvoiceCfdi::class);
