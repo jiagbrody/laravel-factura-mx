@@ -32,7 +32,6 @@ use JiagBrody\LaravelFacturaMx\Enums\InvoiceTypeEnum;
     ],
 ]);
 
-
 \JiagBrody\LaravelFacturaMx\Models\InvoiceType::insert([
     ['id' => InvoiceTypeEnum::INGRESO->value, 'name' => InvoiceTypeEnum::INGRESO->getName(), 'created_at' => now(), 'updated_at' => now()],
     ['id' => InvoiceTypeEnum::EGRESO->value, 'name' => InvoiceTypeEnum::EGRESO->getName(), 'created_at' => now(), 'updated_at' => now()],
