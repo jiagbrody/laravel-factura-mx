@@ -31,6 +31,7 @@ class LaravelFacturaMxServiceProvider extends PackageServiceProvider
         */
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+        $this->mergeConfigFrom(__DIR__.'/../config/jiagbrody-laravel-factura-mx.php', 'jiagbrody-laravel-factura-mx');
         // $this->loadViewsFrom(__DIR__ . '/../resources/views', 'laravel-factura-mx', '');
         // $this->loadViewsFrom(__DIR__ . '/../resources/js/Pages', 'laravel-factura-mx');
 

@@ -4,9 +4,9 @@
 return [
 
     /*
-     |--------------------------------------------------------------------------
-     | Nombre de la columna a la que estará ligada las facturas para su modelo de negocio.
-     |--------------------------------------------------------------------------
+     |-----------------------------------------------------------------------------------------------
+     | Nombre de las tablas y columnas a la que estará ligada las facturas para su modelo de negocio.
+     |-----------------------------------------------------------------------------------------------
      |
      | Teniendo en cuenta que este es un paquete de facturación y como tal
      | debe de ir relacionado con su modelo de negocio.
@@ -14,11 +14,34 @@ return [
      | Previamente, usted debería de tener implementado su sistema de estados de cuenta:
      | cargos (lista de productos), pagos (pago total o abonos).
      |
-     | IMPORTANTE: Este valor solo puede modificarse antes de correr las migraciones.
+     | IMPORTANTE: Estos valores solo pueden modificarse antes de correr las migraciones.
      |
      */
+    'table_names' => [
+        'invoice_companies' => 'jiagbrody_lfmx_invoice_companies',
+        'invoice_types' => 'jiagbrody_lfmx_invoice_types',
+        'invoice_statuses' => 'jiagbrody_lfmx_invoice_statuses',
+        'invoices' => 'jiagbrody_lfmx_invoices',
+        'invoice_details' => 'jiagbrody_lfmx_invoice_details',
+        'invoice_payment_types' => 'jiagbrody_lfmx_invoice_payment_types',
+        'invoice_balances' => 'jiagbrody_lfmx_invoice_balances',
+        'invoice_tax_types' => 'jiagbrody_lfmx_invoice_tax_types',
+        'invoice_taxes' => 'jiagbrody_lfmx_invoice_taxes',
+        'invoice_tax_details' => 'jiagbrody_lfmx_invoice_tax_details',
+        'invoice_statement_detail' => 'jiagbrody_lfmx_invoice_statement_detail',
+        'invoice_document_types' => 'jiagbrody_lfmx_invoice_document_types',
+        'invoice_documents' => 'jiagbrody_lfmx_invoice_documents',
+        'invoice_cfdi_cancel_types' => 'jiagbrody_lfmx_invoice_cfdi_cancel_types',
+        'invoice_cfdis' => 'jiagbrody_lfmx_invoice_cfdis',
+        'invoice_cfdi_cancels' => 'jiagbrody_lfmx_invoice_cfdi_cancels',
+    ],
 
-    'foreign_id_related_to_concepts' => 'statement_detail_id',
+    'column_names' => [
+        /*
+         *
+         */
+        'foreign_id_related_to_concepts' => 'statement_detail_id',
+    ],
 
     /*
      |--------------------------------------------------------------------------
@@ -35,7 +58,7 @@ return [
      |
      */
 
-    'sat_files_path' => __DIR__.'/../storage/app/protected/sat-certificates',
+    'sat_files_path' => __DIR__ . '/../storage/app/protected/sat-certificates',
 
     /*
      |--------------------------------------------------------------------------
@@ -60,7 +83,7 @@ return [
      |
      */
 
-    'sat_local_resource_path' => __DIR__.'/../storage/app/protected/sat-resources',
+    'sat_local_resource_path' => __DIR__ . '/../storage/app/protected/sat-resources',
 
     /*
      |--------------------------------------------------------------------------
