@@ -14,6 +14,11 @@ class InvoiceCfdi extends Model
 {
     use HasFactory;
 
+    public function getTable()
+    {
+        return config('jiagbrody-laravel-factura-mx.table_names.invoice_cfdis', parent::getTable());
+    }
+
     public function invoiceCfdiCancels(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(InvoiceCfdiCancel::class);

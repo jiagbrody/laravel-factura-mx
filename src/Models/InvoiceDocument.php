@@ -35,6 +35,11 @@ class InvoiceDocument extends Model
         'location_root',
     ];
 
+    public function getTable()
+    {
+        return config('jiagbrody-laravel-factura-mx.table_names.invoice_documents', parent::getTable());
+    }
+
     public function documentable(): \Illuminate\Database\Eloquent\Relations\MorphTo
     {
         return $this->morphTo();

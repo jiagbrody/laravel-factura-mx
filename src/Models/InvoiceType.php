@@ -14,4 +14,9 @@ class InvoiceType extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function getTable()
+    {
+        return config('jiagbrody-laravel-factura-mx.table_names.invoice_types', parent::getTable());
+    }
 }

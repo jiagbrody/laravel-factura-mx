@@ -10,4 +10,9 @@ use Illuminate\Database\Eloquent\Model;
 class InvoiceBalance extends Model
 {
     use HasFactory;
+
+    public function getTable()
+    {
+        return config('jiagbrody-laravel-factura-mx.table_names.invoice_balances', parent::getTable());
+    }
 }
