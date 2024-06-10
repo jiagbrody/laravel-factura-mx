@@ -28,6 +28,7 @@ class Invoice extends Model
     {
         $tablePivot = config('jiagbrody-laravel-factura-mx.table_names.invoice_related_concept_pivot');
         $columnRelated = config('jiagbrody-laravel-factura-mx.column_names.foreign_id_related_to_concepts');
+
         return $this->belongsToMany(InvoiceRelatedConcept::class, $tablePivot, 'invoice_id', $columnRelated);
     }
 
