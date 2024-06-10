@@ -24,6 +24,13 @@ class Invoice extends Model
         return config('jiagbrody-laravel-factura-mx.table_names.invoices', parent::getTable());
     }
 
+    public function relatedConcepts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        $tablePivot = config('jiagbrody-laravel-factura-mx.table_names.invoice_related_concept_pivot');
+        $columnRelated = config('jiagbrody-laravel-factura-mx.column_names.foreign_id_related_to_concepts');
+        return $this->belongsToMany(InvoiceRelatedConcept::class, $tablePivot, 'invoice_id', $columnRelated);
+    }
+
     public function invoiceCfdi(): HasOne
     {
         return $this->hasOne(InvoiceCfdi::class);
@@ -75,7 +82,7 @@ class Invoice extends Model
             'created_at' => 'max',
             'id' => 'max',
         ], function ($query) {
-            $query->where('document_type_id', '=', InvoiceDocumentTypeEnum::PDF_FILE->value);
+            $query->where('invoice_document_type_id', '=', InvoiceDocumentTypeEnum::PDF_FILE->value);
         });
     }
 
@@ -85,7 +92,7 @@ class Invoice extends Model
             'created_at' => 'max',
             'id' => 'max',
         ], function ($query) {
-            $query->where('document_type_id', '=', InvoiceDocumentTypeEnum::XML_FILE->value);
+            $query->where('invoice_document_type_id', '=', InvoiceDocumentTypeEnum::XML_FILE->value);
         });
     }
 }

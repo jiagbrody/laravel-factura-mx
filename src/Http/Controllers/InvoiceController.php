@@ -20,7 +20,7 @@ class InvoiceController extends Controller
             'invoiceCfdi',
         ])->get();
 
-        return Inertia::render('laravel-factura-mx/Invoices/Index', [
+        return Inertia::render('jiagbrody-laravel-factura-mx/Invoices/Index', [
             'invoices' => $invoices,
             'cat_invoice_cfdi_cancel_types' => InvoiceCfdiCancelTypeEnum::getCatalog(),
         ]);
@@ -40,7 +40,7 @@ class InvoiceController extends Controller
             'documents',
         ])->whereId($invoiceId)->firstOrFail();
 
-        return Inertia::render('laravel-factura-mx/Invoices/Show', ['invoice' => $invoice]);
+        return Inertia::render('jiagbrody-laravel-factura-mx/Invoices/Show', ['invoice' => $invoice]);
     }
 
     public function getCancelData()

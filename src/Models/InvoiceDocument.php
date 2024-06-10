@@ -19,7 +19,7 @@ class InvoiceDocument extends Model
     const FOLDER_NAME = 'media/documents'; // aquí se guardan todos los archivos de la aplicación
 
     protected $fillable = [
-        'document_type_id',
+        'invoice_document_type_id',
         'documentable_type',
         'documentable_id',
         'file_name',
