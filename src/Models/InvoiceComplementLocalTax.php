@@ -5,7 +5,7 @@ namespace JiagBrody\LaravelFacturaMx\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class InvoiceComplementLocalTax  extends Model
+class InvoiceComplementLocalTax extends Model
 {
     use HasFactory;
 
