@@ -28,6 +28,8 @@ return [
         'invoice_tax_types' => 'jiagbrody_lfmx_invoice_tax_types',
         'invoice_taxes' => 'jiagbrody_lfmx_invoice_taxes',
         'invoice_tax_details' => 'jiagbrody_lfmx_invoice_tax_details',
+        'invoice_complement_local_taxes' => 'jiagbrody_lfmx_invoice_complement_local_taxes',
+        'invoice_complement_local_tax_details' => 'jiagbrody_lfmx_invoice_complement_local_tax_details',
         'invoice_related_concept_pivot' => 'jiagbrody_lfmx_invoice_related_concept_pivot',
         'invoice_document_types' => 'jiagbrody_lfmx_invoice_document_types',
         'invoice_documents' => 'jiagbrody_lfmx_invoice_documents',

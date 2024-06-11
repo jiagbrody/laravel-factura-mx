@@ -6,6 +6,7 @@ namespace JiagBrody\LaravelFacturaMx\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceDocumentTypeEnum;
 use JiagBrody\LaravelFacturaMx\Helpers\AddReadableDatesHelperTrait;
@@ -36,24 +37,29 @@ class Invoice extends Model
         return $this->hasOne(InvoiceCfdi::class);
     }
 
-    public function invoiceBalance(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function invoiceBalance(): HasOne
     {
         return $this->hasOne(InvoiceBalance::class);
     }
 
-    public function invoiceDetail(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function invoiceDetail(): HasOne
     {
         return $this->hasOne(InvoiceDetail::class);
     }
 
-    public function invoiceTaxes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function invoiceTaxes(): HasMany
     {
         return $this->hasMany(InvoiceTax::class);
     }
 
-    public function invoiceTax(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function invoiceTax(): HasOne
     {
         return $this->hasOne(InvoiceTax::class);
+    }
+
+    public function invoiceComplementLocalTax(): HasOne
+    {
+        return $this->hasOne(InvoiceComplementLocalTax::class);
     }
 
     public function invoiceType(): \Illuminate\Database\Eloquent\Relations\BelongsTo

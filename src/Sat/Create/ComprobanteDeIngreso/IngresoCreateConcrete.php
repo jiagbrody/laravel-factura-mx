@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeIngreso;
 
 use CfdiUtils\Elements\ImpLocal10\ImpuestosLocales;
+use Illuminate\Support\Collection;
+use JiagBrody\LaravelFacturaMx\Enums\InvoiceTaxTypeEnum;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 use JiagBrody\LaravelFacturaMx\Sat\CfdiHelperAbstract;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ComprobanteAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\RetencionesLocalesAtributos;
+use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\TrasladosLocalesAtributos;
 
 class IngresoCreateConcrete extends CfdiHelperAbstract
 {
@@ -28,19 +31,28 @@ class IngresoCreateConcrete extends CfdiHelperAbstract
         return $this;
     }
 
-    public function addComplementoImpuestosLocales(RetencionesLocalesAtributos $impuestosLocales): self
+    public function addComplementoImpuestosLocales(Collection $localTaxes): self
     {
         $impLocales = new ImpuestosLocales();
-        $impLocales->addRetencionLocal($impuestosLocales->getCollection()->toArray());
+        $format = collect();
+        foreach ($localTaxes as $localTax) {
+            if ($localTax instanceof RetencionesLocalesAtributos) {
+                $format->push(array_merge($localTax->getCollection()->toArray(), ['invoice_tax_type_id' => InvoiceTaxTypeEnum::RETENCION->value]));
+                $impLocales->addRetencionLocal($localTax->getCollection()->toArray());
+            } elseif ($localTax instanceof TrasladosLocalesAtributos) {
+                $format->push(array_merge($localTax->getCollection()->toArray(), ['invoice_tax_type_id' => InvoiceTaxTypeEnum::TRASLADO->value]));
+                $impLocales->addTrasladoLocal(($localTax->getCollection()->toArray()));
+            }
+        }
 
-        $this->attributeAssembly->setComplementoImpuestosLocales($impuestosLocales->getCollection());
+        $this->attributeAssembly->setComplementoImpuestosLocales($format);
 
         $this->creatorCfdi->comprobante()->addComplemento($impLocales);
 
         return $this;
     }
 
-    public function build(): IngresoCreateBuilder
+    public function builder(): IngresoCreateBuilder
     {
         $this->creatorCfdi->addSumasConceptos(null, 2);
         $this->creatorCfdi->moveSatDefinitionsToComprobante();

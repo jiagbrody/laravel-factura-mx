@@ -100,8 +100,8 @@ return new class extends Migration {
             $table->decimal('discount', 24, 6)->nullable();
             $table->decimal('tax', 24, 6)->nullable();
             $table->decimal('total', 24, 6)->nullable();
-            $table->decimal('local_tax', 24, 6)->nullable();
-            $table->decimal('balance_total', 24, 6)->nullable();
+            // $table->decimal('local_tax', 24, 6)->nullable();
+            $table->decimal('final_total_balance', 24, 6)->nullable()->comment('Puede haber variaciones del "Total" por ejemplo con las retenciones de los impuestos locales, etc.');
             $table->boolean('is_paid')->comment('Cuenta liquidada o pagada.');
             $table->timestamps();
 
@@ -127,8 +127,8 @@ return new class extends Migration {
 
         Schema::create($tableNames['invoice_tax_details'], function (Blueprint $table) use ($tableNames) {
             $table->id();
-            $table->unsignedBigInteger('invoice_tax_id')->constrained()->onDelete('cascade');
-            $table->unsignedBigInteger('invoice_tax_type_id')->constrained();
+            $table->unsignedBigInteger('invoice_tax_id');
+            $table->unsignedBigInteger('invoice_tax_type_id');
             $table->decimal('base', 24, 6);
             $table->string('impuesto', 3);
             $table->string('tipo_factor', 10);
@@ -140,10 +140,35 @@ return new class extends Migration {
             $table->foreign('invoice_tax_type_id', 'invoice_tax_details_invoice_tax_type_id_foreign')->references('id')->on($tableNames['invoice_tax_types']);
         });
 
+        Schema::create($tableNames['invoice_complement_local_taxes'], function (Blueprint $table) use ($tableNames) {
+            $table->id();
+            $table->unsignedBigInteger('invoice_id')->unique();
+            $table->decimal('total_de_retenciones', 24, 6)->nullable();
+            $table->decimal('total_de_traslados', 24, 6)->nullable();
+            $table->timestamps();
+
+            $table->foreign('invoice_id', 'invoice_complement_local_taxes_invoice_id_foreign')->references('id')->on($tableNames['invoices'])->onDelete('cascade');
+        });
+
+        Schema::create($tableNames['invoice_complement_local_tax_details'], function (Blueprint $table) use ($tableNames) {
+            $table->id();
+            $table->unsignedBigInteger('invoice_complement_local_tax_id');
+            $table->unsignedBigInteger('invoice_tax_type_id');
+            $table->string('imp_loc_retenido')->nullable();
+            $table->decimal('tasa_de_retencion', 24, 6)->nullable();
+            $table->string('imp_loc_trasladado')->nullable();
+            $table->decimal('tasa_de_traslado', 24, 6)->nullable();
+            $table->decimal('importe', 24, 6);
+            $table->timestamps();
+
+            $table->foreign('invoice_complement_local_tax_id', 'invoice_c_l_t_d_invoice_c_l_t_i_foreign')->references('id')->on($tableNames['invoice_complement_local_taxes'])->onDelete('cascade');
+            $table->foreign('invoice_tax_type_id', 'invoice_c_l_t_d_invoice_t_t_i_foreign')->references('id')->on($tableNames['invoice_tax_types']);
+        });
+
         Schema::create($tableNames['invoice_related_concept_pivot'], function (Blueprint $table) use ($tableNames) {
             $table->id();
             $table->unsignedBigInteger('invoice_id');
-            $table->unsignedBigInteger(config('jiagbrody-laravel-factura-mx.column_names.foreign_id_related_to_concepts'))->nullable()->comment('conceptos de la factura relacionados sobre un modelo de negocio')->index('invoice_statement_detail_statement_detail_id_index');
+            $table->unsignedBigInteger(config('jiagbrody-laravel-factura-mx.column_names.foreign_id_related_to_concepts'))->nullable()->comment('conceptos de la factura relacionados sobre un modelo de negocio')->unique('invoice_related_concept_pivot_statement_detail_id_unique');
             $table->unsignedSmallInteger('quantity')->default(0);
             $table->decimal('unit_price', 24, 6)->default(0);
             $table->decimal('gross_sub_total', 24, 6)->default(0);
@@ -276,6 +301,8 @@ return new class extends Migration {
         Schema::dropIfExists($tableNames['invoice_cfdis']);
         Schema::dropIfExists($tableNames['invoice_details']);
         Schema::dropIfExists($tableNames['invoice_related_concept_pivot']);
+        Schema::dropIfExists($tableNames['invoice_complement_local_tax_details']);
+        Schema::dropIfExists($tableNames['invoice_complement_local_taxes']);
         Schema::dropIfExists($tableNames['invoice_tax_details']);
         Schema::dropIfExists($tableNames['invoice_taxes']);
         Schema::dropIfExists($tableNames['invoices']);

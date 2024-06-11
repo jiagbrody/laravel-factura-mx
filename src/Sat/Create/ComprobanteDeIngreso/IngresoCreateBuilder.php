@@ -22,16 +22,17 @@ readonly class IngresoCreateBuilder
 
     protected Invoice $invoice;
 
-    public StampInvoiceBuilder $pacProvider;
+    public StampInvoiceBuilder $stampBuilder;
 
     protected DocumentHandler $documentHandler;
 
     public function __construct(
-        protected Credential $credential,
-        protected CfdiCreator40 $creatorCfdi,
+        protected Credential           $credential,
+        protected CfdiCreator40        $creatorCfdi,
         protected InvoiceCompanyHelper $companyHelper,
-        protected AttributeAssembly $attributeAssembly
-    ) {
+        protected AttributeAssembly    $attributeAssembly
+    )
+    {
         $this->documentHandler = new DocumentHandler;
     }
 
@@ -43,17 +44,27 @@ readonly class IngresoCreateBuilder
         return $this;
     }
 
+    /*
+     * Declaro el proveedor del pac de acuerdo a los parámetros de configuración (este podría ser dinámico).
+     */
+    // public function setPacProvider(): self
+    // {
+    //     $this->stampBuilder = ;
+    //
+    //     return $this;
+    // }
+
     public function saveInvoice(): Invoice
     {
         $save = new SaveIngreso($this->attributeAssembly);
 
         $this->invoice = $save->toInvoice($this->relationshipModel->getMorphClass(), $this->relationshipModel->id, $this->companyHelper->id);
+
         $save->toInvoiceDetail($this->invoice);
         $save->toInvoiceBalances($this->invoice);
         $save->toInvoiceTaxes($this->invoice);
-
-        // Declaro el proveedor del pac de acuerdo a los parámetros de configuración.
-        // $this->pacProvider = (new StampInvoiceBuilder($this->invoice));
+        $save->ToComplementLocalTax($this->invoice, $this->attributeAssembly->getComplementoImpuestosLocales());
+        $save->toRelatedConcepts($this->invoice);
 
         return $this->invoice;
     }
@@ -73,9 +84,20 @@ readonly class IngresoCreateBuilder
         );
     }
 
+    public function build(): array
+    {
+        $this->saveInvoice();
+        $this->saveDocument();
+
+        return [
+            'invoice' => $this->invoice,
+            'response' => (new StampInvoiceBuilder($this->invoice))->build()
+        ];
+    }
+
     private function detectLogicError($model): void
     {
-        if (! $model instanceof Model) {
+        if (!$model instanceof Model) {
             abort(422, 'La instancia no es Modelo Eloquent correcto.');
         }
     }
@@ -83,7 +105,7 @@ readonly class IngresoCreateBuilder
     private function getFileName(?string $fileName): string
     {
         if ($fileName === null) {
-            $fileName = 'invoice-'.$this->invoice->id.'_'.Str::slug($this->attributeAssembly->getComprobanteAtributos()->getFecha());
+            $fileName = 'invoice-' . $this->invoice->id . '_' . Str::slug($this->attributeAssembly->getComprobanteAtributos()->getFecha());
         }
 
         return $fileName;
