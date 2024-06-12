@@ -106,7 +106,7 @@ return new class extends Migration
             $table->boolean('is_paid')->comment('Cuenta liquidada o pagada.');
             $table->timestamps();
 
-            $table->foreign('invoice_id', 'invoice_balances_details_invoice_id_foreign')->references('id')->on($tableNames['invoices'])->onDelete('cascade');
+            $table->foreign('invoice_id', 'invoice_balances_invoice_id_foreign')->references('id')->on($tableNames['invoices'])->onDelete('cascade');
             $table->foreign('invoice_payment_type_id', 'invoice_balances_invoice_payment_type_id_foreign')->references('id')->on($tableNames['invoice_payment_types'])->onDelete('cascade');
         });
 
