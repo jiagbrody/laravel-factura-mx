@@ -57,9 +57,9 @@ return new class extends Migration
             $table->nullableMorphs('invoiceable');
             $table->timestamps();
 
-            $table->foreign('invoice_type_id', 'invoices_invoice_type_id_foreign')->references('id')->on($tableNames['invoice_types'])->onDelete('cascade');
-            $table->foreign('invoice_company_id', 'invoices_invoice_company_id_foreign')->references('id')->on($tableNames['invoice_companies'])->onDelete('cascade');
-            $table->foreign('invoice_status_id', 'invoices_invoice_status_id_foreign')->references('id')->on($tableNames['invoice_statuses'])->onDelete('cascade');
+            $table->foreign('invoice_type_id', 'lfmx_invoices_invoice_type_id_foreign')->references('id')->on($tableNames['invoice_types'])->onDelete('cascade');
+            $table->foreign('invoice_company_id', 'lfmx_invoices_invoice_company_id_foreign')->references('id')->on($tableNames['invoice_companies'])->onDelete('cascade');
+            $table->foreign('invoice_status_id', 'lfmx_invoices_invoice_status_id_foreign')->references('id')->on($tableNames['invoice_statuses'])->onDelete('cascade');
         });
 
         Schema::create($tableNames['invoice_details'], function (Blueprint $table) use ($tableNames) {
@@ -83,7 +83,7 @@ return new class extends Migration
             $table->string('receptor_rfc', 20)->index();
             $table->timestamps();
 
-            $table->foreign('invoice_id', 'invoice_details_invoice_id_foreign')->references('id')->on($tableNames['invoices'])->onDelete('cascade');
+            $table->foreign('invoice_id', 'lfmx_invoice_details_invoice_id_foreign')->references('id')->on($tableNames['invoices'])->onDelete('cascade');
         });
 
         Schema::create($tableNames['invoice_payment_types'], function (Blueprint $table) {
@@ -106,8 +106,8 @@ return new class extends Migration
             $table->boolean('is_paid')->comment('Cuenta liquidada o pagada.');
             $table->timestamps();
 
-            $table->foreign('invoice_id', 'invoice_balances_invoice_id_foreign')->references('id')->on($tableNames['invoices'])->onDelete('cascade');
-            $table->foreign('invoice_payment_type_id', 'invoice_balances_invoice_payment_type_id_foreign')->references('id')->on($tableNames['invoice_payment_types'])->onDelete('cascade');
+            $table->foreign('invoice_id', 'lfmx_invoice_balances_invoice_id_foreign')->references('id')->on($tableNames['invoices'])->onDelete('cascade');
+            $table->foreign('invoice_payment_type_id', 'lfmx_invoice_balances_invoice_payment_type_id_foreign')->references('id')->on($tableNames['invoice_payment_types'])->onDelete('cascade');
         });
 
         Schema::create($tableNames['invoice_tax_types'], function (Blueprint $table) {
@@ -123,7 +123,7 @@ return new class extends Migration
             $table->decimal('total_impuestos_trasladados', 24, 6)->nullable();
             $table->timestamps();
 
-            $table->foreign('invoice_id', 'invoice_taxes_invoice_id_foreign')->references('id')->on($tableNames['invoices'])->onDelete('cascade');
+            $table->foreign('invoice_id', 'lfmx_invoice_taxes_invoice_id_foreign')->references('id')->on($tableNames['invoices'])->onDelete('cascade');
         });
 
         Schema::create($tableNames['invoice_tax_details'], function (Blueprint $table) use ($tableNames) {
@@ -137,8 +137,8 @@ return new class extends Migration
             $table->decimal('importe', 24, 6)->nullable();
             $table->timestamps();
 
-            $table->foreign('invoice_tax_id', 'invoice_tax_details_invoice_tax_id_foreign')->references('id')->on($tableNames['invoice_taxes'])->onDelete('cascade');
-            $table->foreign('invoice_tax_type_id', 'invoice_tax_details_invoice_tax_type_id_foreign')->references('id')->on($tableNames['invoice_tax_types']);
+            $table->foreign('invoice_tax_id', 'lfmx_invoice_tax_details_invoice_tax_id_foreign')->references('id')->on($tableNames['invoice_taxes'])->onDelete('cascade');
+            $table->foreign('invoice_tax_type_id', 'lfmx_invoice_tax_details_invoice_tax_type_id_foreign')->references('id')->on($tableNames['invoice_tax_types']);
         });
 
         Schema::create($tableNames['invoice_complement_local_taxes'], function (Blueprint $table) use ($tableNames) {
@@ -148,7 +148,7 @@ return new class extends Migration
             $table->decimal('total_de_traslados', 24, 6)->nullable();
             $table->timestamps();
 
-            $table->foreign('invoice_id', 'invoice_complement_local_taxes_invoice_id_foreign')->references('id')->on($tableNames['invoices'])->onDelete('cascade');
+            $table->foreign('invoice_id', 'lfmx_invoice_complement_local_taxes_invoice_id_foreign')->references('id')->on($tableNames['invoices'])->onDelete('cascade');
         });
 
         Schema::create($tableNames['invoice_complement_local_tax_details'], function (Blueprint $table) use ($tableNames) {
@@ -162,8 +162,8 @@ return new class extends Migration
             $table->decimal('importe', 24, 6);
             $table->timestamps();
 
-            $table->foreign('invoice_complement_local_tax_id', 'invoice_c_l_t_d_invoice_c_l_t_i_foreign')->references('id')->on($tableNames['invoice_complement_local_taxes'])->onDelete('cascade');
-            $table->foreign('invoice_tax_type_id', 'invoice_c_l_t_d_invoice_t_t_i_foreign')->references('id')->on($tableNames['invoice_tax_types']);
+            $table->foreign('invoice_complement_local_tax_id', 'lfmx_invoice_c_l_t_d_invoice_c_l_t_i_foreign')->references('id')->on($tableNames['invoice_complement_local_taxes'])->onDelete('cascade');
+            $table->foreign('invoice_tax_type_id', 'lfmx_invoice_c_l_t_d_invoice_t_t_i_foreign')->references('id')->on($tableNames['invoice_tax_types']);
         });
 
         Schema::create($tableNames['invoice_related_concept_pivot'], function (Blueprint $table) use ($tableNames) {
@@ -178,7 +178,7 @@ return new class extends Migration
             $table->decimal('tax', 24, 6)->default(0);
             $table->decimal('total', 24, 6)->default(0);
 
-            $table->foreign('invoice_id', 'invoice_statement_detail_invoice_id_foreign')->references('id')->on($tableNames['invoices'])->onDelete('cascade');
+            $table->foreign('invoice_id', 'lfmx_invoice_statement_detail_invoice_id_foreign')->references('id')->on($tableNames['invoices'])->onDelete('cascade');
         });
 
         Schema::create($tableNames['invoice_document_types'], function (Blueprint $table) {
@@ -198,7 +198,7 @@ return new class extends Migration
             $table->morphs('documentable', 'invoice_documents_documentable_type_documentable_id_index');
             $table->timestamps();
 
-            $table->foreign('invoice_document_type_id', 'invoice_documents_invoice_document_type_id_foreign')->references('id')->on($tableNames['invoice_document_types']);
+            $table->foreign('invoice_document_type_id', 'lfmx_invoice_documents_invoice_document_type_id_foreign')->references('id')->on($tableNames['invoice_document_types']);
         });
 
         Schema::create($tableNames['invoice_cfdi_cancel_types'], function (Blueprint $table) {
@@ -214,7 +214,7 @@ return new class extends Migration
             $table->uuid();
             $table->timestamps();
 
-            $table->foreign('invoice_id', 'invoice_cfdis_invoice_id_foreign')->references('id')->on($tableNames['invoices'])->onDelete('cascade');
+            $table->foreign('invoice_id', 'lfmx_invoice_cfdis_invoice_id_foreign')->references('id')->on($tableNames['invoices'])->onDelete('cascade');
         });
 
         Schema::create($tableNames['invoice_cfdi_cancels'], function (Blueprint $table) use ($tableNames) {
@@ -223,8 +223,8 @@ return new class extends Migration
             $table->unsignedBigInteger('invoice_cfdi_cancel_type_id');
             $table->timestamps();
 
-            $table->foreign('invoice_cfdi_id', 'invoice_cfdi_cancels_invoice_cfdi_id_foreign')->references('id')->on($tableNames['invoice_cfdis']);
-            $table->foreign('invoice_cfdi_cancel_type_id', 'invoice_cfdi_cancels_invoice_cfdi_cancel_type_id_foreign')->references('id')->on($tableNames['invoice_cfdi_cancel_types']);
+            $table->foreign('invoice_cfdi_id', 'lfmx_invoice_cfdi_cancels_invoice_cfdi_id_foreign')->references('id')->on($tableNames['invoice_cfdis']);
+            $table->foreign('invoice_cfdi_cancel_type_id', 'lfmx_invoice_cfdi_cancels_invoice_cfdi_cancel_type_id_foreign')->references('id')->on($tableNames['invoice_cfdi_cancel_types']);
         });
 
         // include('./database/seeders/include_inserts_to_tables.php');
