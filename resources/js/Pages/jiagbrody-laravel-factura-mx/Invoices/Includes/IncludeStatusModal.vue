@@ -42,6 +42,7 @@ function isNotEmpty(obj) {
         <template #content>
             <template v-if="isNotEmpty(status.response)">
                 <table class="lyt-default-listing-table">
+                    <tbody>
                     <tr>
                         <td class="w-1/2 font-bold">Detalles validación EFOS</td>
                         <td class="w-1/2">{{ status.response.detallesValidacionEFOS }}</td>
@@ -62,6 +63,7 @@ function isNotEmpty(obj) {
                         <td class="w-1/2 font-bold">Estatus cancelación</td>
                         <td class="w-1/2">{{ status.response.estatusCancelacion }}</td>
                     </tr>
+                    </tbody>
                 </table>
             </template>
         </template>

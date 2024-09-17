@@ -21,7 +21,7 @@ const onSubmitStatus = () => {
     props.cancelData.formData.processing = true
     const response = useDeleteAjax(route('laravel-factura-mx.invoices.set-cancel', props.cancelData.formData.invoice.id), props.cancelData.formData.data())
     response.then(({data, validateErrors}) => {
-        if(validateErrors){
+        if (validateErrors) {
             props.cancelData.formData.errors = validateErrors
         }
 
@@ -59,10 +59,12 @@ function onCloseModal() {
         <template #content>
             <template v-if="isNotEmpty(cancelData.response)">
                 <table class="lyt-default-listing-table">
+                    <tbody>
                     <tr>
                         <td class="w-1/2 font-bold">Detalles validación EFOS</td>
                         <td class="w-1/2">{{ cancelData.response.detallesValidacionEFOS }}</td>
                     </tr>
+                    </tbody>
                 </table>
             </template>
             <template v-else>
