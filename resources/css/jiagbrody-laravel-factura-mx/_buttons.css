@@ -1,0 +1,61 @@
+.lyt-button-xs {
+    font-size: 0.65rem;
+    line-height: 0.9rem;
+    @apply px-2 py-1 uppercase border rounded tracking-wider focus:outline-none transition inline-flex justify-center items-center
+}
+
+.lyt-button-sm {
+    font-size: 0.65rem;
+    line-height: 0.95rem;
+    @apply px-2.5 py-1.5 uppercase border rounded tracking-wider focus:outline-none transition inline-flex justify-center items-center
+}
+
+.lyt-button {
+    min-height: 38px;
+    @apply text-xs px-3 py-1 uppercase  border rounded tracking-wider focus:outline-none transition inline-flex justify-center items-center transition
+}
+
+.lyt-button-lg {
+    @apply text-sm px-4 py-3 uppercase border rounded tracking-wider focus:outline-none transition inline-flex justify-center items-center
+}
+
+.lyt-button-xl {
+    @apply text-base px-6 py-4 uppercase border rounded tracking-wider focus:outline-none transition inline-flex justify-center items-center
+}
+
+.lyt-button-style-primary {
+    @apply text-white bg-blue-700 hover:bg-blue-800 active:bg-blue-600 border border-blue-700 transition
+}
+
+.lyt-button-style-default {
+    @apply text-gray-900 bg-white hover:text-blue-700 hover:bg-gray-50 active:bg-gray-200 border border-gray-200
+}
+
+.lyt-button-style-light {
+    @apply text-gray-900 bg-white hover:bg-gray-100 active:bg-gray-200 border border-gray-300 transition
+}
+
+.lyt-button-style-dark {
+    @apply text-white bg-gray-800 hover:bg-gray-700 active:bg-gray-600 border border-black transition
+}
+
+.lyt-button-style-info {
+    @apply text-black bg-blue-100 hover:bg-blue-300 hover:text-white active:bg-blue-400 border border-blue-400 transition
+}
+
+.lyt-button-style-warning {
+    @apply bg-yellow-500 hover:bg-yellow-400 active:bg-yellow-600 text-white border border-yellow-600 transition
+}
+
+.lyt-button-style-assert {
+    @apply bg-green-600 hover:bg-green-500 active:bg-green-700 text-white border border-green-700 transition
+}
+
+.lyt-button-style-danger {
+    @apply bg-red-600 hover:bg-red-500 active:bg-red-600 text-white border border-red-700 transition
+}
+
+.lyt-button-listing-action {
+    font-size: 0.7rem;
+    @apply px-1.5 py-1.5 rounded-sm text-center leading-tight transition
+}

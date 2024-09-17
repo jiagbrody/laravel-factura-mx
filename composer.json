@@ -1,7 +1,19 @@
 {
     "name": "jiagbrody/laravel-factura-mx",
-    "description": "Librería para la facturacion en México, creacion de facturas y CFDI.",
-    "keywords": ["laravel", "laravel-factura-mx", "facturacion", "cfdi", "mexico", "sat", "facturacion electronica", "factura", "jiagbrody", "jiag", "brody"],
+    "description": "Librería para la facturación en México, creación de facturas y CFDI.",
+    "keywords": [
+        "laravel",
+        "laravel-factura-mx",
+        "facturacion",
+        "cfdi",
+        "mexico",
+        "sat",
+        "facturacion electronica",
+        "factura",
+        "jiagbrody",
+        "jiag",
+        "brody"
+    ],
     "homepage": "https://github.com/jiagbrody/laravel-factura-mx",
     "license": "MIT",
     "authors": [
@@ -13,8 +25,12 @@
     ],
     "require": {
         "php": "^8.2",
-        "spatie/laravel-package-tools": "^1.14.0",
-        "illuminate/contracts": "^10.0"
+        "ext-soap": "*",
+        "eclipxe/cfdiutils": "^2.25",
+        "illuminate/contracts": "^10.0",
+        "phpcfdi/cfdi-to-json": "^0.3.4",
+        "phpcfdi/credentials": "^1.2",
+        "spatie/laravel-package-tools": "^1.14.0"
     },
     "require-dev": {
         "laravel/pint": "^1.0",
@@ -23,7 +39,7 @@
         "orchestra/testbench": "^8.8",
         "pestphp/pest": "^2.20",
         "pestphp/pest-plugin-arch": "^2.0",
-        "pestphp/pest-plugin-laravel": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.2",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",

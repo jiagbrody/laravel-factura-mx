@@ -1,0 +1,52 @@
+/* Estilos para el listado de los elementos */
+.lyt-default-listing-table {
+    @apply w-full transform border bg-white table-auto overflow-scroll
+
+}
+
+.lyt-default-listing-table tr {
+    /*odd:bg-white even:bg-slate-100*/
+    @apply transform odd:bg-white even:bg-slate-50
+    /*odd:bg-red-50 hover:bg-gray-100*/
+}
+
+.lyt-default-listing-table tr th {
+    @apply py-1.5 px-2
+}
+
+.lyt-default-listing-table tr th.space_id {
+
+}
+
+.lyt-default-listing-table tr th.space_actions {
+    @apply w-1
+}
+
+.lyt-default-listing-table tr th.space_date {
+    @apply w-28
+}
+
+.lyt-default-listing-table tr td {
+    @apply py-1.5 px-2 border leading-tight
+}
+
+.lyt-default-listing-table tr td.sp
+ace_id {
+    @apply text-center text-gray-400 text-xs
+}
+
+.lyt-default-listing-table tr td.space_actions {
+    @apply p-1.5 border leading-tight
+}
+
+.lyt-default-listing-table tr td.space_date {
+    @apply text-center text-xs
+}
+
+.lyt-default-listing-table tr td.space_date > .date_format {
+
+}
+
+.lyt-default-listing-table tr td.space_date > .date_human {
+    @apply text-gray-400
+}
