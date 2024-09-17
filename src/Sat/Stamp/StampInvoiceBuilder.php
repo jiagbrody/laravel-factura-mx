@@ -26,7 +26,7 @@ class StampInvoiceBuilder
         $this->stampResponse = $this->pacProvider->stampInvoice();
 
         if ($this->stampResponse->getCheckProcess()) {
-            (new UpdateRecordsWhenStampingRevenueInvoiceAction())(
+            (new UpdateRecordsWhenStampingRevenueInvoiceAction)(
                 invoice: $this->invoice,
                 uuid: $this->stampResponse->getUuid(),
                 xml: $this->stampResponse->getXml(),

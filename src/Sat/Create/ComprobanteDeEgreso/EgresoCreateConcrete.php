@@ -60,7 +60,7 @@ class EgresoCreateConcrete extends CfdiHelperAbstract
         $this->conceptoAtributos->ObjetoImp = (string) $products['ObjetoImp'];
 
         if ($this->conceptoAtributos->ObjetoImp === self::OBJETO_IMP_VERIFY_IS_TRASLADO) {
-            $traslado = new ImpuestoTrasladoAtributos();
+            $traslado = new ImpuestoTrasladoAtributos;
             $traslado->Base = $this->conceptoAtributos->Importe;
             $traslado->Impuesto = $products['Impuestos']['Traslados']['Traslado'][0]['Impuesto'] ?? '002';
             $traslado->TipoFactor = $products['Impuestos']['Traslados']['Traslado'][0]['TipoFactor'] ?? 'Tasa';

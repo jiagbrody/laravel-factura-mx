@@ -58,7 +58,7 @@ it('create object', function () {
             $traslado->setImporte(217.6);
             $concepto->addImpuestoTraslado($traslado);
 
-            $retencion = new \JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoRetenidoAtributos();
+            $retencion = new \JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoRetenidoAtributos;
             $retencion->setBase(1360);
             $retencion->setImpuesto('002');
             $retencion->setTipoFactor('Tasa');

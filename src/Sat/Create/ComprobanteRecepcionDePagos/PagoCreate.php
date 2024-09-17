@@ -10,9 +10,7 @@ use JiagBrody\LaravelFacturaMx\Sat\GettingSatCfdiInterface;
 
 readonly class PagoCreate implements GettingSatCfdiInterface
 {
-    public function __construct(protected InvoiceCompanyEnum $invoiceCompanyEnum)
-    {
-    }
+    public function __construct(protected InvoiceCompanyEnum $invoiceCompanyEnum) {}
 
     public function custom($company): PagoCreateConcrete
     {

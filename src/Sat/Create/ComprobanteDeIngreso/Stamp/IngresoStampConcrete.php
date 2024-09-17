@@ -17,9 +17,7 @@ use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStampResponse;
 
 class IngresoStampConcrete
 {
-    public function __construct(protected Invoice $invoice, protected PacStampResponse $pacStampResponse)
-    {
-    }
+    public function __construct(protected Invoice $invoice, protected PacStampResponse $pacStampResponse) {}
 
     public function updateInvoice(): IngresoStampConcrete
     {
@@ -50,7 +48,7 @@ class IngresoStampConcrete
             ->updateFileName('invoice-'.$this->invoice->id.'-'.$this->invoice->cfdi->uuid)
             ->generate($this->pacStampResponse->xml);
 
-        (new PdfFileSatHelperBuilder())
+        (new PdfFileSatHelperBuilder)
             ->setInvoiceCfdiType($this->invoice->invoice_cfdi_type_id)
             ->setXmlContent($this->pacStampResponse->xml)
             ->setXmlDocument($xml)

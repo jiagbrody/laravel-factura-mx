@@ -48,7 +48,7 @@ class PagoCreateConcrete extends CfdiHelperAbstract
         return $this;
     }
 
-    public function addConceptos($products = new Collection()): self
+    public function addConceptos($products = new Collection): self
     {
         $this->conceptoAtributos->ClaveProdServ = '84111506';
         $this->conceptoAtributos->Cantidad = '1';
@@ -84,11 +84,11 @@ class PagoCreateConcrete extends CfdiHelperAbstract
 
     private function calculateComplemento($complemento): Pagos
     {
-        $complementoPagos = new Pagos();
+        $complementoPagos = new Pagos;
         $impuestosP = [];
         foreach ($complemento['Pagos']['Pago'] as $keyPago => $pago) {
 
-            $propertiesPay = (new DefinePagoProperties())->setDinamicPropertiesValues($pago);
+            $propertiesPay = (new DefinePagoProperties)->setDinamicPropertiesValues($pago);
 
             $pay = $complementoPagos->addPago((array) $propertiesPay);
 
@@ -108,7 +108,7 @@ class PagoCreateConcrete extends CfdiHelperAbstract
 
             foreach ($doctoRelacionados as $doctoRelacionado) {
                 $invoice = $invoices->where('cfdi.uuid', $doctoRelacionado['IdDocumento'])->firstOrFail();
-                $documentR = ((new DefineDoctoRelacionadoProperties())->setDinamicPropertiesValues($propertiesPay, $invoice, $doctoRelacionado));
+                $documentR = ((new DefineDoctoRelacionadoProperties)->setDinamicPropertiesValues($propertiesPay, $invoice, $doctoRelacionado));
                 $trasladosDR = GetImpuestosDRHelper::traslados($invoice, $documentR);
                 $retencionesDR = (new DefineImpuestosDRProperties)->getImpuestosDRRetenciones($invoice, $documentR);
 
@@ -229,11 +229,11 @@ class PagoCreateConcrete extends CfdiHelperAbstract
     private function calculateWithCfdiUitls(array $complemento)
     {
 
-        $complementoPagos = new Pagos();
+        $complementoPagos = new Pagos;
         $impuestosP = [];
         foreach ($complemento['Pagos']['Pago'] as $keyPago => $pago) {
 
-            $propertiesPay = (new DefinePagoProperties())->setDinamicPropertiesValues($pago);
+            $propertiesPay = (new DefinePagoProperties)->setDinamicPropertiesValues($pago);
 
             $pay = $complementoPagos->addPago((array) $propertiesPay);
 
@@ -253,7 +253,7 @@ class PagoCreateConcrete extends CfdiHelperAbstract
 
             foreach ($doctoRelacionados as $doctoRelacionado) {
                 $invoice = $invoices->where('cfdi.uuid', $doctoRelacionado['IdDocumento'])->firstOrFail();
-                $documentR = ((new DefineDoctoRelacionadoProperties())->setDinamicPropertiesValues($propertiesPay, $invoice, $doctoRelacionado));
+                $documentR = ((new DefineDoctoRelacionadoProperties)->setDinamicPropertiesValues($propertiesPay, $invoice, $doctoRelacionado));
                 $trasladosDR = GetImpuestosDRHelper::traslados($invoice, $documentR);
                 $retencionesDR = (new DefineImpuestosDRProperties)->getImpuestosDRRetenciones($invoice, $documentR);
 

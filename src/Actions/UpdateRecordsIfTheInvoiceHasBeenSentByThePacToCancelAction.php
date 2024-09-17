@@ -24,7 +24,7 @@ class UpdateRecordsIfTheInvoiceHasBeenSentByThePacToCancelAction
             $cancel = $invoiceCfdi->invoiceCfdiCancels()->create(['invoice_cfdi_cancel_type_id' => $cancelTypeEnum->value]);
 
             //Guardo del Acuse de la cancelación
-            (new DocumentHandler())->create(
+            (new DocumentHandler)->create(
                 relationshipModel: $cancel->getMorphClass(),
                 relationshipId: $cancel->id,
                 documentTypeId: InvoiceDocumentTypeEnum::XML_FILE->value,

@@ -45,7 +45,7 @@ trait StatusTrait
         $sat = $response->get_sat_statusResult->sat;
         $estatusCancelacion = (isset($sat->EstatusCancelacion)) ? $sat->EstatusCancelacion : '';
 
-        $response = new PacStatusResponse();
+        $response = new PacStatusResponse;
         $response->setCheckProcess(true);
 
         $response->setEstado($sat->Estado);

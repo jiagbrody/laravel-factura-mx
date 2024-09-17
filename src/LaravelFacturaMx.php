@@ -18,7 +18,7 @@ class LaravelFacturaMx
 
     public function create(): ComprobanteBuilder
     {
-        return new ComprobanteBuilder();
+        return new ComprobanteBuilder;
     }
 
     /*
@@ -31,16 +31,16 @@ class LaravelFacturaMx
 
     public function stamp(): StampInvoiceBuilder
     {
-        return new StampInvoiceBuilder();
+        return new StampInvoiceBuilder;
     }
 
     public function cancel(): CancelInvoiceBuilder
     {
-        return new CancelInvoiceBuilder();
+        return new CancelInvoiceBuilder;
     }
 
     public function status(): StatusInvoiceBuilder
     {
-        return new StatusInvoiceBuilder();
+        return new StatusInvoiceBuilder;
     }
 }

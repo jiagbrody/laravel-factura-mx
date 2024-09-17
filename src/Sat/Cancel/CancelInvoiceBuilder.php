@@ -59,7 +59,7 @@ final class CancelInvoiceBuilder
         $this->cancelResponse = $this->pacProvider->cancelInvoice(cfdiCancelTypeEnum: $this->cancelTypeEnum, replacementUUID: $this->replacementUUID);
 
         if ($this->cancelResponse->checkProcess) {
-            (new UpdateRecordsIfTheInvoiceHasBeenSentByThePacToCancelAction())(
+            (new UpdateRecordsIfTheInvoiceHasBeenSentByThePacToCancelAction)(
                 invoiceCfdi: $this->invoice->invoiceCfdi,
                 cancelTypeEnum: $this->cancelTypeEnum,
                 xmlFile: $this->cancelResponse->acuse,

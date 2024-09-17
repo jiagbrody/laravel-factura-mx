@@ -11,12 +11,12 @@ class ComprobanteBuilder implements ComprobanteInterface
 {
     public function ingreso(): IngresoHandler
     {
-        return new IngresoHandler();
+        return new IngresoHandler;
     }
 
     public function egreso(): EgresoHandler
     {
-        return new EgresoHandler();
+        return new EgresoHandler;
     }
 
     // public function recepcionDePagos(): PagoHandler

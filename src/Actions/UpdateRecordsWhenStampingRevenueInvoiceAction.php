@@ -46,7 +46,7 @@ class UpdateRecordsWhenStampingRevenueInvoiceAction
 
     public function generateDocuments($invoice, $xmlContent, $fileName): void
     {
-        (new DocumentHandler())->create(
+        (new DocumentHandler)->create(
             relationshipModel: $invoice->invoiceCfdi->getMorphClass(),
             relationshipId: $invoice->invoiceCfdi->id,
             documentTypeId: InvoiceDocumentTypeEnum::XML_FILE->value,

@@ -12,7 +12,7 @@ class FinkokTestDataResponse
 
     public function success(): self
     {
-        $this->quick_stampResult = (new FinkokTestDataSuccess())();
+        $this->quick_stampResult = (new FinkokTestDataSuccess)();
 
         return $this;
     }

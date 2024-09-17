@@ -45,7 +45,7 @@ class FinkokPac implements ProviderPacInterface
 
     public function __construct(protected Invoice $invoice)
     {
-        $this->response = new PacStampResponse();
+        $this->response = new PacStampResponse;
         $this->usernameFinkok = (string) config('jiagbrody-laravel-factura-mx.pac_providers.finkok.user');
         $this->passwordFinkok = (string) config('jiagbrody-laravel-factura-mx.pac_providers.finkok.password');
 
@@ -73,7 +73,7 @@ class FinkokPac implements ProviderPacInterface
 
     public function getStampTestData(): FinkokTestDataResponse
     {
-        return new FinkokTestDataResponse();
+        return new FinkokTestDataResponse;
     }
 
     /*

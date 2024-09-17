@@ -12,9 +12,7 @@ use JiagBrody\LaravelFacturaMx\Models\Invoice;
 
 abstract class StampConcrete implements StampConcreteInterface
 {
-    public function __construct(protected Invoice $invoice, protected PacStampResponse $pacStampResponse)
-    {
-    }
+    public function __construct(protected Invoice $invoice, protected PacStampResponse $pacStampResponse) {}
 
     public function removeInvoiceDraft(): self
     {
@@ -44,7 +42,7 @@ abstract class StampConcrete implements StampConcreteInterface
             ->updateFileName('invoice-'.$this->invoice->id.'-'.$this->invoice->cfdi->uuid)
             ->generate($this->pacStampResponse->xml);
 
-        (new PdfFileSatHelperBuilder())
+        (new PdfFileSatHelperBuilder)
             ->setInvoiceCfdiType($this->invoice->invoice_cfdi_type_id)
             ->setXmlContent($this->pacStampResponse->xml)
             ->setXmlDocument($xml)

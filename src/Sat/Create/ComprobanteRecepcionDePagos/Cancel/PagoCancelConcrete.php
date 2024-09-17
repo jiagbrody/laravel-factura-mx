@@ -14,9 +14,7 @@ class PagoCancelConcrete
 {
     protected CfdiCancel $cancel;
 
-    public function __construct(protected Invoice $invoice, protected PacCancelResponse $pacCancelResponse)
-    {
-    }
+    public function __construct(protected Invoice $invoice, protected PacCancelResponse $pacCancelResponse) {}
 
     public function createCfdiCancel(CfdiCancelTypeEnum $enum): self
     {

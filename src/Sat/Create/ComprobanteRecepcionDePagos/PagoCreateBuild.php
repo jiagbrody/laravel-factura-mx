@@ -26,9 +26,7 @@ class PagoCreateBuild extends DraftBuild
 
     protected bool $asNewRecord;
 
-    public function __construct(protected Credential $credential, protected CfdiCreator40 $creatorCfdi, protected InvoiceCompanyHelper $companyHelper)
-    {
-    }
+    public function __construct(protected Credential $credential, protected CfdiCreator40 $creatorCfdi, protected InvoiceCompanyHelper $companyHelper) {}
 
     public function setProperties(Invoice $invoice, bool $asNewRecord = false): void
     {

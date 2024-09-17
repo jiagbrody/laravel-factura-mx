@@ -16,8 +16,7 @@ class CreateStampConcrete
         protected Invoice $invoice,
         protected string $uuid,
         protected string $xml,
-    ) {
-    }
+    ) {}
 
     public function updateInvoice(): self
     {
@@ -49,7 +48,7 @@ class CreateStampConcrete
             ->updateFileName('invoice-'.$this->invoice->id.'-'.$this->invoice->cfdi->uuid)
             ->generate($this->xml);
 
-        (new PdfFileSatHelperBuilder())
+        (new PdfFileSatHelperBuilder)
             ->setInvoiceCfdiType($this->invoice->invoice_cfdi_type_id)
             ->setXmlContent($this->xml)
             ->setXmlDocument($xml)

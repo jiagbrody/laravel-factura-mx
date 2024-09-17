@@ -13,9 +13,7 @@ use PhpCfdi\Credentials\Credential;
 
 class EgresoCreateBuild extends DraftBuild
 {
-    public function __construct(protected Credential $credential, protected CfdiCreator40 $creatorCfdi, protected InvoiceCompanyHelper $companyHelper)
-    {
-    }
+    public function __construct(protected Credential $credential, protected CfdiCreator40 $creatorCfdi, protected InvoiceCompanyHelper $companyHelper) {}
 
     public function saveDraft(): void
     {
@@ -53,7 +51,7 @@ class EgresoCreateBuild extends DraftBuild
         });
 
         $xml = (new XmlFileSatHelperBuilder($this->invoice))->generate($this->creatorCfdi->asXml());
-        (new PdfFileSatHelperBuilder())
+        (new PdfFileSatHelperBuilder)
             ->setInvoiceCfdiType($this->invoice->invoice_cfdi_type_id)
             ->setXmlContent($this->creatorCfdi->asXml())
             ->setXmlDocument($xml)

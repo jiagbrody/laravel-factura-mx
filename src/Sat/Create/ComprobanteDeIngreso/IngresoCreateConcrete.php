@@ -33,7 +33,7 @@ class IngresoCreateConcrete extends CfdiHelperAbstract
 
     public function addComplementoImpuestosLocales(Collection $localTaxes): self
     {
-        $impLocales = new ImpuestosLocales();
+        $impLocales = new ImpuestosLocales;
         $format = collect();
         foreach ($localTaxes as $localTax) {
             if ($localTax instanceof RetencionesLocalesAtributos) {
