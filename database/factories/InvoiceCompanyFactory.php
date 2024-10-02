@@ -17,7 +17,7 @@ class InvoiceCompanyFactory extends Factory
             'name' => 'Emisor 1',
             'rfc' => 'EKU9003173C9',
             'nombre' => 'ESCUELA KEMPER URGATE',
-            'domicilio_fiscal_receptor' => '21855',
+            'domicilio_fiscal' => '21855',
             'regimen_fiscal' => '601',
             'certificate_path' => '/csd_eku9003173c9_20190617131829/CSD_Sucursal_1_EKU9003173C9_20230517_223850.cer',
             'key_path' => '/csd_eku9003173c9_20190617131829/CSD_Sucursal_1_EKU9003173C9_20230517_223850.key',

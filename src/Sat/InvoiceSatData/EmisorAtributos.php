@@ -8,13 +8,13 @@ final readonly class EmisorAtributos
 {
     use AtributosHelperTrait;
 
-    private string $Rfc;
+    public string $Rfc;
 
-    private string $Nombre;
+    public string $Nombre;
 
-    private string $RegimenFiscal;
+    public string $RegimenFiscal;
 
-    private string $FacAtrAdquirente;
+    public string $FacAtrAdquirente;
 
     public function setRfc(string $Rfc): void
     {

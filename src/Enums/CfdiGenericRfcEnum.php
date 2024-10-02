@@ -17,7 +17,7 @@ enum CfdiGenericRfcEnum: string
                 'nombre' => 'CLIENTE',
                 'regimen_fiscal_receptor' => '616',
                 'uso_cfdi' => 'S01',
-                'domicilio_fiscal_receptor' => '00000', // AL CREAR FACTURA ESTE SE ACTUALIZARÁ AL CODIGO POSTAL DEL "EMISOR".
+                'domicilio_fiscal' => '00000', // AL CREAR FACTURA ESTE SE ACTUALIZARÁ AL CODIGO POSTAL DEL "EMISOR".
                 'residencia_fiscal' => null,
                 'num_reg_id_trib' => null,
                 'is_foreign_resident' => false,
@@ -27,7 +27,7 @@ enum CfdiGenericRfcEnum: string
                 'nombre' => 'CLIENT',
                 'regimen_fiscal_receptor' => '616',
                 'uso_cfdi' => 'S01',
-                'domicilio_fiscal_receptor' => '00000', // AL CREAR FACTURA ESTE SE ACTUALIZARÁ AL CODIGO POSTAL DEL "EMISOR".
+                'domicilio_fiscal' => '00000', // AL CREAR FACTURA ESTE SE ACTUALIZARÁ AL CODIGO POSTAL DEL "EMISOR".
                 'residencia_fiscal' => 'USA',
                 'num_reg_id_trib' => '',
                 'is_foreign_resident' => true,

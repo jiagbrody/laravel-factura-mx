@@ -70,7 +70,7 @@ abstract class CfdiHelperAbstract
     public function addConceptos(Collection $concepts): self
     {
         if ($concepts->count() > 0) {
-            $concepts->each(function (Collection $concept) {
+            $concepts->each(function ($concept) {
 
                 $item = $concept->get('conceptSat');
                 $invoiceConcept = $this->creatorCfdi->comprobante()

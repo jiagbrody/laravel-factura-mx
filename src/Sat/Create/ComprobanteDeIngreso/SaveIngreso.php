@@ -130,19 +130,21 @@ class SaveIngreso implements SaveIngresoInterface
     public function toRelatedConcepts(Invoice $invoice): void
     {
         $concepts = $this->attributeAssembly->getConceptos();
-        $format = $concepts->groupBy('statement_detail_id')->mapWithKeys(function ($items, $key) {
-            $item = $items->first();
+
+        $format = $concepts->mapWithKeys(function ($item, $key) {
+            $infoSatByConcept = $this->getAttributesConceptFromClient($item);
+
             $array = [
-                'quantity' => $item['quantity'],
-                'unit_price' => $item['price_unit'],
-                'gross_sub_total' => $item['gross_sub_total'],
-                'discount' => $item['discount'],
-                'sub_total' => $item['sub_total'],
-                'tax' => $item['tax'],
-                'total' => $item['total'],
+                'quantity' => $infoSatByConcept->getCantidad(),
+                'unit_price' => $infoSatByConcept->getValorUnitario(),
+                'gross_sub_total' => $infoSatByConcept->getImporte(),
+                'discount' => $infoSatByConcept->getDescuento(),
+                'sub_total' => (float)$infoSatByConcept->getImporte() - (float)$infoSatByConcept->getDescuento(),
+                'tax' => $infoSatByConcept->getSumImporteImpuestoTraslados(),
+                'total' => (float)$infoSatByConcept->getImporte() - $infoSatByConcept->getSumImporteImpuestoTraslados(),
             ];
 
-            return [$key => $array];
+            return [$item->get(config('jiagbrody-laravel-factura-mx.column_names.foreign_id_related_to_concepts')) => $array];
         });
 
         $invoice->relatedConcepts()->attach($format);
@@ -151,7 +153,7 @@ class SaveIngreso implements SaveIngresoInterface
     private function saveInvoiceTaxDetails(InvoiceTax $invoiceTax, Collection $concepts): void
     {
         $concepts->each(function (Collection $concept) use ($invoiceTax) {
-            $this->putRegisterTax($invoiceTax, $concept->get('conceptSat'));
+            $this->putRegisterTax($invoiceTax, $this->getAttributesConceptFromClient($concept));
         });
     }
 
@@ -178,5 +180,10 @@ class SaveIngreso implements SaveIngresoInterface
         $data->tasa_o_cuota = $collect->get('TasaOCuota');
         $data->importe = $collect->get('Importe');
         $data->save();
+    }
+
+    private function getAttributesConceptFromClient(Collection $collection): ConceptoAtributos
+    {
+        return $collection->get('conceptSat');
     }
 }

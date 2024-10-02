@@ -11,6 +11,7 @@ use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\EmisorAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoRetenidoAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoTrasladoAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ReceptorAtributos;
+use ReflectionProperty;
 
 readonly class AttributeAssembly
 {
@@ -94,6 +95,33 @@ readonly class AttributeAssembly
 
     public function getComplementoImpuestosLocales(): Collection
     {
+        //ESTA PROPIEDAD ES OPCIONAL Y PUEDE O NO ESTAR INICIALIZADA
+        $rp = new \ReflectionProperty(self::class, 'complementoImpuestosLocales');
+        if ($rp->isInitialized($this) === false) {
+            return collect();
+        }
+
         return $this->complementoImpuestosLocales;
+    }
+
+    /*
+     * Obtiene las propiedades de la clase, util para mostrarse en el frontend con los datos por default para facturar.
+     */
+    public function get(): \stdClass
+    {
+        $class = $this;
+        $className = get_class($class);
+        $properties = get_class_vars($className);
+
+        $data = new \stdClass();
+
+        foreach ($properties as $key => $value) {
+            $rp = new ReflectionProperty($className, $key);
+            if ($rp->isInitialized($class)) {
+                $data->{$key} = clone $this->{$key};
+            }
+        }
+
+        return $data;
     }
 }

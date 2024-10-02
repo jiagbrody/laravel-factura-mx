@@ -8,19 +8,19 @@ final readonly class ReceptorAtributos
 {
     use AtributosHelperTrait;
 
-    private string $Rfc;
+    public string $Rfc;
 
-    private string $Nombre;
+    public string $Nombre;
 
-    private string $DomicilioFiscalReceptor;
+    public string $DomicilioFiscalReceptor;
 
-    private string $ResidenciaFiscal;
+    public string $ResidenciaFiscal;
 
-    private string $NumRegIdTrib;
+    public string $NumRegIdTrib;
 
-    private string $RegimenFiscalReceptor;
+    public string $RegimenFiscalReceptor;
 
-    private string $UsoCFDI;
+    public string $UsoCFDI;
 
     public function setRfc(string $Rfc): void
     {

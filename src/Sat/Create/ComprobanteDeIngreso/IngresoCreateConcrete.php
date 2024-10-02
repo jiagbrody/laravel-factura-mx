@@ -31,11 +31,11 @@ class IngresoCreateConcrete extends CfdiHelperAbstract
         return $this;
     }
 
-    public function addComplementoImpuestosLocales(Collection $localTaxes): self
+    public function addComplementoImpuestosLocales(Collection $impuestosLocales): self
     {
         $impLocales = new ImpuestosLocales();
         $format = collect();
-        foreach ($localTaxes as $localTax) {
+        foreach ($impuestosLocales as $localTax) {
             if ($localTax instanceof RetencionesLocalesAtributos) {
                 $format->push(array_merge($localTax->getCollection()->toArray(), ['invoice_tax_type_id' => InvoiceTaxTypeEnum::RETENCION->value]));
                 $impLocales->addRetencionLocal($localTax->getCollection()->toArray());

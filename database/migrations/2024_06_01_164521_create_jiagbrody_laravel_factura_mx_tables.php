@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('rfc', 20);
             $table->string('nombre', 254)->comment('razon social fiscal');
-            $table->string('domicilio_fiscal_receptor', 10);
+            $table->string('domicilio_fiscal', 10);
             $table->string('residencia_fiscal', 10)->nullable();
             $table->string('num_reg_id_trib', 10)->nullable();
             $table->string('regimen_fiscal', 10);
@@ -233,7 +233,7 @@ return new class extends Migration
                 'name' => 'Emisor 1',
                 'rfc' => 'EKU9003173C9',
                 'nombre' => 'ESCUELA KEMPER URGATE',
-                'domicilio_fiscal_receptor' => '21855',
+                'domicilio_fiscal' => '21855',
                 'regimen_fiscal' => '601',
                 'certificate_path' => '/csd_eku9003173c9_20190617131829/CSD_Sucursal_1_EKU9003173C9_20230517_223850.cer',
                 'key_path' => '/csd_eku9003173c9_20190617131829/CSD_Sucursal_1_EKU9003173C9_20230517_223850.key',
@@ -244,7 +244,7 @@ return new class extends Migration
                 'name' => 'Emisor 2',
                 'rfc' => 'IIA040805DZ4',
                 'nombre' => 'INDISTRIA ILUMINADORA DE ALMACENES',
-                'domicilio_fiscal_receptor' => '63900',
+                'domicilio_fiscal' => '63900',
                 'regimen_fiscal' => '601',
                 'certificate_path' => '/csd_iia040805dz4_20190617133200/CSD_Sucursal_1_IIA040805DZ4_20230518_062510.cer',
                 'key_path' => '/csd_iia040805dz4_20190617133200/CSD_Sucursal_1_IIA040805DZ4_20230518_062510.key',

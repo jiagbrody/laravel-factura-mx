@@ -8,11 +8,11 @@ final readonly class TrasladosLocalesAtributos
 {
     use AtributosHelperTrait;
 
-    private string $ImpLocTrasladado;
+    public string $ImpLocTrasladado;
 
-    private string $TasadeTraslado;
+    public string $TasadeTraslado;
 
-    private string $Importe;
+    public string $Importe;
 
     public function setImpLocTrasladado(string $ImpLocTrasladado): void
     {
