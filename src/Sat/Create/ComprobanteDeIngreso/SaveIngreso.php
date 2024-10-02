@@ -137,9 +137,9 @@ class SaveIngreso implements SaveIngresoInterface
                 'unit_price' => $infoSatByConcept->getValorUnitario(),
                 'gross_sub_total' => $infoSatByConcept->getImporte(),
                 'discount' => $infoSatByConcept->getDescuento(),
-                'sub_total' => (float)$infoSatByConcept->getImporte() - (float)$infoSatByConcept->getDescuento(),
+                'sub_total' => (float) $infoSatByConcept->getImporte() - (float) $infoSatByConcept->getDescuento(),
                 'tax' => $infoSatByConcept->getSumImporteImpuestoTraslados(),
-                'total' => (float)$infoSatByConcept->getImporte() - $infoSatByConcept->getSumImporteImpuestoTraslados(),
+                'total' => (float) $infoSatByConcept->getImporte() - $infoSatByConcept->getSumImporteImpuestoTraslados(),
             ];
 
             return [$item->get(config('jiagbrody-laravel-factura-mx.column_names.foreign_id_related_to_concepts')) => $array];

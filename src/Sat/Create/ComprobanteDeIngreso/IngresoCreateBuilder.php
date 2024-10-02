@@ -27,12 +27,11 @@ readonly class IngresoCreateBuilder
     protected DocumentHandler $documentHandler;
 
     public function __construct(
-        protected Credential           $credential,
-        protected CfdiCreator40        $creatorCfdi,
+        protected Credential $credential,
+        protected CfdiCreator40 $creatorCfdi,
         protected InvoiceCompanyHelper $companyHelper,
-        public AttributeAssembly    $attributeAssembly
-    )
-    {
+        public AttributeAssembly $attributeAssembly
+    ) {
         $this->documentHandler = new DocumentHandler;
     }
 
@@ -98,7 +97,7 @@ readonly class IngresoCreateBuilder
 
     private function detectLogicError($model): void
     {
-        if (!$model instanceof Model) {
+        if (! $model instanceof Model) {
             abort(422, 'La instancia no es Modelo Eloquent correcto.');
         }
     }
@@ -106,7 +105,7 @@ readonly class IngresoCreateBuilder
     private function getFileName(?string $fileName): string
     {
         if ($fileName === null) {
-            $fileName = 'invoice-' . $this->invoice->id . '_' . Str::slug($this->attributeAssembly->getComprobanteAtributos()->getFecha());
+            $fileName = 'invoice-'.$this->invoice->id.'_'.Str::slug($this->attributeAssembly->getComprobanteAtributos()->getFecha());
         }
 
         return $fileName;
