@@ -14,29 +14,29 @@ final readonly class ConceptoAtributos
 
     const RELATED_NAME_CONCEPTO_RETENIDO = 'impuestoRetenidos';
 
-    private string $ClaveProdServ;
+    public string $ClaveProdServ;
 
-    private string $NoIdentificacion;
+    public string $NoIdentificacion;
 
-    private string $Cantidad;
+    public string $Cantidad;
 
-    private string $ClaveUnidad;
+    public string $ClaveUnidad;
 
-    private string $Unidad;
+    public string $Unidad;
 
-    private string $Descripcion;
+    public string $Descripcion;
 
-    private string $ValorUnitario;
+    public string $ValorUnitario;
 
-    private string $Importe;
+    public string $Importe;
 
-    private string $Descuento;
+    public string $Descuento;
 
-    private string $ObjetoImp;
+    public string $ObjetoImp;
 
-    private Collection $impuestoTraslados;
+    public Collection $impuestoTraslados;
 
-    private Collection $impuestoRetenidos;
+    public Collection $impuestoRetenidos;
 
     public function __construct()
     {
@@ -105,7 +105,7 @@ final readonly class ConceptoAtributos
 
     public function setValorUnitario(float $ValorUnitario): void
     {
-        $this->ValorUnitario = (string) PatronDeDatosHelper::t_import($ValorUnitario);
+        $this->ValorUnitario = (string)PatronDeDatosHelper::t_import($ValorUnitario);
     }
 
     public function getValorUnitario(): string
@@ -125,7 +125,7 @@ final readonly class ConceptoAtributos
 
     public function setImporte(float $Importe): void
     {
-        $this->Importe = (string) PatronDeDatosHelper::t_import($Importe);
+        $this->Importe = (string)PatronDeDatosHelper::t_import($Importe);
     }
 
     public function getImporte(): string
@@ -135,7 +135,7 @@ final readonly class ConceptoAtributos
 
     public function setDescuento(float $Descuento): void
     {
-        $this->Descuento = (string) PatronDeDatosHelper::t_import($Descuento);
+        $this->Descuento = (string)PatronDeDatosHelper::t_import($Descuento);
     }
 
     public function getDescuento(): string
@@ -161,6 +161,15 @@ final readonly class ConceptoAtributos
     public function getImpuestoTraslados(): Collection
     {
         return $this->impuestoTraslados;
+    }
+
+    public function getSumImporteImpuestoTraslados(): float
+    {
+        $importesDeTraslado = $this->impuestoTraslados->map(function (ImpuestoTrasladoAtributos $item) {
+            return (float)$item->getImporte();
+        });
+
+        return $importesDeTraslado->sum();
     }
 
     public function addImpuestoRetenido(ImpuestoRetenidoAtributos $impuestoRetenidoAtributos): void

@@ -8,11 +8,11 @@ final readonly class RetencionesLocalesAtributos
 {
     use AtributosHelperTrait;
 
-    private string $ImpLocRetenido;
+    public string $ImpLocRetenido;
 
-    private string $TasadeRetencion; // asi está declarado el nombre para el SAT
+    public string $TasadeRetencion; // asi está declarado el nombre para el SAT
 
-    private string $Importe;
+    public string $Importe;
 
     public function setImpLocRetenido(string $ImpLocRetenido): void
     {

@@ -10,43 +10,43 @@ final readonly class ComprobanteAtributos
 {
     use AtributosHelperTrait;
 
-    private string $Version;
+    public string $Version;
 
-    private string $Serie;
+    public string $Serie;
 
-    private string $Folio;
+    public string $Folio;
 
-    private string $Fecha;
+    public string $Fecha;
 
-    private string $Sello;
+    public string $Sello;
 
-    protected string $FormaPago;
+    public string $FormaPago;
 
-    private string $NoCertificado;
+    public string $NoCertificado;
 
-    private string $Certificado;
+    public string $Certificado;
 
-    private string $CondicionesDePago;
+    public string $CondicionesDePago;
 
-    private string $SubTotal;
+    public string $SubTotal;
 
-    private string $Descuento;
+    public string $Descuento;
 
-    private string $Moneda;
+    public string $Moneda;
 
-    private string $TipoCambio;
+    public string $TipoCambio;
 
-    private string $Total;
+    public string $Total;
 
-    private string $TipoDeComprobante;
+    public string $TipoDeComprobante;
 
-    private string $Exportacion;
+    public string $Exportacion;
 
-    private string $MetodoPago;
+    public string $MetodoPago;
 
-    private string $LugarExpedicion;
+    public string $LugarExpedicion;
 
-    private string $Confirmacion;
+    public string $Confirmacion;
 
     public function __construct()
     {
@@ -146,7 +146,7 @@ final readonly class ComprobanteAtributos
 
     private function setSubTotal(float $SubTotal): void
     {
-        $this->SubTotal = (string) PatronDeDatosHelper::t_import($SubTotal);
+        $this->SubTotal = (string)PatronDeDatosHelper::t_import($SubTotal);
     }
 
     public function getSubTotal(): ?string
@@ -156,7 +156,7 @@ final readonly class ComprobanteAtributos
 
     private function setDescuento(float $Descuento): void
     {
-        $this->Descuento = (string) PatronDeDatosHelper::t_import($Descuento);
+        $this->Descuento = (string)PatronDeDatosHelper::t_import($Descuento);
     }
 
     public function getDescuento(): ?string
@@ -186,7 +186,7 @@ final readonly class ComprobanteAtributos
 
     private function setTotal(float $Total): void
     {
-        $this->Total = (string) PatronDeDatosHelper::t_import($Total);
+        $this->Total = (string)PatronDeDatosHelper::t_import($Total);
     }
 
     public function getTotal(): ?string
@@ -248,8 +248,8 @@ final readonly class ComprobanteAtributos
     // Por ejemplo: Cuando se agrega el complemento de "Impuesto Local" se realiza el descuento sobre el total.
     public function setInternallyAddTotalSubtotalDiscountValues(Comprobante $comprobante): void
     {
-        $this->setTotal((float) $comprobante->attributes()->get('Total'));
-        $this->setSubTotal((float) $comprobante->attributes()->get('SubTotal'));
-        $this->setDescuento((float) $comprobante->attributes()->get('Descuento'));
+        $this->setTotal((float)$comprobante->attributes()->get('Total'));
+        $this->setSubTotal((float)$comprobante->attributes()->get('SubTotal'));
+        $this->setDescuento((float)$comprobante->attributes()->get('Descuento'));
     }
 }

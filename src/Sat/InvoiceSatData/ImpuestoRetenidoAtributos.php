@@ -8,15 +8,15 @@ final readonly class ImpuestoRetenidoAtributos
 {
     use AtributosHelperTrait;
 
-    private string $Base;
+    public string $Base;
 
-    private string $Impuesto;
+    public string $Impuesto;
 
-    private string $TipoFactor;
+    public string $TipoFactor;
 
-    private string $TasaOCuota;
+    public string $TasaOCuota;
 
-    private string $Importe;
+    public string $Importe;
 
     public function setBase(float $Base): void
     {

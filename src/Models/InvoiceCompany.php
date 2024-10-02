@@ -23,7 +23,7 @@ class InvoiceCompany extends Model
             'name',
             'rfc',
             'nombre',
-            'domicilio_fiscal_receptor',
+            'domicilio_fiscal',
             'residencia_fiscal',
             'num_reg_id_trib',
             'regimen_fiscal',
