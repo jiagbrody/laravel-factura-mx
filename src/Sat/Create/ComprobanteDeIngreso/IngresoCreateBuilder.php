@@ -6,6 +6,7 @@ namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeIngreso;
 
 use CfdiUtils\CfdiCreator40;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceDocumentTypeEnum;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
@@ -30,7 +31,7 @@ readonly class IngresoCreateBuilder
         protected Credential           $credential,
         protected CfdiCreator40        $creatorCfdi,
         protected InvoiceCompanyHelper $companyHelper,
-        public AttributeAssembly    $attributeAssembly
+        public AttributeAssembly       $attributeAssembly
     )
     {
         $this->documentHandler = new DocumentHandler;
@@ -86,9 +87,11 @@ readonly class IngresoCreateBuilder
 
     public function build(): array
     {
-        $this->saveInvoice();
+        DB::transaction(function () {
+            $this->saveInvoice();
 
-        $this->saveDocument();
+            $this->saveDocument();
+        });
 
         return [
             'invoice' => $this->invoice,
