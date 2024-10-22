@@ -105,7 +105,7 @@ final readonly class ConceptoAtributos
 
     public function setValorUnitario(float $ValorUnitario): void
     {
-        $this->ValorUnitario = (string)PatronDeDatosHelper::t_import($ValorUnitario);
+        $this->ValorUnitario = (string) PatronDeDatosHelper::t_import($ValorUnitario);
     }
 
     public function getValorUnitario(): string
@@ -125,7 +125,7 @@ final readonly class ConceptoAtributos
 
     public function setImporte(float $Importe): void
     {
-        $this->Importe = (string)PatronDeDatosHelper::t_import($Importe);
+        $this->Importe = (string) PatronDeDatosHelper::t_import($Importe);
     }
 
     public function getImporte(): string
@@ -135,7 +135,7 @@ final readonly class ConceptoAtributos
 
     public function setDescuento(float $Descuento): void
     {
-        $this->Descuento = (string)PatronDeDatosHelper::t_import($Descuento);
+        $this->Descuento = (string) PatronDeDatosHelper::t_import($Descuento);
     }
 
     public function getDescuento(): string
@@ -166,7 +166,7 @@ final readonly class ConceptoAtributos
     public function getSumImporteImpuestoTraslados(): float
     {
         $importesDeTraslado = $this->impuestoTraslados->map(function (ImpuestoTrasladoAtributos $item) {
-            return (float)$item->getImporte();
+            return (float) $item->getImporte();
         });
 
         return $importesDeTraslado->sum();

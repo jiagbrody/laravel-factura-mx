@@ -113,7 +113,7 @@ readonly class AttributeAssembly
         $className = get_class($class);
         $properties = get_class_vars($className);
 
-        $data = new \stdClass();
+        $data = new \stdClass;
 
         foreach ($properties as $key => $value) {
             $rp = new ReflectionProperty($className, $key);
