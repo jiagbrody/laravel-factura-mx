@@ -22,7 +22,7 @@ final class SatCatalogsService
         $claveUnidades = $claveUnidadesQuery->get();
 
         return $claveUnidades->each(function ($item) {
-            $item->name = $item->id . ' - ' . $item->texto;
+            $item->name = $item->id.' - '.$item->texto;
         });
     }
 
@@ -44,24 +44,24 @@ final class SatCatalogsService
                     break;
             }
 
-            $item->name = $item->id . ' - ' . $item->texto . ' - ' . $text;
+            $item->name = $item->id.' - '.$item->texto.' - '.$text;
         });
     }
 
     public static function getUsoCfdi(): \Illuminate\Support\Collection
     {
-        if (!request()->has('id')) {
+        if (! request()->has('id')) {
             abort(422, 'No se ha proporcionado un ID valido del regimen fiscal');
         }
 
         $regimenFiscal = self::connection('cfdi_40_regimenes_fiscales')->find(request()->get('id'));
 
         $usosCfdi = self::connection('cfdi_40_usos_cfdi')
-            ->where('regimenes_fiscales_receptores', 'LIKE', '%' . $regimenFiscal->id . '%')
+            ->where('regimenes_fiscales_receptores', 'LIKE', '%'.$regimenFiscal->id.'%')
             ->get();
 
         return $usosCfdi->each(function ($item) {
-            $item->name = $item->id . ' - ' . $item->texto;
+            $item->name = $item->id.' - '.$item->texto;
         });
     }
 
@@ -70,7 +70,7 @@ final class SatCatalogsService
         $metodoPago = self::connection('cfdi_40_metodos_pago')->get();
 
         return $metodoPago->each(function ($item) {
-            $item->name = $item->id . ' - ' . $item->texto;
+            $item->name = $item->id.' - '.$item->texto;
         });
     }
 
@@ -79,7 +79,7 @@ final class SatCatalogsService
         $metodoPago = self::connection('cfdi_40_paises')->get();
 
         return $metodoPago->each(function ($item) {
-            $item->name = $item->id . ' - ' . $item->texto;
+            $item->name = $item->id.' - '.$item->texto;
         });
     }
 
@@ -88,19 +88,19 @@ final class SatCatalogsService
         $moneda = self::connection('cfdi_40_monedas')->whereIn('id', ['MXN', 'USD'])->get();
 
         return $moneda->each(function ($item) {
-            $item->name = $item->id . ' - ' . $item->texto;
+            $item->name = $item->id.' - '.$item->texto;
         });
     }
 
     public static function getFormaPago(array $filterByIds = []): \Illuminate\Support\Collection
     {
         $query = self::connection('cfdi_40_formas_pago');
-        if (!empty($filterByIds)) {
+        if (! empty($filterByIds)) {
             $query->whereIn('id', $filterByIds);
         }
 
         return $query->get()->each(function ($item) {
-            $item->name = $item->id . ' - ' . $item->texto;
+            $item->name = $item->id.' - '.$item->texto;
         });
     }
 
@@ -109,7 +109,7 @@ final class SatCatalogsService
         $formaPago = self::connection('cfdi_40_exportaciones')->get();
 
         return $formaPago->each(function ($item) {
-            $item->name = $item->id . ' - ' . $item->texto;
+            $item->name = $item->id.' - '.$item->texto;
         });
     }
 
@@ -118,7 +118,7 @@ final class SatCatalogsService
         $tipoRelacion = self::connection('cfdi_40_tipos_relaciones')->get();
 
         return $tipoRelacion->each(function ($item) {
-            $item->name = $item->id . ' - ' . $item->texto;
+            $item->name = $item->id.' - '.$item->texto;
         });
     }
 
@@ -127,7 +127,7 @@ final class SatCatalogsService
         $tipoRelacion = self::connection('cfdi_40_objetos_impuestos')->get();
 
         return $tipoRelacion->each(function ($item) {
-            $item->name = $item->id . ' - ' . $item->texto;
+            $item->name = $item->id.' - '.$item->texto;
         });
     }
 
@@ -136,7 +136,7 @@ final class SatCatalogsService
         $tipoRelacion = self::connection('cfdi_40_impuestos')->get();
 
         return $tipoRelacion->each(function ($item) {
-            $item->name = $item->id . ' - ' . $item->texto;
+            $item->name = $item->id.' - '.$item->texto;
         });
     }
 
@@ -155,7 +155,7 @@ final class SatCatalogsService
 
         return $tipoRelacion->each(function ($item) {
             $item->id = $item->valor;
-            $item->name = $item->tipo . ' - ' . $item->valor . ' - ' . $item->factor . ' - ' . $item->impuesto;
+            $item->name = $item->tipo.' - '.$item->valor.' - '.$item->factor.' - '.$item->impuesto;
         });
     }
 
@@ -164,7 +164,7 @@ final class SatCatalogsService
         $tipoRelacion = self::connection('cfdi_40_tipos_comprobantes')->get();
 
         return $tipoRelacion->each(function ($item) {
-            $item->name = $item->id . ' - ' . $item->texto;
+            $item->name = $item->id.' - '.$item->texto;
         });
     }
 }
