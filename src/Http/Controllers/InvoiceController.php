@@ -35,9 +35,9 @@ class InvoiceController extends Controller
             'invoiceBalance',
             'invoiceCfdi',
             'invoiceDetail',
-            'invoiceTaxes',
+            // 'invoiceTaxes',
             'invoiceTax',
-            'documents',
+            'invoiceDocuments',
         ])->whereId($invoiceId)->firstOrFail();
 
         return Inertia::render('jiagbrody-laravel-factura-mx/Invoices/Show', ['invoice' => $invoice]);

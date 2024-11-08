@@ -19,9 +19,9 @@ class InvoiceCfdi extends Model
         return config('jiagbrody-laravel-factura-mx.table_names.invoice_cfdis', parent::getTable());
     }
 
-    public function invoiceCfdiCancels(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function invoiceCfdiCancel(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasMany(InvoiceCfdiCancel::class);
+        return $this->hasOne(InvoiceCfdiCancel::class);
     }
 
     public function user(): BelongsTo
@@ -37,6 +37,11 @@ class InvoiceCfdi extends Model
     public function invoiceCfdiCancelType(): BelongsTo
     {
         return $this->belongsTo(InvoiceCfdiCancelType::class);
+    }
+
+    public function invoiceCfdiType(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(InvoiceCfdiType::class);
     }
 
     public function documents(): MorphMany

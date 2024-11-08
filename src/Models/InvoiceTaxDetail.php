@@ -20,4 +20,9 @@ class InvoiceTaxDetail extends Model
     {
         return $this->belongsTo(InvoiceTax::class);
     }
+
+    public function invoiceTaxType(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(InvoiceTaxType::class);
+    }
 }

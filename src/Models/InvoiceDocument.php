@@ -45,6 +45,11 @@ class InvoiceDocument extends Model
         return $this->morphTo();
     }
 
+    public function invoiceDocumentType(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(InvoiceDocumentType::class);
+    }
+
     /*
      * Genero el nombre del archivo que se va a guardar.
      */
@@ -104,7 +109,7 @@ class InvoiceDocument extends Model
     }
 
     /*
-     * Leer el XML en formato
+     * Leer el XML en formato objeto. Por ejemplo para mostrar en frontend
      */
     public static function xmlDocumentReadingConverter(InvoiceDocument $document, $associative = null, $depth = 512, $flags = 0)
     {

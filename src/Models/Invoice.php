@@ -48,9 +48,9 @@ class Invoice extends Model
         return $this->hasOne(InvoiceDetail::class);
     }
 
-    public function invoiceTaxes(): HasMany
+    public function invoiceTaxDetails(): HasMany
     {
-        return $this->hasMany(InvoiceTax::class);
+        return $this->hasMany(InvoiceTaxDetail::class);
     }
 
     public function invoiceTax(): HasOne
@@ -78,10 +78,15 @@ class Invoice extends Model
         return $this->belongsTo(InvoiceStatus::class);
     }
 
-    public function documents(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    public function invoiceDocuments(): \Illuminate\Database\Eloquent\Relations\MorphMany
     {
         return $this->morphMany(InvoiceDocument::class, 'documentable');
     }
+
+    // public function documents(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    // {
+    //     return $this->morphMany(InvoiceDocument::class, 'documentable');
+    // }
 
     public function pdfInvoiceDocument(): \Illuminate\Database\Eloquent\Relations\MorphOne
     {

@@ -13,9 +13,13 @@ final class SatCatalogsService
         return DB::connection('sqlite-sat-catalogs')->table($tableName);
     }
 
-    public static function getClaveUnidad()
+    public static function getClaveUnidad(?array $whereIn = null)
     {
-        $claveUnidades = self::connection('cfdi_40_claves_unidades')->get();
+        $claveUnidadesQuery = self::connection('cfdi_40_claves_unidades');
+        if (!is_null($whereIn)) {
+            $claveUnidadesQuery->whereIn('id', $whereIn);
+        }
+        $claveUnidades = $claveUnidadesQuery->get();
 
         return $claveUnidades->each(function ($item) {
             $item->name = $item->id . ' - ' . $item->texto;

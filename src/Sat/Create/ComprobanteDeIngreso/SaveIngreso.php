@@ -87,8 +87,8 @@ class SaveIngreso implements SaveIngresoInterface
         $tax = new InvoiceTax;
 
         $tax->invoice_id = $invoice->id;
-        $tax->total_impuestos_retenidos = $concepts->sum('total_transfer_taxes');
-        $tax->total_impuestos_trasladados = $concepts->sum('total_retention_taxes');
+        $tax->total_impuestos_retenidos = $concepts->sum('total_retention_taxes');
+        $tax->total_impuestos_trasladados = $concepts->sum('total_transfer_taxes');
         $tax->save();
 
         $this->saveInvoiceTaxDetails($tax, $concepts);

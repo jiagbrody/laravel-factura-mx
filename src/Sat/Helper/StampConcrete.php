@@ -49,8 +49,8 @@ abstract class StampConcrete implements StampConcreteInterface
             ->build();
 
         // BORRO LOS DOCUMENTOS DE BORRADOR.
-        if ($this->invoice->documents()->exists()) {
-            $this->invoice->documents()->each(function ($document) {
+        if ($this->invoice->invoiceDocuments()->exists()) {
+            $this->invoice->invoiceDocuments()->each(function ($document) {
                 (new DocumentDestroyService($document))->make();
             });
         }

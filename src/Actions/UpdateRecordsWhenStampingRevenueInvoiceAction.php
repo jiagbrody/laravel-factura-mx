@@ -9,7 +9,7 @@ use JiagBrody\LaravelFacturaMx\Enums\InvoiceDocumentTypeEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceStatusEnum;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCfdi;
-use JiagBrody\LaravelFacturaMx\Sat\Document\DocumentHandler;
+use JiagBrody\LaravelFacturaMx\Sat\Document\DocumentRepository;
 
 class UpdateRecordsWhenStampingRevenueInvoiceAction
 {
@@ -46,7 +46,7 @@ class UpdateRecordsWhenStampingRevenueInvoiceAction
 
     public function generateDocuments($invoice, $xmlContent, $fileName): void
     {
-        (new DocumentHandler)->create(
+        (new DocumentRepository)->create(
             relationshipModel: $invoice->invoiceCfdi->getMorphClass(),
             relationshipId: $invoice->invoiceCfdi->id,
             documentTypeId: InvoiceDocumentTypeEnum::XML_FILE->value,

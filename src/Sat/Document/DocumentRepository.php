@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Document;
 
-class DocumentHandler implements DocumentHandlerInterface
+class DocumentRepository implements DocumentRepositoryInterface
 {
     public function create(
         string $relationshipModel,

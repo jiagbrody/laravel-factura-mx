@@ -8,12 +8,18 @@ use JiagBrody\LaravelFacturaMx\Sat\Cancel\CancelInvoiceBuilder;
 use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteBuilder;
 use JiagBrody\LaravelFacturaMx\Sat\Stamp\StampInvoiceBuilder;
 use JiagBrody\LaravelFacturaMx\Sat\Status\StatusInvoiceBuilder;
+use JiagBrody\LaravelFacturaMx\Services\Document\DocumentService;
 
 class LaravelFacturaMx
 {
     public function __construct()
     {
         date_default_timezone_set(config('jiagbrody-laravel-factura-mx.default_timezone'));
+    }
+
+    public function documentService(): DocumentService
+    {
+        return new DocumentService();
     }
 
     public function create(): ComprobanteBuilder

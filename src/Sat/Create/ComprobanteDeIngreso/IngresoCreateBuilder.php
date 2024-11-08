@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceDocumentTypeEnum;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\AttributeAssembly;
-use JiagBrody\LaravelFacturaMx\Sat\Document\DocumentHandler;
+use JiagBrody\LaravelFacturaMx\Sat\Document\DocumentRepository;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
 use JiagBrody\LaravelFacturaMx\Sat\Stamp\StampInvoiceBuilder;
 use PhpCfdi\Credentials\Credential;
@@ -25,15 +25,16 @@ readonly class IngresoCreateBuilder
 
     public StampInvoiceBuilder $stampBuilder;
 
-    protected DocumentHandler $documentHandler;
+    protected DocumentRepository $documentRepository;
 
     public function __construct(
-        protected Credential $credential,
-        protected CfdiCreator40 $creatorCfdi,
+        protected Credential           $credential,
+        protected CfdiCreator40        $creatorCfdi,
         protected InvoiceCompanyHelper $companyHelper,
-        public AttributeAssembly $attributeAssembly
-    ) {
-        $this->documentHandler = new DocumentHandler;
+        public AttributeAssembly       $attributeAssembly
+    )
+    {
+        $this->documentRepository = new DocumentRepository;
     }
 
     public function setRelationshipModel($model): self
@@ -69,9 +70,46 @@ readonly class IngresoCreateBuilder
         return $this->invoice;
     }
 
-    public function saveDocument(?string $fileName = null): void
+    public function saveDocuments(?string $fileName = null): void
     {
-        $this->documentHandler->create(
+        $this->saveDocumentXml($fileName);
+        $this->saveDocumentPdf($fileName);
+
+    }
+
+    public function build(): array
+    {
+        DB::transaction(function () {
+            $this->saveInvoice();
+
+            $this->saveDocuments();
+        });
+
+        return [
+            'invoice' => $this->invoice,
+            'response' => (new StampInvoiceBuilder($this->invoice))->build(),
+        ];
+    }
+
+    private function detectLogicError($model): void
+    {
+        if (!$model instanceof Model) {
+            abort(422, 'La instancia no es Modelo Eloquent correcto.');
+        }
+    }
+
+    private function getFileName(?string $fileName): string
+    {
+        if ($fileName === null) {
+            $fileName = 'invoice-' . $this->invoice->id . '_' . Str::slug($this->attributeAssembly->getComprobanteAtributos()->getFecha());
+        }
+
+        return $fileName;
+    }
+
+    private function saveDocumentXml($fileName): void
+    {
+        $this->documentRepository->create(
             relationshipModel: $this->invoice->getMorphClass(),
             relationshipId: $this->invoice->id,
             documentTypeId: InvoiceDocumentTypeEnum::XML_FILE->value,
@@ -84,33 +122,18 @@ readonly class IngresoCreateBuilder
         );
     }
 
-    public function build(): array
+    private function saveDocumentPdf($fileName): void
     {
-        DB::transaction(function () {
-            $this->saveInvoice();
-
-            $this->saveDocument();
-        });
-
-        return [
-            'invoice' => $this->invoice,
-            'response' => (new StampInvoiceBuilder($this->invoice))->build(),
-        ];
-    }
-
-    private function detectLogicError($model): void
-    {
-        if (! $model instanceof Model) {
-            abort(422, 'La instancia no es Modelo Eloquent correcto.');
-        }
-    }
-
-    private function getFileName(?string $fileName): string
-    {
-        if ($fileName === null) {
-            $fileName = 'invoice-'.$this->invoice->id.'_'.Str::slug($this->attributeAssembly->getComprobanteAtributos()->getFecha());
-        }
-
-        return $fileName;
+        $this->documentRepository->create(
+            relationshipModel: $this->invoice->getMorphClass(),
+            relationshipId: $this->invoice->id,
+            documentTypeId: InvoiceDocumentTypeEnum::PDF_FILE->value,
+            fileName: $this->getFileName($fileName),
+            filePath: config('jiagbrody-laravel-factura-mx.invoices_files_path'),
+            mimeType: 'pdf',
+            extension: 'pdf',
+            storage: config('jiagbrody-laravel-factura-mx.filesystem_disk'),
+            fileContent: '$this->creatorCfdi->asXml()'
+        );
     }
 }
