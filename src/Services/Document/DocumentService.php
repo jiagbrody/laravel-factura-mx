@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Services\Document;
 
@@ -26,7 +28,7 @@ class DocumentService
 
     public function __construct()
     {
-        $this->helpers = new Helpers();
+        $this->helpers = new Helpers;
         $this->documents = new Collection;
         $this->xmlFile = new InvoiceDocument;
         $this->pdfFile = new InvoiceDocument;
@@ -35,7 +37,7 @@ class DocumentService
     public function setInvoice(Invoice $invoice): void
     {
         $this->invoice = $invoice;
-        $this->hasCfdi = (bool)$invoice->invoiceCfdi;
+        $this->hasCfdi = (bool) $invoice->invoiceCfdi;
 
         if ($this->hasCfdi) {
             //OBTIENE LOS ARCHIVOS DEL CFDI
@@ -95,7 +97,7 @@ class DocumentService
         $model = ($this->invoice->invoiceCfdi) ? $this->invoice->invoiceCfdi->getMorphClass() : $this->invoice->getMorphClass();
         $id = ($this->invoice->invoiceCfdi) ? $this->invoice->invoiceCfdi->id : $this->invoice->id;
 
-        $documentPdf = (new GeneratePdfDocumentFromXmlObjectForIngresoHelper)(comprobante: (array)$this->getXmlArray());
+        $documentPdf = (new GeneratePdfDocumentFromXmlObjectForIngresoHelper)(comprobante: (array) $this->getXmlArray());
         $documentRepository = new DocumentRepository;
         $documentRepository->create(
             relationshipModel: $model,
@@ -116,7 +118,7 @@ class DocumentService
     public function getFileNameToSave(?string $customFileName = null): string
     {
         if ($customFileName === null) {
-            $customFileName = 'invoice-' . $this->invoice->id;
+            $customFileName = 'invoice-'.$this->invoice->id;
         }
 
         return Str::slug($customFileName);

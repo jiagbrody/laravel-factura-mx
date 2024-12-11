@@ -15,7 +15,7 @@ class DatabaseService
         $this->allSimpleRelationDataQuery = new AllSimpleRelationDataQuery;
     }
 
-    public function getAllSimpleRelationData(): null|object
+    public function getAllSimpleRelationData(): ?object
     {
         return $this->allSimpleRelationDataQuery->getQuerySource()->where('i.id', '=', $this->invoice->id)->first();
     }

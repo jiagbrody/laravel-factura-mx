@@ -22,9 +22,7 @@ class IngresoRelatedBusinessItemsService
         $this->concepts = $this->queryBuilder->where('invoice_id', '=', $invoice->id);
     }
 
-    public function setInvoice(Invoice $invoice): void
-    {
-    }
+    public function setInvoice(Invoice $invoice): void {}
 
     public function getInvoice(): Invoice
     {

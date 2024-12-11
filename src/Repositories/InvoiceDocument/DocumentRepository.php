@@ -10,16 +10,15 @@ class DocumentRepository implements DocumentRepositoryInterface
 {
     public function create(
         string $relationshipModel,
-        int    $relationshipId,
-               $documentTypeId,
+        int $relationshipId,
+        $documentTypeId,
         string $fileName,
         string $filePath,
         string $mimeType,
         string $extension,
         string $storage,
         string $fileContent
-    ): InvoiceDocument
-    {
+    ): InvoiceDocument {
         return (new CreateDocument(
             relationshipModel: $relationshipModel,
             relationshipId: $relationshipId,
@@ -35,17 +34,16 @@ class DocumentRepository implements DocumentRepositoryInterface
 
     public function update(
         InvoiceDocument $invoiceDocument,
-        string          $relationshipModel,
-        int             $relationshipId,
-                        $documentTypeId,
-        string          $fileName,
-        string          $filePath,
-        string          $mimeType,
-        string          $extension,
-        string          $storage,
-        string          $fileContent
-    ): void
-    {
+        string $relationshipModel,
+        int $relationshipId,
+        $documentTypeId,
+        string $fileName,
+        string $filePath,
+        string $mimeType,
+        string $extension,
+        string $storage,
+        string $fileContent
+    ): void {
         (new UpdateDocument(
             invoiceDocument: $invoiceDocument,
         ))(

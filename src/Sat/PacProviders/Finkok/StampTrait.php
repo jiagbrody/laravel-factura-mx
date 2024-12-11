@@ -19,7 +19,7 @@ trait StampTrait
 
         $xmlFile = $this->invoice->xmlInvoiceDocument;
 
-        $documentService = new DocumentService();
+        $documentService = new DocumentService;
         $draftXmlDocument = $documentService->helpers::obtainExistingDocumentFile($xmlFile);
 
         $params = [
@@ -72,7 +72,7 @@ trait StampTrait
         $response->setIncidenciaIdIncidencia($incidencia->IdIncidencia);
         $message = $incidencia->MensajeIncidencia;
         if ($incidencia->MensajeIncidencia) {
-            $message .= ' - ' . $incidencia->ExtraInfo;
+            $message .= ' - '.$incidencia->ExtraInfo;
         }
         $response->setIncidenciaMensaje($message);
         $response->setIncidenciaCodigoError($incidencia->CodigoError);

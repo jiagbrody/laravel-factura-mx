@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Helper;
 
@@ -18,7 +20,7 @@ final class GeneratePdfDocumentFromXmlObjectForIngresoHelper
     {
         $renderer = new ImageRenderer(
             new RendererStyle(140),
-            new SvgImageBackEnd()
+            new SvgImageBackEnd
         );
         $qrCode = (new Writer($renderer))->writeString('google.com', 'UTF-8');
         // $writer->writeFile('Hello World!', 'qrcode.svg');
@@ -30,7 +32,7 @@ final class GeneratePdfDocumentFromXmlObjectForIngresoHelper
 
         $episode = null;
         $statement = null;
-        $readableText = (new ConvertNumberToReadableTextHelper())(
+        $readableText = (new ConvertNumberToReadableTextHelper)(
             amount: $comprobante['Total'],
             currencyLabel: 'pesos',
             separatorLabel: 'con',

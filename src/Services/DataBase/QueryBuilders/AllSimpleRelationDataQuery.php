@@ -25,22 +25,22 @@ class AllSimpleRelationDataQuery
         $invoiceComplementLocalTaxDetails = config('jiagbrody-laravel-factura-mx.table_names.invoice_complement_local_tax_details');
         $invoiceTaxes = config('jiagbrody-laravel-factura-mx.table_names.invoice_taxes');
 
-        $this->querySource = DB::table($invoices . ' as i')
+        $this->querySource = DB::table($invoices.' as i')
             // $this->querySource = Invoice::query()
-            ->from($invoices . ' as i')
+            ->from($invoices.' as i')
             ->select($this->obtainSelectOfInvoices())
-            ->join($invoiceTypes . ' as iT', 'i.invoice_type_id', '=', 'iT.id')
-            ->join($invoiceStatuses . ' as iS', 'i.invoice_status_id', '=', 'iS.id')
-            ->join($invoiceCompanies . ' as iC', 'i.invoice_company_id', '=', 'iC.id')
-            ->join($invoiceBalances . ' as iB', 'i.id', '=', 'iB.invoice_id')
-            ->join($invoicePaymentTypes . ' as iPT', 'iB.invoice_payment_type_id', '=', 'iPT.id')
-            ->leftJoin($invoiceComplementLocalTaxes . ' as iCLOCALTAXE', 'i.id', '=', 'iCLOCALTAXE.invoice_id')
-            ->leftJoin($invoiceComplementLocalTaxDetails, 'iCLOCALTAXE.id', '=', $invoiceComplementLocalTaxDetails . '.invoice_complement_local_tax_id')
-            ->leftJoin($invoiceCfdis . ' as iCFDI', 'i.id', '=', 'iCFDI.invoice_id')
+            ->join($invoiceTypes.' as iT', 'i.invoice_type_id', '=', 'iT.id')
+            ->join($invoiceStatuses.' as iS', 'i.invoice_status_id', '=', 'iS.id')
+            ->join($invoiceCompanies.' as iC', 'i.invoice_company_id', '=', 'iC.id')
+            ->join($invoiceBalances.' as iB', 'i.id', '=', 'iB.invoice_id')
+            ->join($invoicePaymentTypes.' as iPT', 'iB.invoice_payment_type_id', '=', 'iPT.id')
+            ->leftJoin($invoiceComplementLocalTaxes.' as iCLOCALTAXE', 'i.id', '=', 'iCLOCALTAXE.invoice_id')
+            ->leftJoin($invoiceComplementLocalTaxDetails, 'iCLOCALTAXE.id', '=', $invoiceComplementLocalTaxDetails.'.invoice_complement_local_tax_id')
+            ->leftJoin($invoiceCfdis.' as iCFDI', 'i.id', '=', 'iCFDI.invoice_id')
             //TODO: CHECAR SI LAS CANCELACIONES LAS DEJO COMO SOLO "hasOne" Y LOS ACUSES CREAR OTRA TABLA SEPARADA DE ACUSES.
-            ->leftJoin($invoiceCfdiCancels . ' as iCCANCEL', 'iCFDI.id', '=', 'iCCANCEL.invoice_cfdi_id')
-            ->leftJoin($invoiceCfdiCancelTypes . ' as iCCANCELTYPE', 'iCCANCEL.invoice_cfdi_cancel_type_id', '=', 'iCCANCELTYPE.id')
-            ->leftJoin($invoiceTaxes, 'i.id', '=', $invoiceTaxes . '.invoice_id');
+            ->leftJoin($invoiceCfdiCancels.' as iCCANCEL', 'iCFDI.id', '=', 'iCCANCEL.invoice_cfdi_id')
+            ->leftJoin($invoiceCfdiCancelTypes.' as iCCANCELTYPE', 'iCCANCEL.invoice_cfdi_cancel_type_id', '=', 'iCCANCELTYPE.id')
+            ->leftJoin($invoiceTaxes, 'i.id', '=', $invoiceTaxes.'.invoice_id');
     }
 
     private function obtainSelectOfInvoices(): array

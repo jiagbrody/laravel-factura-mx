@@ -9,10 +9,10 @@ class ConvertNumberToReadableTextHelper
     public function __invoke(string $amount, string $currencyLabel, string $separatorLabel, string $decimalLabel): string
     {
         $num_word = '';
-        $arr = explode(".", $amount);
-        $entero = (int)$arr[0];
+        $arr = explode('.', $amount);
+        $entero = (int) $arr[0];
         if (isset($arr[1])) {
-            $decimos = (int)(strlen($arr[1]) == 1 ? $arr[1] . '0' : $arr[1]);
+            $decimos = (int) (strlen($arr[1]) == 1 ? $arr[1].'0' : $arr[1]);
         }
 
         $fmt = new \NumberFormatter('es', \NumberFormatter::SPELLOUT);

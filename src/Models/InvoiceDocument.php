@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use JiagBrody\LaravelFacturaMx\Sat\Helper\ConvertXmlContentToObjectHelper;
 
 class InvoiceDocument extends Model
 {
@@ -55,7 +54,7 @@ class InvoiceDocument extends Model
      */
     public static function getInitialFileName($model, string $fileExtension, ?string $addMoreToName = null): string
     {
-        return Str::slug(class_basename($model) . '-' . $model->id . ($model?->document_name ? '-' . $model->document_name : '')) . ($addMoreToName ? '-' . $addMoreToName : '') . '.' . $fileExtension;
+        return Str::slug(class_basename($model).'-'.$model->id.($model?->document_name ? '-'.$model->document_name : '')).($addMoreToName ? '-'.$addMoreToName : '').'.'.$fileExtension;
     }
 
     /*
@@ -63,9 +62,9 @@ class InvoiceDocument extends Model
      */
     public static function getInitialFilePathUsingModel($model): string
     {
-        $folder = self::FOLDER_NAME . '/' . (strtolower(class_basename($model)));
+        $folder = self::FOLDER_NAME.'/'.(strtolower(class_basename($model)));
 
-        return $folder . '/' . now()->format('Y') . '/' . now()->format('m');
+        return $folder.'/'.now()->format('Y').'/'.now()->format('m');
     }
 
     /*
@@ -73,7 +72,7 @@ class InvoiceDocument extends Model
      */
     public function getFileAttribute(): string
     {
-        return $this->file_path . '/' . $this->file_name . '.' . $this->extension;
+        return $this->file_path.'/'.$this->file_name.'.'.$this->extension;
     }
 
     /*
@@ -93,6 +92,6 @@ class InvoiceDocument extends Model
     {
         $file = $this->file;
 
-        return (Storage::disk($this->storage)->exists($file)) ? storage_path('app/' . $this->storage . '/' . $file) : 'The file does not exists';
+        return (Storage::disk($this->storage)->exists($file)) ? storage_path('app/'.$this->storage.'/'.$file) : 'The file does not exists';
     }
 }

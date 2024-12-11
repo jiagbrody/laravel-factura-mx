@@ -21,7 +21,7 @@ class LaravelFacturaMx
 
     public function documentService(): DocumentService
     {
-        return new DocumentService();
+        return new DocumentService;
     }
 
     public function create(): ComprobanteBuilder
@@ -29,9 +29,7 @@ class LaravelFacturaMx
         return new ComprobanteBuilder;
     }
 
-    public function editDraft()
-    {
-    }
+    public function editDraft() {}
 
     public function invoiceStamper(Invoice $invoice): StampInvoiceBuilder
     {

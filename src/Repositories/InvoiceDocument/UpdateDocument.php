@@ -9,22 +9,19 @@ use JiagBrody\LaravelFacturaMx\Models\InvoiceDocument;
 
 final readonly class UpdateDocument
 {
-    public function __construct(private InvoiceDocument $invoiceDocument, private bool $overwriteFileOnDisk = false)
-    {
-    }
+    public function __construct(private InvoiceDocument $invoiceDocument, private bool $overwriteFileOnDisk = false) {}
 
     public function __invoke(
-        int    $documentTypeId,
+        int $documentTypeId,
         string $fileName,
         string $filePath,
         string $mimeType,
         string $extension,
         string $storage,
         string $relationshipModel,
-        int    $relationshipId,
+        int $relationshipId,
         string $fileContent
-    ): void
-    {
+    ): void {
         // $this->invoiceDocument->file_name = config('jiagbrody-laravel-factura-mx.prefix_for_stamped_files') . ((empty($this->fileName)) ? $this->invoiceDocument->file_name : $this->fileName);
 
         //GUARDO PRIMERO EL ARCHIVO EN EL DISCO SI YA EXISTE LO REEMPLAZO SINO BORRO EL ANTERIOR Y AGREGO EL NUEVO
