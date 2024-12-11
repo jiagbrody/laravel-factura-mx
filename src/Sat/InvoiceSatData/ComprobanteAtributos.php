@@ -51,7 +51,10 @@ final readonly class ComprobanteAtributos
     public function __construct()
     {
         $this->Version = '4.0';
-        $this->Fecha = date('Y-m-d\\TH:i:s');
+        // SE OPTO POR MODIFICAR LA FECHA: CUANDO SE QUIERE GENERAR UN FOLIO DE FACTURA INDEPENDIENTEMENTE SI ESTE FALLA AL TIMBRAR
+        // AL EDITAR SE OBTIENEN TODOS LOS DATOS DEL XML BORRADOR Y SE MANTIENE LA FECHA DE FACTURACIÓN, ESTÁ TENDRIA
+        // QUE SER NO MAYOR A 72 HORAS.
+        // $this->Fecha = date('Y-m-d\\TH:i:s');
     }
 
     // public function setVersion(string $Version): void
@@ -84,10 +87,10 @@ final readonly class ComprobanteAtributos
         return $this->Folio;
     }
 
-    // public function setFecha(string $Fecha): void
-    // {
-    //     $this->Fecha = $Fecha;
-    // }
+    public function setFecha(string $Fecha): void
+    {
+        $this->Fecha = $Fecha;
+    }
 
     public function getFecha(): string
     {
@@ -146,7 +149,7 @@ final readonly class ComprobanteAtributos
 
     private function setSubTotal(float $SubTotal): void
     {
-        $this->SubTotal = (string) PatronDeDatosHelper::t_import($SubTotal);
+        $this->SubTotal = (string)PatronDeDatosHelper::t_import($SubTotal);
     }
 
     public function getSubTotal(): ?string
@@ -156,7 +159,7 @@ final readonly class ComprobanteAtributos
 
     private function setDescuento(float $Descuento): void
     {
-        $this->Descuento = (string) PatronDeDatosHelper::t_import($Descuento);
+        $this->Descuento = (string)PatronDeDatosHelper::t_import($Descuento);
     }
 
     public function getDescuento(): ?string
@@ -186,7 +189,7 @@ final readonly class ComprobanteAtributos
 
     private function setTotal(float $Total): void
     {
-        $this->Total = (string) PatronDeDatosHelper::t_import($Total);
+        $this->Total = (string)PatronDeDatosHelper::t_import($Total);
     }
 
     public function getTotal(): ?string
@@ -248,8 +251,8 @@ final readonly class ComprobanteAtributos
     // Por ejemplo: Cuando se agrega el complemento de "Impuesto Local" se realiza el descuento sobre el total.
     public function setInternallyAddTotalSubtotalDiscountValues(Comprobante $comprobante): void
     {
-        $this->setTotal((float) $comprobante->attributes()->get('Total'));
-        $this->setSubTotal((float) $comprobante->attributes()->get('SubTotal'));
-        $this->setDescuento((float) $comprobante->attributes()->get('Descuento'));
+        $this->setTotal((float)$comprobante->attributes()->get('Total'));
+        $this->setSubTotal((float)$comprobante->attributes()->get('SubTotal'));
+        $this->setDescuento((float)$comprobante->attributes()->get('Descuento'));
     }
 }

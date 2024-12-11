@@ -13,6 +13,6 @@ class InvoiceRelatedConcept extends Model
 
     public function getTable()
     {
-        // return config('jiagbrody-laravel-factura-mx.table_names', parent::getTable());
+        return config('jiagbrody-laravel-factura-mx.table_names.invoice_related_concept_pivot', parent::getTable());
     }
 }

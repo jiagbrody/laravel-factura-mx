@@ -10,8 +10,7 @@ use JiagBrody\LaravelFacturaMx\Enums\InvoiceStatusEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceTaxTypeEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceTypeEnum;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -225,6 +224,20 @@ return new class extends Migration
 
             $table->foreign('invoice_cfdi_id', 'lfmx_invoice_cfdi_cancels_invoice_cfdi_id_foreign')->references('id')->on($tableNames['invoice_cfdis']);
             $table->foreign('invoice_cfdi_cancel_type_id', 'lfmx_invoice_cfdi_cancels_invoice_cfdi_cancel_type_id_foreign')->references('id')->on($tableNames['invoice_cfdi_cancel_types']);
+        });
+
+        Schema::create($tableNames['invoice_incidents'], function (Blueprint $table) use ($tableNames) {
+            $table->id();
+            $table->foreignId('user_id')->constrained();
+            $table->unsignedBigInteger('invoice_id');
+            $table->string('supplier');
+            $table->string('code');
+            $table->string('message');
+            $table->jsonb('additional_details');
+            $table->timestamps();
+
+            $table->foreign('invoice_id', 'lfmx_invoice_incidents_invoice_id_foreign')->references('id')->on($tableNames['invoices'])->onDelete('cascade');
+            $table->index(['supplier', 'code']);
         });
 
         // include('./database/seeders/include_inserts_to_tables.php');

@@ -44,19 +44,9 @@ class InvoiceCfdi extends Model
         return $this->belongsTo(InvoiceCfdiType::class);
     }
 
-    public function documents(): MorphMany
+    public function invoiceDocuments(): MorphMany
     {
         return $this->morphMany(InvoiceDocument::class, 'documentable');
-    }
-
-    public function pdfInvoiceDocument(): MorphOne
-    {
-        return $this->morphOne(InvoiceDocument::class, 'documentable')->ofMany([
-            'created_at' => 'max',
-            'id' => 'max',
-        ], function ($query) {
-            $query->where('extension', '=', 'pdf');
-        });
     }
 
     public function xmlInvoiceDocument(): MorphOne
@@ -66,6 +56,16 @@ class InvoiceCfdi extends Model
             'id' => 'max',
         ], function ($query) {
             $query->where('extension', '=', 'xml');
+        });
+    }
+
+    public function pdfInvoiceDocument(): MorphOne
+    {
+        return $this->morphOne(InvoiceDocument::class, 'documentable')->ofMany([
+            'created_at' => 'max',
+            'id' => 'max',
+        ], function ($query) {
+            $query->where('extension', '=', 'pdf');
         });
     }
 }

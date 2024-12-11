@@ -8,12 +8,12 @@ use PhpCfdi\CfdiToJson\JsonConverter;
 
 final class ConvertXmlContentToObjectHelper
 {
-    public static function make(string $xmlContent, $associative = null): mixed
+    public static function make(string $xmlContent, $associative = null): array|object
     {
         try {
             $json = JsonConverter::convertToJson($xmlContent);
         } catch (\Exception $e) {
-            abort(500, 'Ocurrió un error en "ConvertXmlContentToObjectHelper": '.$e->getMessage());
+            abort(500, 'Ocurrió un error en "ConvertXmlContentToObjectHelper": ' . $e->getMessage());
         }
 
         if (json_last_error() !== JSON_ERROR_NONE) {

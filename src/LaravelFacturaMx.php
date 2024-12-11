@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx;
 
+use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\Cancel\CancelInvoiceBuilder;
 use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteBuilder;
+use JiagBrody\LaravelFacturaMx\Sat\Read\ReadInvoiceBuilder;
 use JiagBrody\LaravelFacturaMx\Sat\Stamp\StampInvoiceBuilder;
 use JiagBrody\LaravelFacturaMx\Sat\Status\StatusInvoiceBuilder;
 use JiagBrody\LaravelFacturaMx\Services\Document\DocumentService;
@@ -27,17 +29,18 @@ class LaravelFacturaMx
         return new ComprobanteBuilder;
     }
 
-    /*
-     * Este se integró con el objeto de "create" del comprobante, como van de la mano, vi innecesario desacoplar.
-     */
-    //public function stamp(Invoice $invoice)
-    //{
-    //}
-    //
-
-    public function stamp(): StampInvoiceBuilder
+    public function editDraft()
     {
-        return new StampInvoiceBuilder;
+    }
+
+    public function invoiceStamper(Invoice $invoice): StampInvoiceBuilder
+    {
+        return new StampInvoiceBuilder(invoice: $invoice);
+    }
+
+    public function read(Invoice $invoice): ReadInvoiceBuilder
+    {
+        return new ReadInvoiceBuilder($invoice);
     }
 
     public function cancel(): CancelInvoiceBuilder

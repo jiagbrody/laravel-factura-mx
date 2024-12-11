@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok;
 
 use Exception;
-use JiagBrody\LaravelFacturaMx\Models\InvoiceDocument;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceIncident;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStampResponse;
+use JiagBrody\LaravelFacturaMx\Services\Document\DocumentService;
 use JiagBrody\LaravelFacturaMx\Services\SaveSoapRequestResponseLogService;
 use SoapClient;
 
@@ -17,7 +18,9 @@ trait StampTrait
         $this->detectLogicErrorInStamp();
 
         $xmlFile = $this->invoice->xmlInvoiceDocument;
-        $draftXmlDocument = InvoiceDocument::obtainDocumentContent($xmlFile);
+
+        $documentService = new DocumentService();
+        $draftXmlDocument = $documentService->helpers::obtainExistingDocumentFile($xmlFile);
 
         $params = [
             'xml' => $draftXmlDocument,
@@ -27,9 +30,9 @@ trait StampTrait
 
         try {
             $client = new SoapClient($this->stampUrlFinkok, ['trace' => 1]);
-            $response = $client->__soapCall('quick_stamp', [$params]);
+            $response = $client->__soapCall('stamp', [$params]);
 
-            (new SaveSoapRequestResponseLogService)->make($client, 'Finkok:quick_stamp', 'cfdi_finkok_quick_stamp');
+            (new SaveSoapRequestResponseLogService)->make($client, 'Finkok:stamp', 'cfdi_finkok_stamp');
 
             return $this->getStampResponse($response);
 
@@ -40,7 +43,7 @@ trait StampTrait
 
     private function getStampResponse($pacResponse): PacStampResponse
     {
-        $result = $pacResponse->quick_stampResult;
+        $result = $pacResponse->stampResult;
         $response = new PacStampResponse;
         $response->setUuid($result->UUID ?? '');
         $response->setCodEstatus($result->CodEstatus ?? '');
@@ -53,13 +56,23 @@ trait StampTrait
             return $response;
         }
 
+        //existing incidence
+        $incidencia = $result->Incidencias->Incidencia;
+        $this->saveIncident($incidencia);
+        //RE-TIMBRADO
+        if (isset($result->CodEstatus) && ($result->CodEstatus === 'Comprobante timbrado previamente')) {
+            $response->setCheckProcess(true);
+            $response->setXml($result->xml);
+
+            return $response;
+        }
+
         //NO TRIMBRADO
         $response->setCheckProcess(false);
-        $incidencia = $result->Incidencias->Incidencia;
         $response->setIncidenciaIdIncidencia($incidencia->IdIncidencia);
         $message = $incidencia->MensajeIncidencia;
         if ($incidencia->MensajeIncidencia) {
-            $message .= ' - '.$incidencia->ExtraInfo;
+            $message .= ' - ' . $incidencia->ExtraInfo;
         }
         $response->setIncidenciaMensaje($message);
         $response->setIncidenciaCodigoError($incidencia->CodigoError);
@@ -72,5 +85,20 @@ trait StampTrait
         if ($this->invoice->cfdi) {
             abort(403, 'Esta factura ya se encuentra timbrada!');
         }
+    }
+
+    /*
+     * SAVE INCIDENT DIRECTLY WITH THE RESPONSE FROM THE STAMPING PROVIDER
+     */
+    private function saveIncident($incident): void
+    {
+        $invoiceIncident = new InvoiceIncident;
+        $invoiceIncident->user_id = auth()->id();
+        $invoiceIncident->invoice_id = $this->invoice->id;
+        $invoiceIncident->supplier = 'Finkok';
+        $invoiceIncident->code = $incident->CodigoError;
+        $invoiceIncident->message = $incident->MensajeIncidencia;
+        $invoiceIncident->additional_details = json_encode($incident);
+        $invoiceIncident->save();
     }
 }

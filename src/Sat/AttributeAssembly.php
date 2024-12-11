@@ -60,7 +60,7 @@ readonly class AttributeAssembly
         $this->conceptos = $conceptos;
     }
 
-    public function getConceptos($completelyTransformIntoACollect = false): Collection
+    public function getConceptos(bool $completelyTransformIntoACollect = false): Collection
     {
         if ($completelyTransformIntoACollect) {
             $collect = collect();

@@ -19,7 +19,7 @@ class InvoiceComplementLocalTax extends Model
         return $this->belongsTo(Invoice::class);
     }
 
-    public function invoiceComplementLocalTaxDetail(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function invoiceComplementLocalTaxDetails(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(InvoiceComplementLocalTaxDetail::class);
     }

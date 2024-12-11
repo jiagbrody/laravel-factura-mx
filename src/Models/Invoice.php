@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceDocumentTypeEnum;
 use JiagBrody\LaravelFacturaMx\Helpers\AddReadableDatesHelperTrait;
 
@@ -25,13 +26,30 @@ class Invoice extends Model
         return config('jiagbrody-laravel-factura-mx.table_names.invoices', parent::getTable());
     }
 
-    public function relatedConcepts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function invoiceable(): MorphTo
     {
-        $tablePivot = config('jiagbrody-laravel-factura-mx.table_names.invoice_related_concept_pivot');
-        $columnRelated = config('jiagbrody-laravel-factura-mx.column_names.foreign_id_related_to_concepts');
-
-        return $this->belongsToMany(InvoiceRelatedConcept::class, $tablePivot, 'invoice_id', $columnRelated);
+        return $this->morphTo();
     }
+
+    /*
+     * UPDATE 2024-11-28: SE QUITO ESTA TABLA Y SE RESOLVIO MEJOR UN SERVICIO.
+     * TRATAR EL MANEJO DE REGISTROS DE UN MODELO QUE NO EXISTE AQUI POR SER MODELO DE NEGOCIO DEL CLIENTE
+     * ERA IMPOSIBLE ESTE TEMA EN ESTA LIBRERIA CON RELACIONES NORMALES DE LARAVEL "Many to Many".
+     * REFERENTE A GUARDAR Y OBTENER LOS REGISTROS POR MEDIO DE "ELOQUENT".
+     *
+     * HAY DOS MANERAS:
+     *  -- SE RESOLVIO HACIENDO UNA CLASE DE SERVICIO SIN ELOQUENT LLAMADA "BusinessModelConceptService".
+     *
+     *  -- OTRA SOLUCION ES QUE EL CLIENTE HAGA UN MODELO "Invoice" EN SU PROYECTO Y LAS RELACIONES
+     *     "Many to Many" CON RELACION A SUS CONCEPTOS DE SU MODELO DE NEGOCIO.
+     */
+    // public function invoiceRelatedConcepts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    // {
+    //     $tablePivot = config('jiagbrody-laravel-factura-mx.table_names.invoice_related_concept_pivot');
+    //     $columnRelated = config('jiagbrody-laravel-factura-mx.column_names.foreign_id_related_to_concepts');
+    //
+    //     return $this->belongsToMany(??????????, $tablePivot, 'invoice_id', $columnRelated);
+    // }
 
     public function invoiceCfdi(): HasOne
     {
@@ -46,11 +64,6 @@ class Invoice extends Model
     public function invoiceDetail(): HasOne
     {
         return $this->hasOne(InvoiceDetail::class);
-    }
-
-    public function invoiceTaxDetails(): HasMany
-    {
-        return $this->hasMany(InvoiceTaxDetail::class);
     }
 
     public function invoiceTax(): HasOne
@@ -81,6 +94,11 @@ class Invoice extends Model
     public function invoiceDocuments(): \Illuminate\Database\Eloquent\Relations\MorphMany
     {
         return $this->morphMany(InvoiceDocument::class, 'documentable');
+    }
+
+    public function invoiceIncidents(): HasMany
+    {
+        return $this->hasMany(InvoiceIncident::class);
     }
 
     // public function documents(): \Illuminate\Database\Eloquent\Relations\MorphMany

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceCfdiCancelTypeEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceDocumentTypeEnum;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCfdi;
-use JiagBrody\LaravelFacturaMx\Sat\Document\DocumentRepository;
+use JiagBrody\LaravelFacturaMx\Repositories\InvoiceDocument\DocumentRepository;
 
 class UpdateRecordsIfTheInvoiceHasBeenSentByThePacToCancelAction
 {

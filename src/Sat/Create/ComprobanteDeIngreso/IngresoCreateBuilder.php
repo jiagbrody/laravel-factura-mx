@@ -7,13 +7,16 @@ namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeIngreso;
 use CfdiUtils\CfdiCreator40;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceDocumentTypeEnum;
+use JiagBrody\LaravelFacturaMx\Facades\LaravelFacturaMx;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceDocument;
+use JiagBrody\LaravelFacturaMx\Repositories\InvoiceDocument\DocumentRepository;
 use JiagBrody\LaravelFacturaMx\Sat\AttributeAssembly;
-use JiagBrody\LaravelFacturaMx\Sat\Document\DocumentRepository;
+use JiagBrody\LaravelFacturaMx\Sat\Helper\ConvertXmlContentToObjectHelper;
+use JiagBrody\LaravelFacturaMx\Sat\Helper\GeneratePdfDocumentFromXmlObjectForIngresoHelper;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
-use JiagBrody\LaravelFacturaMx\Sat\Stamp\StampInvoiceBuilder;
+use JiagBrody\LaravelFacturaMx\Services\Document\DocumentService;
 use PhpCfdi\Credentials\Credential;
 
 readonly class IngresoCreateBuilder
@@ -23,9 +26,13 @@ readonly class IngresoCreateBuilder
 
     protected Invoice $invoice;
 
-    public StampInvoiceBuilder $stampBuilder;
+    protected SaveIngreso $saveIngreso;
+
+    protected InvoiceDocument $xmlFile;
 
     protected DocumentRepository $documentRepository;
+
+    protected DocumentService $documentService;
 
     public function __construct(
         protected Credential           $credential,
@@ -34,7 +41,9 @@ readonly class IngresoCreateBuilder
         public AttributeAssembly       $attributeAssembly
     )
     {
+        $this->saveIngreso = new SaveIngreso($this->attributeAssembly);
         $this->documentRepository = new DocumentRepository;
+        $this->documentService = new DocumentService;
     }
 
     public function setRelationshipModel($model): self
@@ -45,75 +54,47 @@ readonly class IngresoCreateBuilder
         return $this;
     }
 
-    /*
-     * Declaro el proveedor del pac de acuerdo a los parámetros de configuración (este podría ser dinámico).
-     */
-    // public function setPacProvider(): self
-    // {
-    //     $this->stampBuilder = ;
-    //
-    //     return $this;
-    // }
-
-    public function saveInvoice(): Invoice
+    public function getArrayOfXmlContentBeforeSaving(): array
     {
-        $save = new SaveIngreso($this->attributeAssembly);
+        return ConvertXmlContentToObjectHelper::make($this->creatorCfdi->asXml(), true);
+    }
 
-        $this->invoice = $save->toInvoice($this->relationshipModel->getMorphClass(), $this->relationshipModel->id, $this->companyHelper->id);
+    public function getObjectOfXmlContentBeforeSaving(): object
+    {
+        return ConvertXmlContentToObjectHelper::make($this->creatorCfdi->asXml());
+    }
 
-        $save->toInvoiceDetail($this->invoice);
-        $save->toInvoiceBalances($this->invoice);
-        $save->toInvoiceTaxes($this->invoice);
-        $save->ToComplementLocalTax($this->invoice, $this->attributeAssembly->getComplementoImpuestosLocales());
-        $save->toRelatedConcepts($this->invoice);
+    public function saveInvoice(): void
+    {
+        $this->invoice = $this->saveIngreso->toInvoice($this->relationshipModel->getMorphClass(), $this->relationshipModel->id, $this->companyHelper->id);
+    }
 
-        return $this->invoice;
+    private function saveAdditionalTables(): void
+    {
+        //GUARDO TABLAS RELACIONADAS CON INFORMACIÓN PARA LA FACTURA DE INGRESO
+        $this->saveIngreso->toInvoiceDetail($this->invoice);
+        $this->saveIngreso->toInvoiceBalances($this->invoice);
+        $this->saveIngreso->toInvoiceTaxes($this->invoice);
+        $this->saveIngreso->ToComplementLocalTax($this->invoice, $this->attributeAssembly->getComplementoImpuestosLocales());
+        $this->saveIngreso->toRelatedConcepts($this->invoice);
+
+        //INICIALIZO PARAMETROS PARA USAR EL "DocumentService"
+        $this->documentService->setInvoice($this->invoice);
     }
 
     public function saveDocuments(?string $fileName = null): void
     {
         $this->saveDocumentXml($fileName);
         $this->saveDocumentPdf($fileName);
-
-    }
-
-    public function build(): array
-    {
-        DB::transaction(function () {
-            $this->saveInvoice();
-
-            $this->saveDocuments();
-        });
-
-        return [
-            'invoice' => $this->invoice,
-            'response' => (new StampInvoiceBuilder($this->invoice))->build(),
-        ];
-    }
-
-    private function detectLogicError($model): void
-    {
-        if (!$model instanceof Model) {
-            abort(422, 'La instancia no es Modelo Eloquent correcto.');
-        }
-    }
-
-    private function getFileName(?string $fileName): string
-    {
-        if ($fileName === null) {
-            $fileName = 'invoice-' . $this->invoice->id . '_' . Str::slug($this->attributeAssembly->getComprobanteAtributos()->getFecha());
-        }
-
-        return $fileName;
     }
 
     private function saveDocumentXml($fileName): void
     {
-        $this->documentRepository->create(
+        $this->xmlFile = $this->documentRepository->create(
             relationshipModel: $this->invoice->getMorphClass(),
             relationshipId: $this->invoice->id,
             documentTypeId: InvoiceDocumentTypeEnum::XML_FILE->value,
-            fileName: $this->getFileName($fileName),
+            fileName: $this->documentService->getFileNameToSave(),
             filePath: config('jiagbrody-laravel-factura-mx.invoices_files_path'),
             mimeType: 'xml',
             extension: 'xml',
@@ -124,16 +105,81 @@ readonly class IngresoCreateBuilder
 
     private function saveDocumentPdf($fileName): void
     {
+        $comprobante = $this->documentService->helpers::obtainXmlDocumentObject($this->xmlFile, associative: true);
+        $documentPdf = (new GeneratePdfDocumentFromXmlObjectForIngresoHelper)(comprobante: $comprobante);
         $this->documentRepository->create(
             relationshipModel: $this->invoice->getMorphClass(),
             relationshipId: $this->invoice->id,
             documentTypeId: InvoiceDocumentTypeEnum::PDF_FILE->value,
-            fileName: $this->getFileName($fileName),
+            fileName: $this->documentService->getFileNameToSave(),
             filePath: config('jiagbrody-laravel-factura-mx.invoices_files_path'),
             mimeType: 'pdf',
             extension: 'pdf',
             storage: config('jiagbrody-laravel-factura-mx.filesystem_disk'),
-            fileContent: '$this->creatorCfdi->asXml()'
+            fileContent: $documentPdf
         );
+    }
+
+    private function deleteAdditionalTables(): void
+    {
+        //DELETE "Complementos locales / Impuesto cedular"
+        if ($this->invoice->invoiceComplementLocalTax) {
+            $this->invoice->invoiceComplementLocalTax->invoiceComplementLocalTaxDetails()->delete();
+            $this->invoice->invoiceComplementLocalTax()->delete();
+        }
+
+        //DELETE "Impuestos y sus detalles para retenciónes como traslados"
+        if ($this->invoice->invoiceTax) {
+            $this->invoice->invoiceTax->invoiceTaxDetails()->delete();
+            // $this->invoice->invoiceTax()->delete();
+        }
+
+        //DELETE "Items de los conceptos del estado de cuenta del modelo de negocio."
+        $facturaMx = LaravelFacturaMx::read($this->invoice);
+        $ids = $facturaMx->ingresoRelatedBusinessItemsService->get()->pluck('id')->toArray();
+        DB::table(config('jiagbrody-laravel-factura-mx.table_names.invoice_related_concept_pivot'))->whereIn('id', $ids)->delete();
+
+        $this->invoice->refresh();
+    }
+
+    private function deleteDocuments(): void
+    {
+        $this->invoice->invoiceDocuments()->delete();
+    }
+
+    private function detectLogicError($model): void
+    {
+        if (!$model instanceof Model) {
+            abort(422, 'La instancia no es Modelo Eloquent correcto.');
+        }
+    }
+
+    public function saveInvoiceAndSaveDocuments(): Invoice
+    {
+        DB::transaction(function () {
+            $this->saveInvoice();
+
+            $this->saveAdditionalTables();
+
+            $this->saveDocuments();
+        });
+
+        return $this->invoice;
+    }
+
+    public function reSaveDataAndRedoDocuments(Invoice $invoice): void
+    {
+        $this->invoice = $invoice;
+
+        DB::transaction(function () {
+
+            $this->deleteAdditionalTables();
+
+            $this->deleteDocuments();
+
+            $this->saveAdditionalTables();
+
+            $this->saveDocuments();
+        });
     }
 }

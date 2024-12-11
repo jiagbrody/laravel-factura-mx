@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace JiagBrody\LaravelFacturaMx\Sat\Helper;
 
 use App\Enums\InvoiceCfdiTypeEnum;
-use App\Helpers\Cfdi\ConvertXmlContentToObjectHelper;
-use App\Helpers\ConvertNumberToReadableTextHelper;
 use App\Services\Documentable\DocumentDestroyService;
 use App\Services\Documentable\DocumentGenerateService;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -21,8 +19,12 @@ trait GenerateInvoicePdfFileHelperTrait
 
         switch ($this->invoice->invoice_cfdi_type_id) {
             case InvoiceCfdiTypeEnum::INGRESO->value:
-                $readableText = ConvertNumberToReadableTextHelper::make(number_format((float)$comprobante['Total'], 2,
-                    '.', ''), 'pesos', 'con', 'centavos');
+                $readableText = (new ConvertNumberToReadableTextHelper())(
+                    amount: number_format((float)$comprobante['Total'], 2, '.', ''),
+                    currencyLabel: 'pesos',
+                    separatorLabel: 'con',
+                    decimalLabel: 'centavos'
+                );
                 $episode = null;
                 $statement = null;
                 $pdfFile = PDF::loadView('pdf.invoices.invoice_ingreso',

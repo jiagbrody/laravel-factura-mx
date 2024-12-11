@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeIngreso;
 
+use Illuminate\Support\Collection;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 
 interface SaveIngresoInterface
@@ -15,4 +16,8 @@ interface SaveIngresoInterface
     public function toInvoiceBalances(Invoice $invoice);
 
     public function toInvoiceTaxes(Invoice $invoice);
+
+    public function ToComplementLocalTax(Invoice $invoice, Collection $localTaxes);
+
+    public function toRelatedConcepts(Invoice $invoice);
 }

@@ -25,7 +25,10 @@
     ],
     "require": {
         "php": "^8.2",
+        "ext-intl": "*",
         "ext-soap": "*",
+        "bacon/bacon-qr-code": "^3.0",
+        "barryvdh/laravel-dompdf": "^3.0",
         "eclipxe/cfdiutils": "^2.25",
         "phpcfdi/cfdi-to-json": "^0.3.4",
         "phpcfdi/credentials": "^1.2",

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JiagBrody\LaravelFacturaMx\Sat\Document;
+namespace JiagBrody\LaravelFacturaMx\Repositories\InvoiceDocument;
 
 use Exception;
 use Illuminate\Support\Facades\Storage;
@@ -14,18 +14,20 @@ final class CreateDocument
 
     public function __construct(
         protected string $relationshipModel,
-        protected int $relationshipId,
-        protected $documentTypeId,
+        protected int    $relationshipId,
+        protected        $documentTypeId,
         protected string $fileName,
         protected string $filePath,
         protected string $mimeType,
         protected string $extension,
         protected string $storage,
         protected string $fileContent
-    ) {
+    )
+    {
         $this->exists = InvoiceDocument::where([
             ['documentable_type', $this->relationshipModel],
             ['documentable_id', $this->relationshipId],
+            ['invoice_document_type_id', $this->documentTypeId],
             ['file_name', $this->fileName],
             ['file_path', $this->filePath],
             ['mime_type', $this->mimeType],
@@ -34,7 +36,7 @@ final class CreateDocument
         ])->first();
     }
 
-    public function create(): InvoiceDocument
+    public function __invoke(): InvoiceDocument
     {
         //NOTA: SI EXISTE UN ARCHIVO CON EL MISMO NOMBRE, MODELO Y ID SIMPLEMENTE REGENERO EL ARCHIVO SIN GUARDAR OTRO REGISTRO EN LA BASE DE DATOS.
         if ($this->exists) {
@@ -43,7 +45,7 @@ final class CreateDocument
             return $this->exists;
         }
 
-        $archive = $this->filePath.'/'.$this->fileName.'.'.$this->extension;
+        $archive = $this->filePath . '/' . $this->fileName . '.' . $this->extension;
         $documentCreated = new InvoiceDocument;
 
         if (Storage::disk($this->storage)->put($archive, $this->fileContent)) {
@@ -51,7 +53,7 @@ final class CreateDocument
                 $documentCreated = $this->saveDocumentInstance();
             } catch (Exception $e) {
                 Storage::disk($this->storage)->delete($archive);
-                abort(403, 'Error al generar el archivo: '.$e->getMessage());
+                abort(403, 'Error al generar el archivo: ' . $e->getMessage());
             }
         }
 
@@ -63,13 +65,13 @@ final class CreateDocument
         $document = new InvoiceDocument;
 
         $document->invoice_document_type_id = $this->documentTypeId;
-        $document->documentable_type = $this->relationshipModel;
-        $document->documentable_id = $this->relationshipId;
         $document->file_name = $this->fileName;
         $document->file_path = $this->filePath;
         $document->mime_type = $this->mimeType;
         $document->extension = $this->extension;
         $document->storage = $this->storage;
+        $document->documentable_type = $this->relationshipModel;
+        $document->documentable_id = $this->relationshipId;
         $document->save();
 
         return $document;

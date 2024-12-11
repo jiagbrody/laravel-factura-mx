@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceStatusEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceTaxTypeEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceTypeEnum;
+use JiagBrody\LaravelFacturaMx\Facades\LaravelFacturaMx;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceBalance;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceComplementLocalTax;
@@ -23,7 +24,9 @@ use JiagBrody\LaravelFacturaMx\Sat\Rules\ComprobanteDeIngresoRuleHelper;
 
 class SaveIngreso implements SaveIngresoInterface
 {
-    public function __construct(protected AttributeAssembly $attributeAssembly) {}
+    public function __construct(protected AttributeAssembly $attributeAssembly)
+    {
+    }
 
     public function toInvoice($relationshipModel, $relationshipId, $companyHelperId): Invoice
     {
@@ -41,57 +44,60 @@ class SaveIngreso implements SaveIngresoInterface
 
     public function toInvoiceDetail(Invoice $invoice): void
     {
-        $details = new InvoiceDetail;
+        //WILL ALWAYS BE SAVED
+        $invoiceDetail = $invoice->invoiceDetail ?? new InvoiceDetail;
         $attributes = $this->attributeAssembly->getComprobanteAtributos();
 
-        $details->invoice_id = $invoice->id;
-        $details->version = $attributes->getVersion();
-        $details->serie = $attributes->getSerie();
-        $details->folio = $attributes->getFolio();
-        $details->fecha = $attributes->getFecha();
-        $details->forma_pago = $attributes->getFormaPago();
-        $details->condiciones_de_pago = $attributes->getCondicionesDePago();
-        $details->sub_total = $attributes->getSubTotal();
-        $details->descuento = $attributes->getDescuento();
-        $details->moneda = $attributes->getMoneda();
-        $details->tipo_cambio = $attributes->getTipoCambio();
-        $details->total = $attributes->getTotal();
-        $details->tipo_de_comprobante = $attributes->getTipoDeComprobante();
-        $details->exportacion = $attributes->getExportacion();
-        $details->metodo_pago = $attributes->getMetodoPago();
-        $details->lugar_expedicion = $attributes->getLugarExpedicion();
-        $details->receptor_rfc = $this->attributeAssembly->getReceptorAtributos()->getRfc();
-        $details->save();
+        $invoiceDetail->invoice_id = $invoice->id;
+        $invoiceDetail->version = $attributes->getVersion();
+        $invoiceDetail->serie = $attributes->getSerie();
+        $invoiceDetail->folio = $attributes->getFolio();
+        $invoiceDetail->fecha = $attributes->getFecha();
+        $invoiceDetail->forma_pago = $attributes->getFormaPago();
+        $invoiceDetail->condiciones_de_pago = $attributes->getCondicionesDePago();
+        $invoiceDetail->sub_total = $attributes->getSubTotal();
+        $invoiceDetail->descuento = $attributes->getDescuento();
+        $invoiceDetail->moneda = $attributes->getMoneda();
+        $invoiceDetail->tipo_cambio = $attributes->getTipoCambio();
+        $invoiceDetail->total = $attributes->getTotal();
+        $invoiceDetail->tipo_de_comprobante = $attributes->getTipoDeComprobante();
+        $invoiceDetail->exportacion = $attributes->getExportacion();
+        $invoiceDetail->metodo_pago = $attributes->getMetodoPago();
+        $invoiceDetail->lugar_expedicion = $attributes->getLugarExpedicion();
+        $invoiceDetail->receptor_rfc = $this->attributeAssembly->getReceptorAtributos()->getRfc();
+        $invoiceDetail->save();
     }
 
     public function toInvoiceBalances(Invoice $invoice): void
     {
+        //WILL ALWAYS BE SAVED
+        $invoiceBalance = $invoice->invoiceBalance ?? new InvoiceBalance;
         $concepts = $this->attributeAssembly->getConceptos();
-        $balance = new InvoiceBalance;
 
-        $balance->invoice_id = $invoice->id;
-        $balance->gross_sub_total = $concepts->sum('gross_sub_total');
-        $balance->sub_total = $concepts->sum('sub_total');
-        $balance->discount = $concepts->sum('discount');
-        $balance->tax = $concepts->sum('tax');
-        $balance->total = $concepts->sum('total');
-        $balance->final_total_balance = null; // TODO: ES LA RESTA DEL IMPUESTO LOCAL PERO NO SE CONTRA QUE SI TOTAL O SUBTOTAL.
-        $balance->is_paid = ComprobanteDeIngresoRuleHelper::getIsPaid($this->attributeAssembly->getComprobanteAtributos()->getMetodoPago());
-        $balance->invoice_payment_type_id = ComprobanteDeIngresoRuleHelper::getPaymentTypeId($this->attributeAssembly->getComprobanteAtributos()->getMetodoPago());
-        $balance->save();
+        $invoiceBalance->invoice_id = $invoice->id;
+        $invoiceBalance->gross_sub_total = $concepts->sum('gross_sub_total');
+        $invoiceBalance->sub_total = $concepts->sum('sub_total');
+        $invoiceBalance->discount = $concepts->sum('discount');
+        $invoiceBalance->tax = $concepts->sum('tax');
+        $invoiceBalance->total = $concepts->sum('total');
+        $invoiceBalance->final_total_balance = null; // TODO: ES LA RESTA DEL IMPUESTO LOCAL PERO NO SE CONTRA QUE SI TOTAL O SUBTOTAL.
+        $invoiceBalance->is_paid = ComprobanteDeIngresoRuleHelper::getIsPaid($this->attributeAssembly->getComprobanteAtributos()->getMetodoPago());
+        $invoiceBalance->invoice_payment_type_id = ComprobanteDeIngresoRuleHelper::getPaymentTypeId($this->attributeAssembly->getComprobanteAtributos()->getMetodoPago());
+        $invoiceBalance->save();
     }
 
     public function toInvoiceTaxes(Invoice $invoice): void
     {
+        //WILL ALWAYS BE SAVED
+        $invoiceTax = $invoice->invoiceTax ?? new InvoiceTax;
         $concepts = $this->attributeAssembly->getConceptos();
-        $tax = new InvoiceTax;
 
-        $tax->invoice_id = $invoice->id;
-        $tax->total_impuestos_retenidos = $concepts->sum('total_retention_taxes');
-        $tax->total_impuestos_trasladados = $concepts->sum('total_transfer_taxes');
-        $tax->save();
+        $invoiceTax->invoice_id = $invoice->id;
+        $invoiceTax->total_impuestos_retenidos = $concepts->sum('total_retention_taxes');
+        $invoiceTax->total_impuestos_trasladados = $concepts->sum('total_transfer_taxes');
+        $invoiceTax->save();
 
-        $this->saveInvoiceTaxDetails($tax, $concepts);
+        $this->saveInvoiceTaxDetails($invoiceTax, $concepts);
     }
 
     public function ToComplementLocalTax(Invoice $invoice, Collection $localTaxes): void
@@ -129,23 +135,26 @@ class SaveIngreso implements SaveIngresoInterface
     {
         $concepts = $this->attributeAssembly->getConceptos();
 
-        $format = $concepts->mapWithKeys(function ($item, $key) {
+        $format = $concepts->mapWithKeys(function ($item, $key) use ($invoice) {
             $infoSatByConcept = $this->getAttributesConceptFromClient($item);
-
+// dd($infoSatByConcept->getImporte());
             $array = [
+                'invoice_id' => $invoice->id,
+                'statement_detail_id' => $item->get(config('jiagbrody-laravel-factura-mx.column_names.foreign_id_related_to_concepts')),
                 'quantity' => $infoSatByConcept->getCantidad(),
                 'unit_price' => $infoSatByConcept->getValorUnitario(),
                 'gross_sub_total' => $infoSatByConcept->getImporte(),
                 'discount' => $infoSatByConcept->getDescuento(),
-                'sub_total' => (float) $infoSatByConcept->getImporte() - (float) $infoSatByConcept->getDescuento(),
+                'sub_total' => (float)$infoSatByConcept->getImporte() - (float)$infoSatByConcept->getDescuento(),
                 'tax' => $infoSatByConcept->getSumImporteImpuestoTraslados(),
-                'total' => (float) $infoSatByConcept->getImporte() - $infoSatByConcept->getSumImporteImpuestoTraslados(),
+                'total' => (float)$infoSatByConcept->getImporte() - $infoSatByConcept->getSumImporteImpuestoTraslados(),
             ];
 
-            return [$item->get(config('jiagbrody-laravel-factura-mx.column_names.foreign_id_related_to_concepts')) => $array];
+            return [$key => $array];
         });
 
-        $invoice->relatedConcepts()->attach($format);
+        $facturaMx = LaravelFacturaMx::read($invoice);
+        $facturaMx->ingresoRelatedBusinessItemsService->setConceptsByInsert($format->toArray());
     }
 
     private function saveInvoiceTaxDetails(InvoiceTax $invoiceTax, Collection $concepts): void
@@ -159,6 +168,7 @@ class SaveIngreso implements SaveIngresoInterface
     {
         $conceptoAtributos->getImpuestoTraslados()->each(function (ImpuestoTrasladoAtributos $concept) use ($invoiceTax) {
             $this->saveTax($invoiceTax, $concept->getCollection(), InvoiceTaxTypeEnum::TRASLADO);
+
         });
 
         $conceptoAtributos->getImpuestoRetenidos()->each(function (ImpuestoRetenidoAtributos $concept) use ($invoiceTax) {

@@ -46,8 +46,8 @@ class FinkokPac implements ProviderPacInterface
     public function __construct(protected Invoice $invoice)
     {
         $this->response = new PacStampResponse;
-        $this->usernameFinkok = (string) config('jiagbrody-laravel-factura-mx.pac_providers.finkok.user');
-        $this->passwordFinkok = (string) config('jiagbrody-laravel-factura-mx.pac_providers.finkok.password');
+        $this->usernameFinkok = (string)config('jiagbrody-laravel-factura-mx.pac_providers.finkok.user');
+        $this->passwordFinkok = (string)config('jiagbrody-laravel-factura-mx.pac_providers.finkok.password');
 
         if (config('jiagbrody-laravel-factura-mx.pac_environment_production')) {
             $this->pacEnvironment = 'production';
@@ -79,6 +79,7 @@ class FinkokPac implements ProviderPacInterface
     /*
      * Timbrar factura.
      *
+     * https://wiki.finkok.com/doku.php?id=wsdl_stamp
      * https://wiki.finkok.com/doku.php?id=metodo_quick_stamp
      * https://wiki.finkok.com/doku.php?id=php#consumir_metodo_quick_stamp_del_web_service_de_timbrado_en_php
      * Validador de Cfdi: https://validador.finkok.com

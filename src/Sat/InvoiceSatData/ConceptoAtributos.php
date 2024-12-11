@@ -165,11 +165,11 @@ final readonly class ConceptoAtributos
 
     public function getSumImporteImpuestoTraslados(): float
     {
-        $importesDeTraslado = $this->impuestoTraslados->map(function (ImpuestoTrasladoAtributos $item) {
-            return (float) $item->getImporte();
-        });
+        // $importesDeTraslado = $this->impuestoTraslados->map(function (ImpuestoTrasladoAtributos $item) {
+        //     return (float) $item->getImporte();
+        // });
 
-        return $importesDeTraslado->sum();
+        return $this->impuestoTraslados->sum('Importe');
     }
 
     public function addImpuestoRetenido(ImpuestoRetenidoAtributos $impuestoRetenidoAtributos): void
