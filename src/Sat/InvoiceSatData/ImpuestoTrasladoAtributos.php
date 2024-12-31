@@ -20,7 +20,7 @@ final readonly class ImpuestoTrasladoAtributos
 
     public function setBase(float $Base): void
     {
-        $this->Base = (string)PatronDeDatosHelper::t_import($Base);
+        $this->Base = (string) PatronDeDatosHelper::t_import($Base);
     }
 
     public function getBase(): string
@@ -60,7 +60,7 @@ final readonly class ImpuestoTrasladoAtributos
 
     public function setImporte(float $Importe): void
     {
-        $this->Importe = (string)PatronDeDatosHelper::t_import($Importe);
+        $this->Importe = (string) PatronDeDatosHelper::t_import($Importe);
     }
 
     public function getImporte(): string

@@ -23,9 +23,9 @@ class AllSimpleRelationDataQuery
         $invoiceCfdiCancelTypes = config('jiagbrody-laravel-factura-mx.table_names.invoice_cfdi_cancel_types');
         $invoiceTaxes = config('jiagbrody-laravel-factura-mx.table_names.invoice_taxes');
 
-        $this->querySource = DB::table($invoices . ' as i')
+        $this->querySource = DB::table($invoices.' as i')
             // $this->querySource = Invoice::query()
-            ->from($invoices . ' as i')
+            ->from($invoices.' as i')
             ->select($this->obtainSelectOfInvoices())
             ->join($invoiceTypes . ' as iT', 'i.invoice_type_id', '=', 'iT.id')
             ->join($invoiceStatuses . ' as iS', 'i.invoice_status_id', '=', 'iS.id')

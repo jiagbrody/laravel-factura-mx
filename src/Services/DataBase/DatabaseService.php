@@ -32,7 +32,7 @@ class DatabaseService extends AllSimpleRelationDataQuery
     public function getIncidents(): Collection
     {
         $this->checkLogicalError();
-        
+
         return $this->invoice->invoiceIncidents;
     }
 

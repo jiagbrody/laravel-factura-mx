@@ -13,7 +13,7 @@ final class ConvertXmlContentToObjectHelper
         try {
             $json = JsonConverter::convertToJson($xmlContent);
         } catch (\Exception $e) {
-            abort(500, 'Ocurrió un error en "ConvertXmlContentToObjectHelper": ' . $e->getMessage());
+            abort(500, 'Ocurrió un error en "ConvertXmlContentToObjectHelper": '.$e->getMessage());
         }
 
         if (json_last_error() !== JSON_ERROR_NONE) {

@@ -13,8 +13,8 @@ interface DocumentRepositoryInterface
      */
     public function create(
         string $relationshipModel,
-        int    $relationshipId,
-               $documentTypeId,
+        int $relationshipId,
+        $documentTypeId,
         string $fileName,
         string $filePath,
         string $mimeType,
@@ -28,15 +28,15 @@ interface DocumentRepositoryInterface
      */
     public function update(
         InvoiceDocument $invoiceDocument,
-        string          $relationshipModel,
-        int             $relationshipId,
-                        $documentTypeId,
-        string          $fileName,
-        string          $filePath,
-        string          $mimeType,
-        string          $extension,
-        string          $storage,
-        string          $fileContent
+        string $relationshipModel,
+        int $relationshipId,
+        $documentTypeId,
+        string $fileName,
+        string $filePath,
+        string $mimeType,
+        string $extension,
+        string $storage,
+        string $fileContent
     );
 
     /*
