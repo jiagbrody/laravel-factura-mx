@@ -95,7 +95,7 @@ readonly class AttributeAssembly
 
     public function getComplementoImpuestosLocales(): Collection
     {
-        //ESTA PROPIEDAD ES OPCIONAL Y PUEDE O NO ESTAR INICIALIZADA
+        // ESTA PROPIEDAD ES OPCIONAL Y PUEDE O NO ESTAR INICIALIZADA
         $rp = new \ReflectionProperty(self::class, 'complementoImpuestosLocales');
         if ($rp->isInitialized($this) === false) {
             return collect();

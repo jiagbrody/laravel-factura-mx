@@ -70,14 +70,14 @@ readonly class IngresoCreateBuilder
 
     private function saveAdditionalTables(): void
     {
-        //GUARDO TABLAS RELACIONADAS CON INFORMACIÓN PARA LA FACTURA DE INGRESO
+        // GUARDO TABLAS RELACIONADAS CON INFORMACIÓN PARA LA FACTURA DE INGRESO
         $this->saveIngreso->toInvoiceDetail($this->invoice);
         $this->saveIngreso->toInvoiceBalances($this->invoice);
         $this->saveIngreso->toInvoiceTaxes($this->invoice);
         $this->saveIngreso->ToComplementLocalTax($this->invoice, $this->attributeAssembly->getComplementoImpuestosLocales());
         $this->saveIngreso->toRelatedConcepts($this->invoice);
 
-        //INICIALIZO PARAMETROS PARA USAR EL "DocumentService"
+        // INICIALIZO PARAMETROS PARA USAR EL "DocumentService"
         $this->documentService->setInvoice($this->invoice);
     }
 
@@ -121,19 +121,19 @@ readonly class IngresoCreateBuilder
 
     private function deleteAdditionalTables(): void
     {
-        //DELETE "Complementos locales / Impuesto cedular"
+        // DELETE "Complementos locales / Impuesto cedular"
         if ($this->invoice->invoiceComplementLocalTax) {
             $this->invoice->invoiceComplementLocalTax->invoiceComplementLocalTaxDetails()->delete();
             $this->invoice->invoiceComplementLocalTax()->delete();
         }
 
-        //DELETE "Impuestos y sus detalles para retenciónes como traslados"
+        // DELETE "Impuestos y sus detalles para retenciónes como traslados"
         if ($this->invoice->invoiceTax) {
             $this->invoice->invoiceTax->invoiceTaxDetails()->delete();
             // $this->invoice->invoiceTax()->delete();
         }
 
-        //DELETE "Items de los conceptos del estado de cuenta del modelo de negocio."
+        // DELETE "Items de los conceptos del estado de cuenta del modelo de negocio."
         $facturaMx = LaravelFacturaMx::read();
         $facturaMx->specifyInvoiceReading->setInvoice($this->invoice);
         $ids = $facturaMx->specifyInvoiceReading->ingresoRelatedBusinessItemsService->get()->pluck('id')->toArray();

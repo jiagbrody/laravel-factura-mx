@@ -19,11 +19,11 @@ class UpdateRecordsIfTheInvoiceHasBeenSentByThePacToCancelAction
         ?string $fileName = null
     ): void {
         DB::transaction(function () use ($invoiceCfdi, $cancelTypeEnum, $xmlFile, $fileName) {
-            //NOTA: Aunque procede el acuse no significa que ya esté cancelada la factura. Hay que
-            //estar revisando el STATUS de la factura para que cambie a "cancelado".
+            // NOTA: Aunque procede el acuse no significa que ya esté cancelada la factura. Hay que
+            // estar revisando el STATUS de la factura para que cambie a "cancelado".
             $cancel = $invoiceCfdi->invoiceCfdiCancel()->create(['invoice_cfdi_cancel_type_id' => $cancelTypeEnum->value]);
 
-            //Guardo del Acuse de la cancelación
+            // Guardo del Acuse de la cancelación
             (new DocumentRepository)->create(
                 relationshipModel: $cancel->getMorphClass(),
                 relationshipId: $cancel->id,

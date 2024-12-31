@@ -24,10 +24,10 @@ trait CancelTrait
 
         return $this->signCancelSoap();
 
-        //UPDATE 2022-09-27: SE VA A DEJAR DE USAR ESTE METODO YA QUE VEO COMPLICADO MANTENER ALGO QUE EN EL DEMO DEL SAT NO VA A FUNCIONAR.
-        //AUNQUE EN PRODUCCION LO IDEAL ES USAR "cancelSignature".
-        //return $this->cancelSignatureSoap();
-        //return $this->cancelSignatureQuickFinkok();
+        // UPDATE 2022-09-27: SE VA A DEJAR DE USAR ESTE METODO YA QUE VEO COMPLICADO MANTENER ALGO QUE EN EL DEMO DEL SAT NO VA A FUNCIONAR.
+        // AUNQUE EN PRODUCCION LO IDEAL ES USAR "cancelSignature".
+        // return $this->cancelSignatureSoap();
+        // return $this->cancelSignatureQuickFinkok();
     }
 
     private function signCancelSoap(): PacCancelResponse
@@ -147,7 +147,7 @@ trait CancelTrait
 
     private function getResponsePac($cancelResult): PacCancelResponse
     {
-        if (!isset($cancelResult->Folios->Folio)) {
+        if (! isset($cancelResult->Folios->Folio)) {
             abort(422, $cancelResult->CodEstatus);
         }
 

@@ -22,7 +22,7 @@ class PagoStamp extends PacProviderHelper implements StampCfdiInterface
         $pacResponse = $this->pacProvider->stampInvoice();
         $this->concrete = new PagoStampConcrete($this->invoice, $pacResponse);
 
-        //103.2871008
+        // 103.2871008
 
         if ($pacResponse->checkProcess) {
             $this->concrete

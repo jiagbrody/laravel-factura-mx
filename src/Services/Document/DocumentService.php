@@ -40,12 +40,12 @@ class DocumentService
         $this->hasCfdi = (bool) $invoice->invoiceCfdi;
 
         if ($this->hasCfdi) {
-            //OBTIENE LOS ARCHIVOS DEL CFDI
+            // OBTIENE LOS ARCHIVOS DEL CFDI
             $this->documents = $invoice->invoiceCfdi->invoiceDocuments ?? new Collection;
             $this->xmlFile = $invoice->invoiceCfdi->xmlInvoiceDocument ?? new InvoiceDocument;
             $this->pdfFile = $invoice->invoiceCfdi->pdfInvoiceDocument ?? new InvoiceDocument;
         } else {
-            //OBTIENE BORRADOR
+            // OBTIENE BORRADOR
             $this->documents = $invoice->invoiceDocuments ?? new Collection;
             $this->xmlFile = $invoice->xmlInvoiceDocument ?? new InvoiceDocument;
             $this->pdfFile = $invoice->pdfInvoiceDocument ?? new InvoiceDocument;

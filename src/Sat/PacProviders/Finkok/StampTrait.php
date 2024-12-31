@@ -48,7 +48,7 @@ trait StampTrait
         $response->setUuid($result->UUID ?? '');
         $response->setCodEstatus($result->CodEstatus ?? '');
 
-        //TIMBRADO
+        // TIMBRADO
         if (isset($result->CodEstatus) && ($result->CodEstatus === 'Comprobante timbrado satisfactoriamente')) {
             $response->setCheckProcess(true);
             $response->setXml($result->xml);
@@ -56,10 +56,10 @@ trait StampTrait
             return $response;
         }
 
-        //existing incidence
+        // existing incidence
         $incidencia = $result->Incidencias->Incidencia;
         $this->saveIncident($incidencia);
-        //RE-TIMBRADO
+        // RE-TIMBRADO
         if (isset($result->CodEstatus) && ($result->CodEstatus === 'Comprobante timbrado previamente')) {
             $response->setCheckProcess(true);
             $response->setXml($result->xml);
@@ -67,7 +67,7 @@ trait StampTrait
             return $response;
         }
 
-        //NO TRIMBRADO
+        // NO TRIMBRADO
         $response->setCheckProcess(false);
         $response->setIncidenciaIdIncidencia($incidencia->IdIncidencia);
         $message = $incidencia->MensajeIncidencia;

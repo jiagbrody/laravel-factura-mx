@@ -24,7 +24,7 @@ class UpdateRecordsAfterCheckingInvoiceStatusAction
                 InvoiceRelatedConcept::whereInvoiceId($invoice->id)->delete();
             }
 
-            //TODO: CHECAR ESTA PARTE COMO SE DEBE QUEDAR BIEN LA CANCELACION DEL PAGO, SE SUPONE QUE SOLO ES UN CAMBIO DE REGISTRO, NO RECUERDO POR QUE EL "LOOP" PARA ACTUALIZAR.
+            // TODO: CHECAR ESTA PARTE COMO SE DEBE QUEDAR BIEN LA CANCELACION DEL PAGO, SE SUPONE QUE SOLO ES UN CAMBIO DE REGISTRO, NO RECUERDO POR QUE EL "LOOP" PARA ACTUALIZAR.
             // if ($invoice->invoice_cfdi_type_id === InvoiceTypeEnum::PAGO->value) {
             //     $invoice->invoicePayments->each(function ($item) {
             //         $item->invoicePaymentDocuments()->update(['is_active' => false]);

@@ -17,7 +17,7 @@ class StampInvoiceBuilder
 
     public function __construct(readonly Invoice $invoice)
     {
-        //VALIDAR SI SE QUITA EL INVOICE, YA LO TENGO DECLARADO COMO "$this-invoice"
+        // VALIDAR SI SE QUITA EL INVOICE, YA LO TENGO DECLARADO COMO "$this-invoice"
         $this->pacProvider = new FinkokPac($invoice);
         $this->pacProvider->setInvoiceCompanyHelper($invoice->invoiceCompany);
     }
