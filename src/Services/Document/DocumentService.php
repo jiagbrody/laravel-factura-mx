@@ -70,7 +70,7 @@ class DocumentService
         return $this->helpers::obtainXmlDocumentObject(document: $this->xmlFile, associative: true);
     }
 
-    public function getXmlObject()
+    public function getXmlObject(): bool|\stdClass
     {
         return $this->helpers::obtainXmlDocumentObject(document: $this->xmlFile);
     }

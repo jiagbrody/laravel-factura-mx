@@ -137,7 +137,7 @@ class SaveIngreso implements SaveIngresoInterface
 
         $format = $concepts->mapWithKeys(function ($item, $key) use ($invoice) {
             $infoSatByConcept = $this->getAttributesConceptFromClient($item);
-// dd($infoSatByConcept->getImporte());
+
             $array = [
                 'invoice_id' => $invoice->id,
                 'statement_detail_id' => $item->get(config('jiagbrody-laravel-factura-mx.column_names.foreign_id_related_to_concepts')),
@@ -153,8 +153,9 @@ class SaveIngreso implements SaveIngresoInterface
             return [$key => $array];
         });
 
-        $facturaMx = LaravelFacturaMx::read($invoice);
-        $facturaMx->ingresoRelatedBusinessItemsService->setConceptsByInsert($format->toArray());
+        $facturaMx = LaravelFacturaMx::read();
+        $facturaMx->specifyInvoiceReading->setInvoice($invoice);
+        $facturaMx->specifyInvoiceReading->ingresoRelatedBusinessItemsService->setConceptsByInsert($format->toArray());
     }
 
     private function saveInvoiceTaxDetails(InvoiceTax $invoiceTax, Collection $concepts): void

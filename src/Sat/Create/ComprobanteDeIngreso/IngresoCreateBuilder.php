@@ -135,8 +135,9 @@ readonly class IngresoCreateBuilder
         }
 
         //DELETE "Items de los conceptos del estado de cuenta del modelo de negocio."
-        $facturaMx = LaravelFacturaMx::read($this->invoice);
-        $ids = $facturaMx->ingresoRelatedBusinessItemsService->get()->pluck('id')->toArray();
+        $facturaMx = LaravelFacturaMx::read();
+        $facturaMx->specifyInvoiceReading->setInvoice($this->invoice);
+        $ids = $facturaMx->specifyInvoiceReading->ingresoRelatedBusinessItemsService->get()->pluck('id')->toArray();
         DB::table(config('jiagbrody-laravel-factura-mx.table_names.invoice_related_concept_pivot'))->whereIn('id', $ids)->delete();
 
         $this->invoice->refresh();
@@ -164,6 +165,8 @@ readonly class IngresoCreateBuilder
             $this->saveDocuments();
         });
 
+        $this->invoice->refresh();
+
         return $this->invoice;
     }
 
@@ -172,7 +175,6 @@ readonly class IngresoCreateBuilder
         $this->invoice = $invoice;
 
         DB::transaction(function () {
-
             $this->deleteAdditionalTables();
 
             $this->deleteDocuments();

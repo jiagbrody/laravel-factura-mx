@@ -34,6 +34,11 @@ readonly class PacStatusResponse
         $this->invoiceStatusEnum = $invoiceStatusEnum;
     }
 
+    public function getInvoiceStatusEnum(): InvoiceStatusEnum
+    {
+        return $this->invoiceStatusEnum;
+    }
+
     public function setCodigoEstatus(string $codigoEstatus): void
     {
         $this->codigoEstatus = $codigoEstatus;

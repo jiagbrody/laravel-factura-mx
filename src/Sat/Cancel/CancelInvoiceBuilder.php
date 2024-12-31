@@ -49,9 +49,11 @@ final class CancelInvoiceBuilder
         return $this;
     }
 
-    public function setReplacementUUID(string $replacementUUID): void
+    public function setReplacementUUID(string $replacementUUID): self
     {
         $this->replacementUUID = $replacementUUID;
+
+        return $this;
     }
 
     public function build(): PacCancelResponse

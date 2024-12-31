@@ -6,6 +6,7 @@ namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok;
 
 use Exception;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceCfdiCancelTypeEnum;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceIncident;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacCancelResponse;
 use JiagBrody\LaravelFacturaMx\Services\SaveSoapRequestResponseLogService;
 use SoapClient;
@@ -146,7 +147,7 @@ trait CancelTrait
 
     private function getResponsePac($cancelResult): PacCancelResponse
     {
-        if (! isset($cancelResult->Folios->Folio)) {
+        if (!isset($cancelResult->Folios->Folio)) {
             abort(422, $cancelResult->CodEstatus);
         }
 
@@ -165,8 +166,22 @@ trait CancelTrait
             }
         }
 
+        $this->saveErrorCancel($response, $folio);
+
         $response->setCheckProcess(false);
 
         return $response;
+    }
+
+    private function saveErrorCancel(PacCancelResponse $response, $folio): void
+    {
+        $invoiceIncident = new InvoiceIncident;
+        $invoiceIncident->user_id = auth()->id();
+        $invoiceIncident->invoice_id = $this->invoice->id;
+        $invoiceIncident->supplier = 'Finkok';
+        $invoiceIncident->code = $response->estatusCancelacion;
+        $invoiceIncident->message = $response->estatusUUID;
+        $invoiceIncident->additional_details = json_encode($folio);
+        $invoiceIncident->save();
     }
 }

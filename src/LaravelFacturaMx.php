@@ -38,9 +38,9 @@ class LaravelFacturaMx
         return new StampInvoiceBuilder(invoice: $invoice);
     }
 
-    public function read(Invoice $invoice): ReadInvoiceBuilder
+    public function read(): ReadInvoiceBuilder
     {
-        return new ReadInvoiceBuilder($invoice);
+        return new ReadInvoiceBuilder();
     }
 
     public function cancel(): CancelInvoiceBuilder
