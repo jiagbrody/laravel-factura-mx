@@ -27,16 +27,16 @@ class AllSimpleRelationDataQuery
             // $this->querySource = Invoice::query()
             ->from($invoices.' as i')
             ->select($this->obtainSelectOfInvoices())
-            ->join($invoiceTypes . ' as iT', 'i.invoice_type_id', '=', 'iT.id')
-            ->join($invoiceStatuses . ' as iS', 'i.invoice_status_id', '=', 'iS.id')
-            ->join($invoiceCompanies . ' as iC', 'i.invoice_company_id', '=', 'iC.id')
-            ->join($invoiceBalances . ' as iB', 'i.id', '=', 'iB.invoice_id')
-            ->leftJoin($invoiceDetails . ' as iD', 'i.id', '=', 'iD.invoice_id')
-            ->leftJoin($invoiceCfdis . ' as iCFDI', 'i.id', '=', 'iCFDI.invoice_id')
-            //TODO: CHECAR SI LAS CANCELACIONES LAS DEJO COMO SOLO "hasOne" Y LOS ACUSES CREAR OTRA TABLA SEPARADA DE ACUSES.
-            ->leftJoin($invoiceCfdiCancels . ' as iCCANCEL', 'iCFDI.id', '=', 'iCCANCEL.invoice_cfdi_id')
-            ->leftJoin($invoiceCfdiCancelTypes . ' as iCCANCELTYPE', 'iCCANCEL.invoice_cfdi_cancel_type_id', '=', 'iCCANCELTYPE.id')
-            ->leftJoin($invoiceTaxes, 'i.id', '=', $invoiceTaxes . '.invoice_id');
+            ->join($invoiceTypes.' as iT', 'i.invoice_type_id', '=', 'iT.id')
+            ->join($invoiceStatuses.' as iS', 'i.invoice_status_id', '=', 'iS.id')
+            ->join($invoiceCompanies.' as iC', 'i.invoice_company_id', '=', 'iC.id')
+            ->join($invoiceBalances.' as iB', 'i.id', '=', 'iB.invoice_id')
+            ->leftJoin($invoiceDetails.' as iD', 'i.id', '=', 'iD.invoice_id')
+            ->leftJoin($invoiceCfdis.' as iCFDI', 'i.id', '=', 'iCFDI.invoice_id')
+            // TODO: CHECAR SI LAS CANCELACIONES LAS DEJO COMO SOLO "hasOne" Y LOS ACUSES CREAR OTRA TABLA SEPARADA DE ACUSES.
+            ->leftJoin($invoiceCfdiCancels.' as iCCANCEL', 'iCFDI.id', '=', 'iCCANCEL.invoice_cfdi_id')
+            ->leftJoin($invoiceCfdiCancelTypes.' as iCCANCELTYPE', 'iCCANCEL.invoice_cfdi_cancel_type_id', '=', 'iCCANCELTYPE.id')
+            ->leftJoin($invoiceTaxes, 'i.id', '=', $invoiceTaxes.'.invoice_id');
     }
 
     private function obtainSelectOfInvoices(): array

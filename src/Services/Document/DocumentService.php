@@ -45,13 +45,13 @@ class DocumentService
         $this->hasCfdiCanceled = (bool)$invoice->invoiceCfdi?->invoiceCfdiCancel;
 
         if ($this->hasCfdi) {
-            //OBTIENE LOS ARCHIVOS DEL CFDI
+            // OBTIENE LOS ARCHIVOS DEL CFDI
             $this->documents = $invoice->invoiceCfdi->invoiceDocuments ?? new Collection;
             $this->xmlFile = $invoice->invoiceCfdi->xmlInvoiceDocument ?? new InvoiceDocument;
             $this->pdfFile = $invoice->invoiceCfdi->pdfInvoiceDocument ?? new InvoiceDocument;
             $this->cancellationDocuments = $invoice->invoiceCfdi->invoiceCfdiCancel->invoiceDocuments ?? new Collection;
         } else {
-            //OBTIENE BORRADOR
+            // OBTIENE BORRADOR
             $this->documents = $invoice->invoiceDocuments ?? new Collection;
             $this->xmlFile = $invoice->xmlInvoiceDocument ?? new InvoiceDocument;
             $this->pdfFile = $invoice->pdfInvoiceDocument ?? new InvoiceDocument;

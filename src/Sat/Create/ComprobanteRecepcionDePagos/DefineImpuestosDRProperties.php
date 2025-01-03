@@ -28,12 +28,12 @@ class DefineImpuestosDRProperties
 
         if ($traslados) {
             $doctoR->ObjetoImpDR = self::VALUE_OBJECT_IMP_WITH_TAX;
-            //TODO: SACAR DE LO QUE QUEDE PENDIENTE.
+            // TODO: SACAR DE LO QUE QUEDE PENDIENTE.
             $percentajePay = floatval($doctoR->ImpPagado) / $invoice->invoiceDetail->total;
 
             $collect = collect();
             foreach ($traslados as $traslado) {
-                //TODO: SACAR DE LO QUE QUEDE PENDIENTE.
+                // TODO: SACAR DE LO QUE QUEDE PENDIENTE.
                 $baseDR = ($traslado->base * $percentajePay);
 
                 $this->BaseDR = PatronDeDatosHelper::t_import($baseDR);
@@ -63,12 +63,12 @@ class DefineImpuestosDRProperties
         if ($retenciones) {
             $doctoR->ObjetoImpDR = self::VALUE_OBJECT_IMP_WITH_TAX;
 
-            //TODO: SACAR DE LO QUE QUEDE PENDIENTE.
+            // TODO: SACAR DE LO QUE QUEDE PENDIENTE.
             $percentajePay = floatval($doctoR->ImpPagado) / $invoice->invoiceDetail->total;
 
             $collect = collect();
             foreach ($retenciones as $retencion) {
-                //TODO: SACAR DE LO QUE QUEDE PENDIENTE.
+                // TODO: SACAR DE LO QUE QUEDE PENDIENTE.
                 $baseDR = $retencion->base * $percentajePay;
 
                 $this->BaseDR = $baseDR;

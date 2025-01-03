@@ -33,15 +33,15 @@ class PagoCreateConcrete extends CfdiHelperAbstract
 
     public function addAtributos(array $atributos): self
     {
-        //$this->atributos->Serie = $atributos['Serie'] ?? '';
-        //$this->atributos->Folio = $atributos['Folio'] ?? '';
-        //$this->atributos->Sello = '';
-        //$this->atributos->NoCertificado = '';
-        //$this->atributos->Certificado = '';
-        //$this->atributos->SubTotal = '0';
-        //$this->atributos->Moneda = 'XXX';
-        //$this->atributos->Total = '0';
-        //$this->atributos->Exportacion = '01';
+        // $this->atributos->Serie = $atributos['Serie'] ?? '';
+        // $this->atributos->Folio = $atributos['Folio'] ?? '';
+        // $this->atributos->Sello = '';
+        // $this->atributos->NoCertificado = '';
+        // $this->atributos->Certificado = '';
+        // $this->atributos->SubTotal = '0';
+        // $this->atributos->Moneda = 'XXX';
+        // $this->atributos->Total = '0';
+        // $this->atributos->Exportacion = '01';
 
         $this->creatorCfdi->comprobante()->addAttributes((array) $this->atributos);
 

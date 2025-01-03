@@ -23,7 +23,7 @@ class EgresoCreateBuild extends DraftBuild
 
         $data = $this->getObjectFromComprobanteData();
 
-        //TODO: VER LA MANERA DE GUARDAR EL TOTAL POR CFDI.
+        // TODO: VER LA MANERA DE GUARDAR EL TOTAL POR CFDI.
         /*if ($data->CfdiRelacionados) {
             foreach ($data->CfdiRelacionados as $relacionados) {
                 if ($relacionados->TipoRelacion === CfdiRelationTypeEnum::NOTA_DE_CREDITO->value) {

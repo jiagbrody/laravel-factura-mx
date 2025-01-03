@@ -21,15 +21,15 @@ class ReadSpecificByInvoiceBuild
     {
         $this->invoice = $invoice;
 
-        //LIBRERIA EXTERNA PARA OBTENER INFORMACION DE LOS DOCUMENTOS (SE USA EN VARIAS PARTES DE LA LIBRERIA)
+        // LIBRERIA EXTERNA PARA OBTENER INFORMACION DE LOS DOCUMENTOS (SE USA EN VARIAS PARTES DE LA LIBRERIA)
         $this->documentService = new DocumentService;
         $this->documentService->setInvoice(invoice: $invoice);
 
-        //OBTENER INFORMACIÓN REFERENTE A LOS ITEMS DEL MODELO DE NEGOCIO DE LA LIBRERIA DESDE EL CLIENTE, PARA LAS FACTURAS DE INGRESO.
+        // OBTENER INFORMACIÓN REFERENTE A LOS ITEMS DEL MODELO DE NEGOCIO DE LA LIBRERIA DESDE EL CLIENTE, PARA LAS FACTURAS DE INGRESO.
         $this->ingresoRelatedBusinessItemsService = new IngresoRelatedBusinessItemsService(invoice: $invoice);
 
-        //OBTENER INFORMACIÓN DE LA LIBRERIA DESDE EL CLIENTE
-        $this->databaseService = new DatabaseService();
+        // OBTENER INFORMACIÓN DE LA LIBRERIA DESDE EL CLIENTE
+        $this->databaseService = new DatabaseService;
         $this->databaseService->setInvoice(invoice: $invoice);
     }
 }

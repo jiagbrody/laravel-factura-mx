@@ -13,7 +13,7 @@ class InvoiceCfdiCancel extends Model
     use HasFactory;
 
     protected $fillable = [
-        'invoice_cfdi_cancel_type_id'
+        'invoice_cfdi_cancel_type_id',
     ];
 
     public function getTable()

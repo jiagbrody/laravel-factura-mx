@@ -21,9 +21,9 @@ final class IngresoDataQuery extends AllSimpleRelationDataQuery
         ]);
 
         $this->querySource()
-            ->leftJoin($invoicePaymentTypes . ' as iPT', 'iB.invoice_payment_type_id', '=', 'iPT.id')
-            ->leftJoin($invoiceComplementLocalTaxes . ' as iCLOCALTAXE', 'i.id', '=', 'iCLOCALTAXE.invoice_id')
-            ->leftJoin($invoiceComplementLocalTaxDetails, 'iCLOCALTAXE.id', '=', $invoiceComplementLocalTaxDetails . '.invoice_complement_local_tax_id');
+            ->leftJoin($invoicePaymentTypes.' as iPT', 'iB.invoice_payment_type_id', '=', 'iPT.id')
+            ->leftJoin($invoiceComplementLocalTaxes.' as iCLOCALTAXE', 'i.id', '=', 'iCLOCALTAXE.invoice_id')
+            ->leftJoin($invoiceComplementLocalTaxDetails, 'iCLOCALTAXE.id', '=', $invoiceComplementLocalTaxDetails.'.invoice_complement_local_tax_id');
 
         return $this->querySource()->where('i.id', '=', $invoice->id)->first();
     }

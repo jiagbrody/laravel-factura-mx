@@ -12,7 +12,7 @@ readonly class ReadAllInvoicesBuild
 
     public function __construct()
     {
-        $this->databaseService = new DatabaseService();
+        $this->databaseService = new DatabaseService;
     }
 
     public function getAll()

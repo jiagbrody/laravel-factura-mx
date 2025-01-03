@@ -18,14 +18,14 @@ final class GetImpuestosDRHelper
 
         if ($traslados) {
             $documentoR->ObjetoImpDR = '02';
-            //TODO: SACAR DE LO QUE QUEDE PENDIENTE.
+            // TODO: SACAR DE LO QUE QUEDE PENDIENTE.
             $percentajePay = floatval($documentoR->ImpPagado) / $invoice->invoiceDetail->total;
 
             $collect = collect();
             foreach ($traslados as $traslado) {
                 $object = new DefineImpuestosDRProperties;
 
-                //TODO: SACAR DE LO QUE QUEDE PENDIENTE.
+                // TODO: SACAR DE LO QUE QUEDE PENDIENTE.
                 $baseDR = ($traslado->base * $percentajePay);
 
                 $object->BaseDR = PatronDeDatosHelper::t_import($baseDR);

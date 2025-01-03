@@ -30,7 +30,7 @@ class InvoiceCompanyHelper
 
     public function __construct(InvoiceCompany $invoiceCompany)
     {
-        $invoiceCompany->refresh(); //It probably comes from the static method: "getProtectedData()"
+        $invoiceCompany->refresh(); // It probably comes from the static method: "getProtectedData()"
         $folder = config('jiagbrody-laravel-factura-mx.sat_files_path');
 
         $this->pacEnvironmentProduction = config('jiagbrody-laravel-factura-mx.pac_environment_production');

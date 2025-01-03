@@ -26,7 +26,7 @@ class DatabaseService extends AllSimpleRelationDataQuery
     {
         $this->checkLogicalError();
 
-        return (new IngresoDataQuery())($this->invoice);
+        return (new IngresoDataQuery)($this->invoice);
     }
 
     public function getIncidents(): Collection
@@ -38,7 +38,7 @@ class DatabaseService extends AllSimpleRelationDataQuery
 
     private function checkLogicalError(): void
     {
-        if (!property_exists($this, "invoice")) {
+        if (! property_exists($this, 'invoice')) {
             abort(422, 'NO ESTA DEFINIDA LA PROPIEDAD "invoice" en la clase "DatabaseService"');
         }
     }

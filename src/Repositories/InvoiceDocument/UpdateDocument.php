@@ -24,7 +24,7 @@ final readonly class UpdateDocument
     ): void {
         // $this->invoiceDocument->file_name = config('jiagbrody-laravel-factura-mx.prefix_for_stamped_files') . ((empty($this->fileName)) ? $this->invoiceDocument->file_name : $this->fileName);
 
-        //GUARDO PRIMERO EL ARCHIVO EN EL DISCO SI YA EXISTE LO REEMPLAZO SINO BORRO EL ANTERIOR Y AGREGO EL NUEVO
+        // GUARDO PRIMERO EL ARCHIVO EN EL DISCO SI YA EXISTE LO REEMPLAZO SINO BORRO EL ANTERIOR Y AGREGO EL NUEVO
         if ($this->upsertStorageFile($fileContent)) {
             $this->invoiceDocument->invoice_document_type_id = $documentTypeId;
             $this->invoiceDocument->file_name = $fileName;
@@ -40,7 +40,7 @@ final readonly class UpdateDocument
 
     private function upsertStorageFile($fileContent): bool
     {
-        //NOTA: SI EXISTE UN ARCHIVO CON EL MISMO NOMBRE Y RUTA MARCA ERROR.
+        // NOTA: SI EXISTE UN ARCHIVO CON EL MISMO NOMBRE Y RUTA MARCA ERROR.
         if (Storage::disk($this->invoiceDocument->storage)->exists($this->invoiceDocument->file) && $this->overwriteFileOnDisk === false) {
             abort('403', 'The file already exists and the instruction is not to overwrite it.');
         }

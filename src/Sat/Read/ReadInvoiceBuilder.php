@@ -10,8 +10,8 @@ readonly class ReadInvoiceBuilder
 
     public function __construct()
     {
-        $this->specifyInvoiceReading = new ReadSpecificByInvoiceBuild();
+        $this->specifyInvoiceReading = new ReadSpecificByInvoiceBuild;
 
-        $this->specifyAllInvoicesReading = new ReadAllInvoicesBuild();
+        $this->specifyAllInvoicesReading = new ReadAllInvoicesBuild;
     }
 }

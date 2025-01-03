@@ -24,9 +24,7 @@ use JiagBrody\LaravelFacturaMx\Sat\Rules\ComprobanteDeIngresoRuleHelper;
 
 class SaveIngreso implements SaveIngresoInterface
 {
-    public function __construct(protected AttributeAssembly $attributeAssembly)
-    {
-    }
+    public function __construct(protected AttributeAssembly $attributeAssembly) {}
 
     public function toInvoice($relationshipModel, $relationshipId, $companyHelperId): Invoice
     {
@@ -44,7 +42,7 @@ class SaveIngreso implements SaveIngresoInterface
 
     public function toInvoiceDetail(Invoice $invoice): void
     {
-        //WILL ALWAYS BE SAVED
+        // WILL ALWAYS BE SAVED
         $invoiceDetail = $invoice->invoiceDetail ?? new InvoiceDetail;
         $attributes = $this->attributeAssembly->getComprobanteAtributos();
 
@@ -70,7 +68,7 @@ class SaveIngreso implements SaveIngresoInterface
 
     public function toInvoiceBalances(Invoice $invoice): void
     {
-        //WILL ALWAYS BE SAVED
+        // WILL ALWAYS BE SAVED
         $invoiceBalance = $invoice->invoiceBalance ?? new InvoiceBalance;
         $concepts = $this->attributeAssembly->getConceptos();
 
@@ -88,7 +86,7 @@ class SaveIngreso implements SaveIngresoInterface
 
     public function toInvoiceTaxes(Invoice $invoice): void
     {
-        //WILL ALWAYS BE SAVED
+        // WILL ALWAYS BE SAVED
         $invoiceTax = $invoice->invoiceTax ?? new InvoiceTax;
         $concepts = $this->attributeAssembly->getConceptos();
 
@@ -145,9 +143,9 @@ class SaveIngreso implements SaveIngresoInterface
                 'unit_price' => $infoSatByConcept->getValorUnitario(),
                 'gross_sub_total' => $infoSatByConcept->getImporte(),
                 'discount' => $infoSatByConcept->getDescuento(),
-                'sub_total' => (float)$infoSatByConcept->getImporte() - (float)$infoSatByConcept->getDescuento(),
+                'sub_total' => (float) $infoSatByConcept->getImporte() - (float) $infoSatByConcept->getDescuento(),
                 'tax' => $infoSatByConcept->getSumImporteImpuestoTraslados(),
-                'total' => (float)$infoSatByConcept->getImporte() - $infoSatByConcept->getSumImporteImpuestoTraslados(),
+                'total' => (float) $infoSatByConcept->getImporte() - $infoSatByConcept->getSumImporteImpuestoTraslados(),
             ];
 
             return [$key => $array];
