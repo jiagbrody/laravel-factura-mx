@@ -18,7 +18,11 @@ class DocumentService
 
     public readonly bool $hasCfdi;
 
+    public readonly bool $hasCfdiCanceled;
+
     protected Collection $documents;
+
+    protected Collection $cancellationDocuments;
 
     protected InvoiceDocument $xmlFile;
 
@@ -37,18 +41,21 @@ class DocumentService
     public function setInvoice(Invoice $invoice): void
     {
         $this->invoice = $invoice;
-        $this->hasCfdi = (bool) $invoice->invoiceCfdi;
+        $this->hasCfdi = (bool)$invoice->invoiceCfdi;
+        $this->hasCfdiCanceled = (bool)$invoice->invoiceCfdi?->invoiceCfdiCancel;
 
         if ($this->hasCfdi) {
             //OBTIENE LOS ARCHIVOS DEL CFDI
             $this->documents = $invoice->invoiceCfdi->invoiceDocuments ?? new Collection;
             $this->xmlFile = $invoice->invoiceCfdi->xmlInvoiceDocument ?? new InvoiceDocument;
             $this->pdfFile = $invoice->invoiceCfdi->pdfInvoiceDocument ?? new InvoiceDocument;
+            $this->cancellationDocuments = $invoice->invoiceCfdi->invoiceCfdiCancel->invoiceDocuments ?? new Collection;
         } else {
             //OBTIENE BORRADOR
             $this->documents = $invoice->invoiceDocuments ?? new Collection;
             $this->xmlFile = $invoice->xmlInvoiceDocument ?? new InvoiceDocument;
             $this->pdfFile = $invoice->pdfInvoiceDocument ?? new InvoiceDocument;
+            $this->cancellationDocuments = new Collection;
         }
     }
 
@@ -57,9 +64,14 @@ class DocumentService
         return $this->invoice;
     }
 
-    public function getDocuments(): Collection
+    public function getDocuments(): \Illuminate\Support\Collection
     {
         return $this->documents;
+    }
+
+    public function getCancellationDocuments(): Collection
+    {
+        return $this->cancellationDocuments;
     }
 
     public function getXmlFile(): InvoiceDocument
@@ -97,7 +109,7 @@ class DocumentService
         $model = ($this->invoice->invoiceCfdi) ? $this->invoice->invoiceCfdi->getMorphClass() : $this->invoice->getMorphClass();
         $id = ($this->invoice->invoiceCfdi) ? $this->invoice->invoiceCfdi->id : $this->invoice->id;
 
-        $documentPdf = (new GeneratePdfDocumentFromXmlObjectForIngresoHelper)(comprobante: (array) $this->getXmlArray());
+        $documentPdf = (new GeneratePdfDocumentFromXmlObjectForIngresoHelper)(comprobante: (array)$this->getXmlArray());
         $documentRepository = new DocumentRepository;
         $documentRepository->create(
             relationshipModel: $model,
@@ -118,7 +130,7 @@ class DocumentService
     public function getFileNameToSave(?string $customFileName = null): string
     {
         if ($customFileName === null) {
-            $customFileName = 'invoice-'.$this->invoice->id;
+            $customFileName = 'invoice-' . $this->invoice->id;
         }
 
         return Str::slug($customFileName);

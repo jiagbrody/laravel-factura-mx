@@ -10,8 +10,7 @@ use JiagBrody\LaravelFacturaMx\Enums\InvoiceStatusEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceTaxTypeEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceTypeEnum;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -84,6 +83,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('invoice_id', 'lfmx_invoice_details_invoice_id_foreign')->references('id')->on($tableNames['invoices'])->onDelete('cascade');
+            $table->index(['version', 'folio', 'serie', 'fecha']);
         });
 
         Schema::create($tableNames['invoice_payment_types'], function (Blueprint $table) {
