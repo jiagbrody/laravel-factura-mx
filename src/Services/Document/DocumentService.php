@@ -41,8 +41,8 @@ class DocumentService
     public function setInvoice(Invoice $invoice): void
     {
         $this->invoice = $invoice;
-        $this->hasCfdi = (bool)$invoice->invoiceCfdi;
-        $this->hasCfdiCanceled = (bool)$invoice->invoiceCfdi?->invoiceCfdiCancel;
+        $this->hasCfdi = (bool) $invoice->invoiceCfdi;
+        $this->hasCfdiCanceled = (bool) $invoice->invoiceCfdi?->invoiceCfdiCancel;
 
         if ($this->hasCfdi) {
             // OBTIENE LOS ARCHIVOS DEL CFDI
@@ -109,7 +109,7 @@ class DocumentService
         $model = ($this->invoice->invoiceCfdi) ? $this->invoice->invoiceCfdi->getMorphClass() : $this->invoice->getMorphClass();
         $id = ($this->invoice->invoiceCfdi) ? $this->invoice->invoiceCfdi->id : $this->invoice->id;
 
-        $documentPdf = (new GeneratePdfDocumentFromXmlObjectForIngresoHelper)(comprobante: (array)$this->getXmlArray());
+        $documentPdf = (new GeneratePdfDocumentFromXmlObjectForIngresoHelper)(comprobante: (array) $this->getXmlArray());
         $documentRepository = new DocumentRepository;
         $documentRepository->create(
             relationshipModel: $model,
@@ -130,7 +130,7 @@ class DocumentService
     public function getFileNameToSave(?string $customFileName = null): string
     {
         if ($customFileName === null) {
-            $customFileName = 'invoice-' . $this->invoice->id;
+            $customFileName = 'invoice-'.$this->invoice->id;
         }
 
         return Str::slug($customFileName);
