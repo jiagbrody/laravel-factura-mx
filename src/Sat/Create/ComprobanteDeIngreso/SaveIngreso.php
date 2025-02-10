@@ -8,7 +8,6 @@ use Illuminate\Support\Collection;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceStatusEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceTaxTypeEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceTypeEnum;
-use JiagBrody\LaravelFacturaMx\Facades\LaravelFacturaMx;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceBalance;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceComplementLocalTax;
