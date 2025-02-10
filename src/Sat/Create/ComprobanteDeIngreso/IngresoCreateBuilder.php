@@ -8,7 +8,6 @@ use CfdiUtils\CfdiCreator40;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceDocumentTypeEnum;
-use JiagBrody\LaravelFacturaMx\Facades\LaravelFacturaMx;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceDocument;
 use JiagBrody\LaravelFacturaMx\Repositories\InvoiceDocument\DocumentRepository;
@@ -35,11 +34,12 @@ readonly class IngresoCreateBuilder
     protected DocumentService $documentService;
 
     public function __construct(
-        protected Credential $credential,
-        protected CfdiCreator40 $creatorCfdi,
+        protected Credential           $credential,
+        protected CfdiCreator40        $creatorCfdi,
         protected InvoiceCompanyHelper $companyHelper,
-        public AttributeAssembly $attributeAssembly
-    ) {
+        public AttributeAssembly       $attributeAssembly
+    )
+    {
         $this->saveIngreso = new SaveIngreso($this->attributeAssembly);
         $this->documentRepository = new DocumentRepository;
         $this->documentService = new DocumentService;
@@ -75,7 +75,6 @@ readonly class IngresoCreateBuilder
         $this->saveIngreso->toInvoiceBalances($this->invoice);
         $this->saveIngreso->toInvoiceTaxes($this->invoice);
         $this->saveIngreso->ToComplementLocalTax($this->invoice, $this->attributeAssembly->getComplementoImpuestosLocales());
-        $this->saveIngreso->toRelatedConcepts($this->invoice);
 
         // INICIALIZO PARAMETROS PARA USAR EL "DocumentService"
         $this->documentService->setInvoice($this->invoice);
@@ -133,12 +132,6 @@ readonly class IngresoCreateBuilder
             // $this->invoice->invoiceTax()->delete();
         }
 
-        // DELETE "Items de los conceptos del estado de cuenta del modelo de negocio."
-        $facturaMx = LaravelFacturaMx::read();
-        $facturaMx->specifyInvoiceReading->setInvoice($this->invoice);
-        $ids = $facturaMx->specifyInvoiceReading->ingresoRelatedBusinessItemsService->get()->pluck('id')->toArray();
-        DB::table(config('jiagbrody-laravel-factura-mx.table_names.invoice_related_concept_pivot'))->whereIn('id', $ids)->delete();
-
         $this->invoice->refresh();
     }
 
@@ -149,20 +142,16 @@ readonly class IngresoCreateBuilder
 
     private function detectLogicError($model): void
     {
-        if (! $model instanceof Model) {
+        if (!$model instanceof Model) {
             abort(422, 'La instancia no es Modelo Eloquent correcto.');
         }
     }
 
     public function saveInvoiceAndSaveDocuments(): Invoice
     {
-        DB::transaction(function () {
-            $this->saveInvoice();
-
-            $this->saveAdditionalTables();
-
-            $this->saveDocuments();
-        });
+        $this->saveInvoice();
+        $this->saveAdditionalTables();
+        $this->saveDocuments();
 
         $this->invoice->refresh();
 

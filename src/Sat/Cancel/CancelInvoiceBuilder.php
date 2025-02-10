@@ -18,14 +18,14 @@ final class CancelInvoiceBuilder
 
     protected readonly InvoiceCfdiCancelTypeEnum $cancelTypeEnum;
 
-    protected ?string $replacementUUID;
+    protected ?string $replacementUUID = null;
 
     protected readonly PacCancelResponse $cancelResponse;
 
-    public function __construct()
-    {
-        $this->replacementUUID = null;
-    }
+    // public function __construct()
+    // {
+    //     $this->replacementUUID = null;
+    // }
 
     public function setInvoice(Invoice $invoice): self
     {

@@ -2,7 +2,6 @@
 
 // config for JiagBrody/LaravelFacturaMx
 return [
-
     /*
      |-----------------------------------------------------------------------------------------------
      | Nombre de las tablas y columnas a la que estará ligada las facturas para su modelo de negocio.
@@ -30,7 +29,6 @@ return [
         'invoice_tax_details' => 'jiagbrody_lfmx_invoice_tax_details',
         'invoice_complement_local_taxes' => 'jiagbrody_lfmx_invoice_complement_local_taxes',
         'invoice_complement_local_tax_details' => 'jiagbrody_lfmx_invoice_complement_local_tax_details',
-        'invoice_related_concept_pivot' => 'jiagbrody_lfmx_invoice_related_concept_pivot',
         'invoice_document_types' => 'jiagbrody_lfmx_invoice_document_types',
         'invoice_documents' => 'jiagbrody_lfmx_invoice_documents',
         'invoice_cfdi_cancel_types' => 'jiagbrody_lfmx_invoice_cfdi_cancel_types',
@@ -61,7 +59,7 @@ return [
      |
      */
 
-    'sat_files_path' => __DIR__.'/../storage/app/protected/sat-certificates',
+    'sat_files_path' => __DIR__ . '/../storage/app/protected/sat-certificates',
 
     /*
      |--------------------------------------------------------------------------
@@ -86,7 +84,7 @@ return [
      |
      */
 
-    'sat_local_resource_path' => __DIR__.'/../storage/app/protected/sat-resources',
+    'sat_local_resource_path' => __DIR__ . '/../storage/app/protected/sat-resources',
 
     /*
      |--------------------------------------------------------------------------

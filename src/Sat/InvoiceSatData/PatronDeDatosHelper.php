@@ -21,9 +21,9 @@ final class PatronDeDatosHelper
         return round($value, $decimals);
     }
 
-    public static function t_import($value): float
+    public static function t_import($value): string
     {
-        return round($value, 6);
+        return number_format($value, 6, '.', '');
     }
 
     public static function t_FechaH(Carbon $date): string

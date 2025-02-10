@@ -11,6 +11,7 @@ use JiagBrody\LaravelFacturaMx\Enums\InvoiceTaxTypeEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceTypeEnum;
 
 return new class extends Migration {
+
     /**
      * Run the migrations.
      */
@@ -49,11 +50,10 @@ return new class extends Migration {
 
         Schema::create($tableNames['invoices'], function (Blueprint $table) use ($tableNames) {
             $table->id();
-            $table->foreignId('user_id')->comment('El usuario quien crea la factura')->constrained();
+            $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('invoice_type_id')->comment('Tipo de comprobante del SAT (ingreso, egreso, traslado...)');
             $table->unsignedBigInteger('invoice_company_id')->comment('A que empresa se le factura (emisor)');
             $table->unsignedBigInteger('invoice_status_id')->comment('estatus de la factura (vigente, cancelado, etc)');
-            $table->nullableMorphs('invoiceable');
             $table->timestamps();
 
             $table->foreign('invoice_type_id', 'lfmx_invoices_invoice_type_id_foreign')->references('id')->on($tableNames['invoice_types'])->onDelete('cascade');
@@ -166,21 +166,6 @@ return new class extends Migration {
             $table->foreign('invoice_tax_type_id', 'lfmx_invoice_c_l_t_d_invoice_t_t_i_foreign')->references('id')->on($tableNames['invoice_tax_types']);
         });
 
-        Schema::create($tableNames['invoice_related_concept_pivot'], function (Blueprint $table) use ($tableNames) {
-            $table->id();
-            $table->unsignedBigInteger('invoice_id');
-            $table->unsignedBigInteger(config('jiagbrody-laravel-factura-mx.column_names.foreign_id_related_to_concepts'))->nullable()->comment('conceptos de la factura relacionados sobre un modelo de negocio')->unique('invoice_related_concept_pivot_statement_detail_id_unique');
-            $table->unsignedSmallInteger('quantity')->default(0);
-            $table->decimal('unit_price', 24, 6)->default(0);
-            $table->decimal('gross_sub_total', 24, 6)->default(0);
-            $table->decimal('discount', 24, 6)->default(0);
-            $table->decimal('sub_total', 24, 6)->default(0);
-            $table->decimal('tax', 24, 6)->default(0);
-            $table->decimal('total', 24, 6)->default(0);
-
-            $table->foreign('invoice_id', 'lfmx_invoice_statement_detail_invoice_id_foreign')->references('id')->on($tableNames['invoices'])->onDelete('cascade');
-        });
-
         Schema::create($tableNames['invoice_document_types'], function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -209,9 +194,11 @@ return new class extends Migration {
 
         Schema::create($tableNames['invoice_cfdis'], function (Blueprint $table) use ($tableNames) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('invoice_id');
-            $table->uuid();
+            //The production server supports up to MariaDb 10.6, which is a real shame since it currently supports 11.8. We use the CloudWays.com manager.
+            // $table->uuid();
+            $table->string('uuid', 36)->unique();
             $table->timestamps();
 
             $table->foreign('invoice_id', 'lfmx_invoice_cfdis_invoice_id_foreign')->references('id')->on($tableNames['invoices'])->onDelete('cascade');
@@ -229,7 +216,7 @@ return new class extends Migration {
 
         Schema::create($tableNames['invoice_incidents'], function (Blueprint $table) use ($tableNames) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('invoice_id');
             $table->string('supplier');
             $table->string('code');
@@ -315,7 +302,6 @@ return new class extends Migration {
         Schema::dropIfExists($tableNames['invoice_cfdi_cancels']);
         Schema::dropIfExists($tableNames['invoice_cfdis']);
         Schema::dropIfExists($tableNames['invoice_details']);
-        Schema::dropIfExists($tableNames['invoice_related_concept_pivot']);
         Schema::dropIfExists($tableNames['invoice_complement_local_tax_details']);
         Schema::dropIfExists($tableNames['invoice_complement_local_taxes']);
         Schema::dropIfExists($tableNames['invoice_tax_details']);

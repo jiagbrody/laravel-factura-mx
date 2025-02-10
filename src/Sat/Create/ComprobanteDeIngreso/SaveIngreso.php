@@ -33,8 +33,8 @@ class SaveIngreso implements SaveIngresoInterface
         $invoice->invoice_type_id = InvoiceTypeEnum::INGRESO->value;
         $invoice->invoice_company_id = $companyHelperId;
         $invoice->invoice_status_id = InvoiceStatusEnum::DRAFT->value;
-        $invoice->invoiceable_type = $relationshipModel;
-        $invoice->invoiceable_id = $relationshipId;
+        // $invoice->invoiceable_type = $relationshipModel;
+        // $invoice->invoiceable_id = $relationshipId;
         $invoice->save();
 
         return $invoice;
@@ -127,33 +127,6 @@ class SaveIngreso implements SaveIngresoInterface
                 $localTaxDetail->save();
             }
         }
-    }
-
-    public function toRelatedConcepts(Invoice $invoice): void
-    {
-        $concepts = $this->attributeAssembly->getConceptos();
-
-        $format = $concepts->mapWithKeys(function ($item, $key) use ($invoice) {
-            $infoSatByConcept = $this->getAttributesConceptFromClient($item);
-
-            $array = [
-                'invoice_id' => $invoice->id,
-                'statement_detail_id' => $item->get(config('jiagbrody-laravel-factura-mx.column_names.foreign_id_related_to_concepts')),
-                'quantity' => $infoSatByConcept->getCantidad(),
-                'unit_price' => $infoSatByConcept->getValorUnitario(),
-                'gross_sub_total' => $infoSatByConcept->getImporte(),
-                'discount' => $infoSatByConcept->getDescuento(),
-                'sub_total' => (float) $infoSatByConcept->getImporte() - (float) $infoSatByConcept->getDescuento(),
-                'tax' => $infoSatByConcept->getSumImporteImpuestoTraslados(),
-                'total' => (float) $infoSatByConcept->getImporte() - $infoSatByConcept->getSumImporteImpuestoTraslados(),
-            ];
-
-            return [$key => $array];
-        });
-
-        $facturaMx = LaravelFacturaMx::read();
-        $facturaMx->specifyInvoiceReading->setInvoice($invoice);
-        $facturaMx->specifyInvoiceReading->ingresoRelatedBusinessItemsService->setConceptsByInsert($format->toArray());
     }
 
     private function saveInvoiceTaxDetails(InvoiceTax $invoiceTax, Collection $concepts): void
