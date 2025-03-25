@@ -34,8 +34,8 @@ readonly class IngresoCreateBuilder
     protected DocumentService $documentService;
 
     public function __construct(
-        protected Credential           $credential,
-        protected CfdiCreator40        $creatorCfdi,
+        protected Credential $credential,
+        protected CfdiCreator40 $creatorCfdi,
         protected InvoiceCompanyHelper $companyHelper,
         protected AttributeAssembly    $attributeAssembly
     )
@@ -143,7 +143,7 @@ readonly class IngresoCreateBuilder
 
     private function detectLogicError($model): void
     {
-        if (!$model instanceof Model) {
+        if (! $model instanceof Model) {
             abort(422, 'La instancia no es Modelo Eloquent correcto.');
         }
     }

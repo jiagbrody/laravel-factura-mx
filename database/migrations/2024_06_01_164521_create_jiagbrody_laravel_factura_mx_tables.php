@@ -195,7 +195,7 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('invoice_id');
-            //The production server supports up to MariaDb 10.6, which is a real shame since it currently supports 11.8. We use the CloudWays.com manager.
+            // The production server supports up to MariaDb 10.6, which is a real shame since it currently supports 11.8. We use the CloudWays.com manager.
             // $table->uuid();
             $table->string('uuid', 36)->unique();
             $table->timestamps();
