@@ -15,8 +15,6 @@ final class IngresoDataQuery extends SimpleRelationDataQuery
     {
         parent::__construct();
 
-
-
         $this->querySource()->addSelect([
 
         ]);

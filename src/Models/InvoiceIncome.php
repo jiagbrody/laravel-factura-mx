@@ -17,6 +17,6 @@ class InvoiceIncome extends Model
     }
 
     protected $casts = [
-        'total' => 'float'
+        'total' => 'float',
     ];
 }

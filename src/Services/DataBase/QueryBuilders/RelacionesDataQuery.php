@@ -30,16 +30,16 @@ class RelacionesDataQuery extends SimpleRelationDataQuery
         ]);
 
         $this->querySource()
-            ->leftJoin($invoiceRelationships . ' as invoice_relationships', 'invoices.id', '=', 'invoice_relationships.origin_invoice_id')
-            ->leftJoin($invoiceRelationshipTypes . ' as invoice_relationship_types', 'invoice_relationships.invoice_relationship_type_id', '=', 'invoice_relationship_types.id');
+            ->leftJoin($invoiceRelationships.' as invoice_relationships', 'invoices.id', '=', 'invoice_relationships.origin_invoice_id')
+            ->leftJoin($invoiceRelationshipTypes.' as invoice_relationship_types', 'invoice_relationships.invoice_relationship_type_id', '=', 'invoice_relationship_types.id');
     }
 
     public function getOriginAndRelated(): Collection
     {
         $this->checkLogicalErrorTrait();
 
-        $clone = clone($this->querySource());
-        $clone2 = clone($this->querySource());
+        $clone = clone $this->querySource();
+        $clone2 = clone $this->querySource();
 
         return collect([
             'origin' => $clone2->where('iR.origin_invoice_id', $this->invoice->id)->get(),

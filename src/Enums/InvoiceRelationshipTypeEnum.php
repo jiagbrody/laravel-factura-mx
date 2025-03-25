@@ -12,9 +12,7 @@ enum InvoiceRelationshipTypeEnum: int
     case FACTURA_GENERADA_TRASLADOS = 6;
     case CFDI_POR_APLICACION_DE_ANTICIPO = 7;
 
-    public static function getCatalog(): \Illuminate\Support\Collection
-    {
-    }
+    public static function getCatalog(): \Illuminate\Support\Collection {}
 
     public function getSatId(): string
     {

@@ -37,9 +37,8 @@ readonly class IngresoCreateBuilder
         protected Credential $credential,
         protected CfdiCreator40 $creatorCfdi,
         protected InvoiceCompanyHelper $companyHelper,
-        protected AttributeAssembly    $attributeAssembly
-    )
-    {
+        protected AttributeAssembly $attributeAssembly
+    ) {
         $this->saveIngreso = new SaveIngreso($this->attributeAssembly);
         $this->documentRepository = new DocumentRepository;
         $this->documentService = new DocumentService;
