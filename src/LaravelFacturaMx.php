@@ -29,9 +29,7 @@ class LaravelFacturaMx
         return new ComprobanteBuilder;
     }
 
-    public function editDraft()
-    {
-    }
+    public function editDraft() {}
 
     public function invoiceStamper(Invoice $invoice): StampInvoiceBuilder
     {

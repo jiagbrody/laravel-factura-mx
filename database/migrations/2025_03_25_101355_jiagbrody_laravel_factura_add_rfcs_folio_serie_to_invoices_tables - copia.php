@@ -4,8 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -13,7 +13,7 @@ return new class extends Migration {
     {
         $tableNames = config('jiagbrody-laravel-factura-mx.table_names');
 
-        Schema::table($tableNames['invoices'], function (Blueprint $table) use ($tableNames) {
+        Schema::table($tableNames['invoices'], function (Blueprint $table) {
             $table->string('serie')->after('invoice_date');
             $table->string('folio')->after('serie');
             $table->string('rfc_emisor')->default('')->after('invoice_status_id');
@@ -31,7 +31,7 @@ return new class extends Migration {
     {
         $tableNames = config('jiagbrody-laravel-factura-mx.table_names');
 
-        Schema::table($tableNames['invoices'], function (Blueprint $table) use ($tableNames) {
+        Schema::table($tableNames['invoices'], function (Blueprint $table) {
             $table->dropColumn('serie');
             $table->dropColumn('folio');
             $table->dropColumn('rfc_emisor');

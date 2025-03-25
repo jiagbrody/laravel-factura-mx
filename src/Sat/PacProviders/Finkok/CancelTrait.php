@@ -19,7 +19,7 @@ trait CancelTrait
 
     protected PacCancelResponse $cancelResponse;
 
-    private function cancel(InvoiceCfdiCancelTypeEnum $cancelType, ?string $replacementUUID = ""): PacCancelResponse
+    private function cancel(InvoiceCfdiCancelTypeEnum $cancelType, ?string $replacementUUID = ''): PacCancelResponse
     {
         $this->cfdiCancelTypeEnum = $cancelType;
         $this->replace_uuid = $replacementUUID;
@@ -27,7 +27,7 @@ trait CancelTrait
 
         $this->processSignCancel();
 
-        //Verificación de cancelación
+        // Verificación de cancelación
         // $this->get_receipt();
 
         return $this->cancelResponse;
@@ -36,20 +36,19 @@ trait CancelTrait
         // AUNQUE EN PRODUCCION LO IDEAL ES USAR "cancelSignature".
     }
 
-
     public function get_receipt(): void
     {
-        $params = array(
+        $params = [
             'username' => $this->usernameFinkok,
             'password' => $this->passwordFinkok,
             'taxpayer_id' => $this->invoiceCompanyHelper->rfc,
-            "uuid" => $this->invoice->invoiceCfdi->uuid,
-            "type" => 'C'
-        );
+            'uuid' => $this->invoice->invoiceCfdi->uuid,
+            'type' => 'C',
+        ];
 
         try {
             $client = new SoapClient($this->cancelUrlFinkok, ['trace' => 1]);
-            $response = $client->__soapCall("get_receipt", array($params));
+            $response = $client->__soapCall('get_receipt', [$params]);
             // dd($client->__getLastRequest(), $client->__getLastResponse());
             // dd($response);
         } catch (exception $e) {
@@ -91,7 +90,7 @@ trait CancelTrait
     {
         $folio = $cancelResult->Folios->Folio;
 
-        if (!isset($folio)) {
+        if (! isset($folio)) {
             abort(422, $cancelResult->CodEstatus);
         }
 

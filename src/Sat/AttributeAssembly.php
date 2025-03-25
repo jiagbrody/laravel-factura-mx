@@ -37,12 +37,10 @@ readonly class AttributeAssembly
         return $this->comprobanteAtributos;
     }
 
-
     public function setCfdiRelacionados(Collection $cfdiRelacionados): void
     {
         $this->cfdiRelacionados = $cfdiRelacionados;
     }
-
 
     public function getCfdiRelacionados(): Collection
     {

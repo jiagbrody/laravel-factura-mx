@@ -2,8 +2,8 @@
 
 namespace JiagBrody\LaravelFacturaMx\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use JiagBrody\LaravelFacturaMx\Helpers\AddReadableDatesHelperTrait;
 
 class InvoiceRelationship extends Model
@@ -19,5 +19,4 @@ class InvoiceRelationship extends Model
     {
         return config('jiagbrody-laravel-factura-mx.table_names.invoice_relationship_types', parent::getTable());
     }
-
 }

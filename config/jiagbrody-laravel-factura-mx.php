@@ -40,7 +40,6 @@ return [
         'invoice_incidents' => 'jiagbrody_lfmx_invoice_incidents',
     ],
 
-
     /*
      |--------------------------------------------------------------------------
      | Ruta de la carpeta para los archivos del SAT
