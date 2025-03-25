@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Enums;
 
+/*
+ * NOTA: BORRAR ESTE ARCHIVO, HA SIDO REEMPLAZADO POR "CfdiRelationshipTypeEnum"
+ */
+
 enum CfdiRelationTypeEnum: string
 {
     case NOTA_DE_CREDITO = '01';

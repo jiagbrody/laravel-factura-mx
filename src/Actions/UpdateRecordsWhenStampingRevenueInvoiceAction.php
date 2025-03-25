@@ -32,7 +32,6 @@ class UpdateRecordsWhenStampingRevenueInvoiceAction
     {
         $invoice->invoice_status_id = InvoiceStatusEnum::VIGENT->value;
         $invoice->save();
-        $invoice->load('invoiceDetail');
     }
 
     public function createCfdi($invoice, $uuid): void

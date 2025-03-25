@@ -8,6 +8,7 @@ use CfdiUtils\Certificado\Certificado;
 use CfdiUtils\CfdiCreator40;
 use CfdiUtils\XmlResolver\XmlResolver;
 use Illuminate\Support\Collection;
+use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\CfdiRelacionadosAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\EmisorAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoRetenidoAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoTrasladoAtributos;
@@ -35,13 +36,23 @@ abstract class CfdiHelperAbstract
         $this->addEmisor();
     }
 
-    public function addRelacionados(array $relacionados): self
+    public function addRelacionados(Collection $relacionados): self
     {
-        foreach ($relacionados as $k => $relacionado) {
+        $relacionados->each(function (CfdiRelacionadosAtributos $relacionado) {
+            // dd($relacionado, $relacionado->getTipoRelacion(), $relacionado->getCfdiRelacionado());
             $this->creatorCfdi->comprobante()->addCfdiRelacionados([
-                'TipoRelacion' => $relacionado['TipoRelacion'],
-            ])->multiCfdiRelacionado(...$relacionado['CfdiRelacionado']);
-        }
+                'TipoRelacion' => $relacionado->getTipoRelacion(),
+            ])->multiCfdiRelacionado(...($relacionado->getCfdiRelacionado()->toArray()));
+        });
+
+        $this->attributeAssembly->setCfdiRelacionados($relacionados);
+
+        // foreach ($relacionados as $relacionado) {
+        //     dd($relacionado);
+        //     $this->creatorCfdi->comprobante()->addCfdiRelacionados([
+        //         'TipoRelacion' => $relacionado['TipoRelacion'],
+        //     ])->multiCfdiRelacionado(...$relacionado['CfdiRelacionado']);
+        // }
 
         return $this;
     }
@@ -96,7 +107,7 @@ abstract class CfdiHelperAbstract
                     $sumR->push($array);
                     $invoiceConcept->addRetencion($array);
                 });
-                $concept->put('total_retention_taxes', $sumT->sum('Importe'));
+                $concept->put('total_retention_taxes', $sumR->sum('Importe'));
             });
             $this->attributeAssembly->setConceptos($concepts);
         }

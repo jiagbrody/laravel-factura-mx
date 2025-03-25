@@ -37,7 +37,7 @@ readonly class IngresoCreateBuilder
         protected Credential           $credential,
         protected CfdiCreator40        $creatorCfdi,
         protected InvoiceCompanyHelper $companyHelper,
-        public AttributeAssembly       $attributeAssembly
+        protected AttributeAssembly    $attributeAssembly
     )
     {
         $this->saveIngreso = new SaveIngreso($this->attributeAssembly);
@@ -65,16 +65,17 @@ readonly class IngresoCreateBuilder
 
     public function saveInvoice(): void
     {
-        $this->invoice = $this->saveIngreso->toInvoice($this->relationshipModel->getMorphClass(), $this->relationshipModel->id, $this->companyHelper->id);
+        $this->invoice = $this->saveIngreso->toInvoice(companyHelperId: $this->companyHelper->id);
     }
 
     private function saveAdditionalTables(): void
     {
         // GUARDO TABLAS RELACIONADAS CON INFORMACIÓN PARA LA FACTURA DE INGRESO
-        $this->saveIngreso->toInvoiceDetail($this->invoice);
-        $this->saveIngreso->toInvoiceBalances($this->invoice);
-        $this->saveIngreso->toInvoiceTaxes($this->invoice);
-        $this->saveIngreso->ToComplementLocalTax($this->invoice, $this->attributeAssembly->getComplementoImpuestosLocales());
+        $this->saveIngreso->toInvoiceRelationships($this->invoice, $this->attributeAssembly->getCfdiRelacionados());
+        $this->saveIngreso->toInvoiceIncome($this->invoice);
+        // $this->saveIngreso->toInvoiceBalances($this->invoice);
+        // $this->saveIngreso->toInvoiceTaxes($this->invoice);
+        // $this->saveIngreso->ToComplementLocalTax($this->invoice, $this->attributeAssembly->getComplementoImpuestosLocales());
 
         // INICIALIZO PARAMETROS PARA USAR EL "DocumentService"
         $this->documentService->setInvoice($this->invoice);
@@ -121,16 +122,16 @@ readonly class IngresoCreateBuilder
     private function deleteAdditionalTables(): void
     {
         // DELETE "Complementos locales / Impuesto cedular"
-        if ($this->invoice->invoiceComplementLocalTax) {
-            $this->invoice->invoiceComplementLocalTax->invoiceComplementLocalTaxDetails()->delete();
-            $this->invoice->invoiceComplementLocalTax()->delete();
-        }
+        // if ($this->invoice->invoiceComplementLocalTax) {
+        //     $this->invoice->invoiceComplementLocalTax->invoiceComplementLocalTaxDetails()->delete();
+        //     $this->invoice->invoiceComplementLocalTax()->delete();
+        // }
 
         // DELETE "Impuestos y sus detalles para retenciónes como traslados"
-        if ($this->invoice->invoiceTax) {
-            $this->invoice->invoiceTax->invoiceTaxDetails()->delete();
-            // $this->invoice->invoiceTax()->delete();
-        }
+        // if ($this->invoice->invoiceTax) {
+        //     $this->invoice->invoiceTax->invoiceTaxDetails()->delete();
+        //     // $this->invoice->invoiceTax()->delete();
+        // }
 
         $this->invoice->refresh();
     }
@@ -164,12 +165,14 @@ readonly class IngresoCreateBuilder
 
         DB::transaction(function () {
             $this->deleteAdditionalTables();
-
             $this->deleteDocuments();
-
             $this->saveAdditionalTables();
-
             $this->saveDocuments();
         });
+    }
+
+    public function getAttributeAssembly(): AttributeAssembly
+    {
+        return $this->attributeAssembly;
     }
 }

@@ -16,9 +16,26 @@ class Invoice extends Model
 {
     use AddReadableDatesHelperTrait, HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'invoice_date',
+        'serie',
+        'folio',
+        'invoice_type_id',
+        'invoice_company_id',
+        'invoice_status_id',
+        'rfc_emisor',
+        'rfc_receptor',
+        'version',
+    ];
+
     protected $appends = [
         'created_at_format',
         'created_at_human',
+    ];
+
+    protected $casts = [
+        'invoice_date' => 'datetime',
     ];
 
     public function getTable()
@@ -31,19 +48,14 @@ class Invoice extends Model
         return $this->morphTo();
     }
 
+    public function invoiceIncome(): HasOne
+    {
+        return $this->hasOne(InvoiceIncome::class);
+    }
+
     public function invoiceCfdi(): HasOne
     {
         return $this->hasOne(InvoiceCfdi::class);
-    }
-
-    public function invoiceBalance(): HasOne
-    {
-        return $this->hasOne(InvoiceBalance::class);
-    }
-
-    public function invoiceDetail(): HasOne
-    {
-        return $this->hasOne(InvoiceDetail::class);
     }
 
     public function invoiceTax(): HasOne

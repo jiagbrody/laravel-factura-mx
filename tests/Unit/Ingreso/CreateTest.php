@@ -40,13 +40,13 @@ it('create object', function () {
     $products->each(function (Collection $product) {
         $concepto = new \JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ConceptoAtributos;
         $concepto->setClaveProdServ('01010101');
-        $concepto->setNoIdentificacion((string) $product->get('statement_detail_id'));
-        $concepto->setCantidad((string) $product->get('quantity'));
+        $concepto->setNoIdentificacion((string)$product->get('statement_detail_id'));
+        $concepto->setCantidad((float)$product->get('quantity'));
         $concepto->setClaveUnidad('H87');
-        $concepto->setDescripcion((string) $product->get('name'));
-        $concepto->setValorUnitario((float) $product->get('price_unit'));
-        $concepto->setImporte((float) $product->get('total'));
-        $concepto->setDescuento((float) $product->get('discount'));
+        $concepto->setDescripcion((string)$product->get('name'));
+        $concepto->setValorUnitario((float)$product->get('price_unit'));
+        $concepto->setImporte((float)$product->get('total'));
+        $concepto->setDescuento((float)$product->get('discount'));
         $concepto->setObjetoImp('02');
 
         for ($j = 1; $j <= 2; $j++) {
@@ -76,7 +76,7 @@ it('create object', function () {
         $retencionesLocales = new \JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\RetencionesLocalesAtributos;
         $retencionesLocales->setImpLocRetenido('Impuesto Cedular');
         $retencionesLocales->setTasadeRetencion('3.00');
-        $retencionesLocales->setImporte((string) $tax->get('amount'));
+        $retencionesLocales->setImporte((string)$tax->get('amount'));
         $tax->put('localTaxSat', $retencionesLocales);
     });
 

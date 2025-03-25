@@ -2,13 +2,14 @@
 
 namespace JiagBrody\LaravelFacturaMx\Services\DataBase;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\Builder;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
-use JiagBrody\LaravelFacturaMx\Services\DataBase\QueryBuilders\AllSimpleRelationDataQuery;
+use JiagBrody\LaravelFacturaMx\Services\DataBase\QueryBuilders\IncidentesDataQuery;
 use JiagBrody\LaravelFacturaMx\Services\DataBase\QueryBuilders\IngresoDataQuery;
+use JiagBrody\LaravelFacturaMx\Services\DataBase\QueryBuilders\RelacionesDataQuery;
+use JiagBrody\LaravelFacturaMx\Services\DataBase\QueryBuilders\SimpleRelationDataQuery;
 
-class DatabaseService extends AllSimpleRelationDataQuery
+class DatabaseService extends SimpleRelationDataQuery
 {
     protected Invoice $invoice;
 
@@ -17,29 +18,23 @@ class DatabaseService extends AllSimpleRelationDataQuery
         $this->invoice = $invoice;
     }
 
-    public function getAllSimpleRelationData(): Builder
+    public function getAllSimpleRelationQueryBuilder(): Builder
     {
         return $this->querySource();
     }
 
-    public function getIngresoData(): object
+    public function chooseIngresoData(): object
     {
-        $this->checkLogicalError();
-
-        return (new IngresoDataQuery)($this->invoice);
+        return new IngresoDataQuery($this->invoice ?? null);
     }
 
-    public function getIncidents(): Collection
+    public function getIncidentesData(): object
     {
-        $this->checkLogicalError();
-
-        return $this->invoice->invoiceIncidents;
+        return new IncidentesDataQuery($this->invoice);
     }
 
-    private function checkLogicalError(): void
+    public function chooseAllRelationshipsPerInvoice(): object
     {
-        if (! property_exists($this, 'invoice')) {
-            abort(422, 'NO ESTA DEFINIDA LA PROPIEDAD "invoice" en la clase "DatabaseService"');
-        }
+        return new RelacionesDataQuery($this->invoice ?? null);
     }
 }

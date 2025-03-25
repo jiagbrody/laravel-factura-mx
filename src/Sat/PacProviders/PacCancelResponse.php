@@ -16,12 +16,14 @@ readonly class PacCancelResponse
 
     public string $acuse;
 
+    public string $date;
+
     public function setCheckProcess(bool $checkProcess): void
     {
         $this->checkProcess = $checkProcess;
     }
 
-    public function setUuid(string $uuid): void
+    public function setUUID(string $uuid): void
     {
         $this->uuid = $uuid;
     }

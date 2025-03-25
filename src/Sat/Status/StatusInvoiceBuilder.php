@@ -34,6 +34,7 @@ final readonly class StatusInvoiceBuilder
     public function build(): PacStatusResponse
     {
         $this->statusResponse = $this->pacProvider->statusInvoice();
+        dd($this->statusResponse);
 
         if ($this->statusResponse->checkProcess && $this->statusResponse->invoiceStatusEnum === InvoiceStatusEnum::CANCELED) {
             (new UpdateRecordsAfterCheckingInvoiceStatusAction)($this->invoice);

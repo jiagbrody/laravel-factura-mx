@@ -7,12 +7,16 @@ namespace JiagBrody\LaravelFacturaMx\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class InvoiceBalance extends Model
+class InvoiceIncome extends Model
 {
     use HasFactory;
 
     public function getTable()
     {
-        return config('jiagbrody-laravel-factura-mx.table_names.invoice_balances', parent::getTable());
+        return config('jiagbrody-laravel-factura-mx.table_names.invoice_incomes', parent::getTable());
     }
+
+    protected $casts = [
+        'total' => 'float'
+    ];
 }

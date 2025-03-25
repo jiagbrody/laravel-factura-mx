@@ -63,9 +63,9 @@ final readonly class ConceptoAtributos
         return $this->ClaveProdServ;
     }
 
-    public function setCantidad(string $Cantidad): void
+    public function setCantidad(float $Cantidad): void
     {
-        $this->Cantidad = $Cantidad;
+        $this->Cantidad = PatronDeDatosHelper::t_import($Cantidad);
     }
 
     public function getCantidad(): string
@@ -105,7 +105,7 @@ final readonly class ConceptoAtributos
 
     public function setValorUnitario(float $ValorUnitario): void
     {
-        $this->ValorUnitario = (string) PatronDeDatosHelper::t_import($ValorUnitario);
+        $this->ValorUnitario = PatronDeDatosHelper::t_import($ValorUnitario);
     }
 
     public function getValorUnitario(): string

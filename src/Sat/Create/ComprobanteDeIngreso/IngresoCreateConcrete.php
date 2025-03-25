@@ -25,7 +25,6 @@ class IngresoCreateConcrete extends CfdiHelperAbstract
     public function addAtributos(ComprobanteAtributos $attributes): self
     {
         $this->attributeAssembly->setComprobanteAtributos($attributes);
-
         $this->creatorCfdi->comprobante()->addAttributes($attributes->getCollection()->toArray());
 
         return $this;

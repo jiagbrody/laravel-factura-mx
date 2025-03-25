@@ -41,8 +41,8 @@ class DocumentService
     public function setInvoice(Invoice $invoice): void
     {
         $this->invoice = $invoice;
-        $this->hasCfdi = (bool) $invoice->invoiceCfdi;
-        $this->hasCfdiCanceled = (bool) $invoice->invoiceCfdi?->invoiceCfdiCancel;
+        $this->hasCfdi = (bool)$invoice->invoiceCfdi;
+        $this->hasCfdiCanceled = (bool)$invoice->invoiceCfdi?->invoiceCfdiCancel;
 
         if ($this->hasCfdi) {
             // OBTIENE LOS ARCHIVOS DEL CFDI
@@ -104,12 +104,16 @@ class DocumentService
         return ($this->pdfFile->exists) ? $this->pdfFile->public_url : '';
     }
 
-    public function regenerateAndSaveInvoicePdf(string $filenamePdf = ''): void
+    public function regenerateAndSaveInvoicePdf(string $filenamePdf = '', $documentPdf = null): void
     {
         $model = ($this->invoice->invoiceCfdi) ? $this->invoice->invoiceCfdi->getMorphClass() : $this->invoice->getMorphClass();
         $id = ($this->invoice->invoiceCfdi) ? $this->invoice->invoiceCfdi->id : $this->invoice->id;
 
-        $documentPdf = (new GeneratePdfDocumentFromXmlObjectForIngresoHelper)(comprobante: (array) $this->getXmlArray());
+        if ($documentPdf === null) {
+            $documentPdf = (new GeneratePdfDocumentFromXmlObjectForIngresoHelper)(comprobante: (array)$this->getXmlArray());
+        }
+
+
         $documentRepository = new DocumentRepository;
         $documentRepository->create(
             relationshipModel: $model,
@@ -130,7 +134,7 @@ class DocumentService
     public function getFileNameToSave(?string $customFileName = null): string
     {
         if ($customFileName === null) {
-            $customFileName = 'invoice-'.$this->invoice->id;
+            $customFileName = 'invoice-' . $this->invoice->id;
         }
 
         return Str::slug($customFileName);

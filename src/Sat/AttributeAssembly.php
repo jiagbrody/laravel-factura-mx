@@ -17,6 +17,8 @@ readonly class AttributeAssembly
 {
     protected ComprobanteAtributos $comprobanteAtributos;
 
+    protected Collection $cfdiRelacionados;
+
     protected EmisorAtributos $emisorAtributos;
 
     protected ReceptorAtributos $receptorAtributos;
@@ -33,6 +35,24 @@ readonly class AttributeAssembly
     public function getComprobanteAtributos(): ComprobanteAtributos
     {
         return $this->comprobanteAtributos;
+    }
+
+
+    public function setCfdiRelacionados(Collection $cfdiRelacionados): void
+    {
+        $this->cfdiRelacionados = $cfdiRelacionados;
+    }
+
+
+    public function getCfdiRelacionados(): Collection
+    {
+        // ESTA PROPIEDAD ES OPCIONAL Y PUEDE O NO ESTAR INICIALIZADA
+        $rp = new \ReflectionProperty(self::class, 'cfdiRelacionados');
+        if ($rp->isInitialized($this) === false) {
+            return collect();
+        }
+
+        return $this->cfdiRelacionados;
     }
 
     public function setEmisorAtributos(EmisorAtributos $emisorAtributos): void

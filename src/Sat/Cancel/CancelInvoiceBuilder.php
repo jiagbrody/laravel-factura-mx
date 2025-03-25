@@ -22,11 +22,6 @@ final class CancelInvoiceBuilder
 
     protected readonly PacCancelResponse $cancelResponse;
 
-    // public function __construct()
-    // {
-    //     $this->replacementUUID = null;
-    // }
-
     public function setInvoice(Invoice $invoice): self
     {
         $this->invoice = $invoice;
@@ -65,7 +60,7 @@ final class CancelInvoiceBuilder
                 invoiceCfdi: $this->invoice->invoiceCfdi,
                 cancelTypeEnum: $this->cancelTypeEnum,
                 xmlFile: $this->cancelResponse->acuse,
-                fileName: 'acuse-cancelacion'.'_'.$this->invoice->invoiceCfdi->uuid.'_'.date('Y-m-d-H_i_s')
+                fileName: 'acuse-cancelacion' . '_' . $this->invoice->invoiceCfdi->uuid . '_' . date('Y-m-d-H_i_s')
             );
         }
 

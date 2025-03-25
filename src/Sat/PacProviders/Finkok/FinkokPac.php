@@ -95,6 +95,7 @@ class FinkokPac implements ProviderPacInterface
      *
      * "Cancel_signature" siempre da error 205, ya que nunca funciona en ambiente DEMO por parte del SAT.
      * Asi que uso "sign_cancel" este método está simulado en Finkok en ambiente DEMO.
+     * https://wiki.integracion.finkok.com/home/webservices/ws_cancelacion/sign_cancel
      * https://wiki.finkok.com/doku.php?id=sign_cancel2022
      * https://wiki.finkok.com/doku.php?id=php#consumir_web_service_de_cancel_signature
      * https://wiki.finkok.com/doku.php?id=errores-cancelacion

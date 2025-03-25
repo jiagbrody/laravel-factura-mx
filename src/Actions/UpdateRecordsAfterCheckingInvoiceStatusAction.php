@@ -21,7 +21,7 @@ class UpdateRecordsAfterCheckingInvoiceStatusAction
 
             // QUITO LA RELACIÓN DE LOS PRODUCTOS DEL INVOICE PARA PODER GESTIONARLOS NUEVAMENTE (O HACER LA SUBSTITUCION DE LA FACTURA).
             if ($invoice->invoice_type_id === InvoiceTypeEnum::INGRESO->value) {
-                InvoiceRelatedConcept::whereInvoiceId($invoice->id)->delete();
+                // InvoiceRelatedConcept::whereInvoiceId($invoice->id)->delete();
             }
 
             // TODO: CHECAR ESTA PARTE COMO SE DEBE QUEDAR BIEN LA CANCELACION DEL PAGO, SE SUPONE QUE SOLO ES UN CAMBIO DE REGISTRO, NO RECUERDO POR QUE EL "LOOP" PARA ACTUALIZAR.

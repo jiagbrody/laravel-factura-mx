@@ -9,13 +9,13 @@ use JiagBrody\LaravelFacturaMx\Models\Invoice;
 
 interface SaveIngresoInterface
 {
-    public function toInvoice(string $relationshipModel, int $relationshipId, int $companyHelperId);
+    public function toInvoice(int $companyHelperId);
 
-    public function toInvoiceDetail(Invoice $invoice);
+    public function toInvoiceIncome(Invoice $invoice);
 
-    public function toInvoiceBalances(Invoice $invoice);
+    // public function toInvoiceBalances(Invoice $invoice);
 
-    public function toInvoiceTaxes(Invoice $invoice);
+    // public function toInvoiceTaxes(Invoice $invoice);
 
-    public function ToComplementLocalTax(Invoice $invoice, Collection $localTaxes);
+    // public function ToComplementLocalTax(Invoice $invoice, Collection $localTaxes);
 }

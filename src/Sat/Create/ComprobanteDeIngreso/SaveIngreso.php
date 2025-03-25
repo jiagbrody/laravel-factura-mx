@@ -8,12 +8,12 @@ use Illuminate\Support\Collection;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceStatusEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceTaxTypeEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceTypeEnum;
-use JiagBrody\LaravelFacturaMx\Facades\LaravelFacturaMx;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceBalance;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceComplementLocalTax;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceComplementLocalTaxDetail;
-use JiagBrody\LaravelFacturaMx\Models\InvoiceDetail;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceIncome;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceRelationship;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceTax;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceTaxDetail;
 use JiagBrody\LaravelFacturaMx\Sat\AttributeAssembly;
@@ -24,46 +24,62 @@ use JiagBrody\LaravelFacturaMx\Sat\Rules\ComprobanteDeIngresoRuleHelper;
 
 class SaveIngreso implements SaveIngresoInterface
 {
-    public function __construct(protected AttributeAssembly $attributeAssembly) {}
-
-    public function toInvoice($relationshipModel, $relationshipId, $companyHelperId): Invoice
+    public function __construct(protected AttributeAssembly $attributeAssembly)
     {
+    }
+
+    public function toInvoice($companyHelperId): Invoice
+    {
+        $attributes = $this->attributeAssembly->getComprobanteAtributos();
+        $emisor = $this->attributeAssembly->getEmisorAtributos();
+        $receptor = $this->attributeAssembly->getReceptorAtributos();
+
         $invoice = new Invoice;
         $invoice->user_id = auth()->id();
         $invoice->invoice_type_id = InvoiceTypeEnum::INGRESO->value;
         $invoice->invoice_company_id = $companyHelperId;
         $invoice->invoice_status_id = InvoiceStatusEnum::DRAFT->value;
-        // $invoice->invoiceable_type = $relationshipModel;
-        // $invoice->invoiceable_id = $relationshipId;
+        $invoice->invoice_date = $attributes->getFecha();
+        $invoice->serie = $attributes->getSerie();
+        $invoice->folio = $attributes->getFolio();
+        $invoice->rfc_emisor = $emisor->getRfc();
+        $invoice->rfc_receptor = $receptor->getRfc();
+        $invoice->version = $attributes->getVersion();
         $invoice->save();
 
         return $invoice;
     }
 
-    public function toInvoiceDetail(Invoice $invoice): void
+    public function toInvoiceRelationships(Invoice $invoice, Collection $cfdiRelationships): void
+    {
+        // dd($cfdiRelationships);
+        if ($cfdiRelationships->has('CfdiRelacionados')) {
+
+            $cfdiRelationship = new InvoiceRelationship();
+            dd($cfdiRelationships);
+        }
+    }
+
+    public function toInvoiceIncome(Invoice $invoice): void
     {
         // WILL ALWAYS BE SAVED
-        $invoiceDetail = $invoice->invoiceDetail ?? new InvoiceDetail;
+        $invoiceIncome = $invoice->invoiceIncome ?? new InvoiceIncome;
         $attributes = $this->attributeAssembly->getComprobanteAtributos();
 
-        $invoiceDetail->invoice_id = $invoice->id;
-        $invoiceDetail->version = $attributes->getVersion();
-        $invoiceDetail->serie = $attributes->getSerie();
-        $invoiceDetail->folio = $attributes->getFolio();
-        $invoiceDetail->fecha = $attributes->getFecha();
-        $invoiceDetail->forma_pago = $attributes->getFormaPago();
-        $invoiceDetail->condiciones_de_pago = $attributes->getCondicionesDePago();
-        $invoiceDetail->sub_total = $attributes->getSubTotal();
-        $invoiceDetail->descuento = $attributes->getDescuento();
-        $invoiceDetail->moneda = $attributes->getMoneda();
-        $invoiceDetail->tipo_cambio = $attributes->getTipoCambio();
-        $invoiceDetail->total = $attributes->getTotal();
-        $invoiceDetail->tipo_de_comprobante = $attributes->getTipoDeComprobante();
-        $invoiceDetail->exportacion = $attributes->getExportacion();
-        $invoiceDetail->metodo_pago = $attributes->getMetodoPago();
-        $invoiceDetail->lugar_expedicion = $attributes->getLugarExpedicion();
-        $invoiceDetail->receptor_rfc = $this->attributeAssembly->getReceptorAtributos()->getRfc();
-        $invoiceDetail->save();
+        $invoiceIncome->invoice_id = $invoice->id;
+        $invoiceIncome->forma_pago = $attributes->getFormaPago();
+        // $invoiceIncome->condiciones_de_pago = $attributes->getCondicionesDePago();
+        $invoiceIncome->sub_total = $attributes->getSubTotal();
+        $invoiceIncome->descuento = $attributes->getDescuento();
+        $invoiceIncome->moneda = $attributes->getMoneda();
+        $invoiceIncome->tipo_cambio = $attributes->getTipoCambio();
+        $invoiceIncome->total = $attributes->getTotal();
+        // $invoiceIncome->tipo_de_comprobante = $attributes->getTipoDeComprobante();
+        $invoiceIncome->exportacion = $attributes->getExportacion();
+        $invoiceIncome->metodo_pago = $attributes->getMetodoPago();
+        $invoiceIncome->lugar_expedicion = $attributes->getLugarExpedicion();
+        // $invoiceIncome->receptor_rfc = $this->attributeAssembly->getReceptorAtributos()->getRfc();
+        $invoiceIncome->save();
     }
 
     public function toInvoiceBalances(Invoice $invoice): void

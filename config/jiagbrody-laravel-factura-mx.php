@@ -17,10 +17,13 @@ return [
      |
      */
     'table_names' => [
+        'invoice_incomes' => 'jiagbrody_lfmx_invoice_incomes',
         'invoice_companies' => 'jiagbrody_lfmx_invoice_companies',
         'invoice_types' => 'jiagbrody_lfmx_invoice_types',
         'invoice_statuses' => 'jiagbrody_lfmx_invoice_statuses',
         'invoices' => 'jiagbrody_lfmx_invoices',
+        'invoice_relationship_types' => 'jiagbrody_lfmx_invoice_relationship_types',
+        'invoice_relationships' => 'jiagbrody_lfmx_invoice_relationships',
         'invoice_details' => 'jiagbrody_lfmx_invoice_details',
         'invoice_payment_types' => 'jiagbrody_lfmx_invoice_payment_types',
         'invoice_balances' => 'jiagbrody_lfmx_invoice_balances',
@@ -37,12 +40,6 @@ return [
         'invoice_incidents' => 'jiagbrody_lfmx_invoice_incidents',
     ],
 
-    'column_names' => [
-        /*
-         * Campo relacionado con el modelo de negocio del los conceptos del estado de cuenta
-         */
-        'foreign_id_related_to_concepts' => 'statement_detail_id',
-    ],
 
     /*
      |--------------------------------------------------------------------------

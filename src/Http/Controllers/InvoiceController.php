@@ -32,11 +32,7 @@ class InvoiceController extends Controller
             'invoiceType',
             'invoiceCompany',
             'invoiceStatus',
-            'invoiceBalance',
             'invoiceCfdi',
-            'invoiceDetail',
-            // 'invoiceTaxes',
-            'invoiceTax',
             'invoiceDocuments',
         ])->whereId($invoiceId)->firstOrFail();
 
