@@ -9,9 +9,26 @@ use JiagBrody\LaravelFacturaMx\Models\Invoice;
 
 interface SaveIngresoInterface
 {
-    public function toInvoice(int $companyHelperId);
+    /*
+     * TODO: ESTE METODO DEBERIA DE IR EN OTRA INTERFACE LA CUAL SE USARA EN OTRAS CREACIONES DE FACTURAS.
+     */
+    /*
+     * CREAR UNICO REGISTRO DE FACTURA QUE NO ES POSIBLE BORRAR.
+     */
+    public function createNewInvoice(int $companyHelperId): Invoice;
 
-    public function toInvoiceIncome(Invoice $invoice);
+    /*
+     * TODO: ESTE METODO DEBERIA DE IR EN OTRA INTERFACE LA CUAL SE USARA EN OTRAS CREACIONES DE FACTURAS.
+     */
+    /*
+     * GUARDAR COMPLEMENTO "CfdiRelacionados" DE LA FACTURA O MODIFICAR BORRADOR CON ERRORES DE TIMBRADO.
+     */
+    public function upsertRelationshipsAddOn(Invoice $invoice, Collection $cfdiRelationships);
+
+    /*
+     * GUARDAR TABLAS ADICIONALES DE LA FACTURA O MODIFICAR BORRADOR CON ERRORES DE TIMBRADO.
+     */
+    public function upsertAdditionalTables(Invoice $invoice);
 
     // public function toInvoiceBalances(Invoice $invoice);
 

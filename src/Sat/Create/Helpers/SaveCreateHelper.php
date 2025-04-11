@@ -1,8 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
-namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeIngreso;
+namespace JiagBrody\LaravelFacturaMx\Sat\Create\Helpers;
 
 use Illuminate\Support\Collection;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceStatusEnum;
@@ -10,6 +8,7 @@ use JiagBrody\LaravelFacturaMx\Enums\InvoiceTaxTypeEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceTypeEnum;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceBalance;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceCfdi;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceComplementLocalTax;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceComplementLocalTaxDetail;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceIncome;
@@ -17,18 +16,19 @@ use JiagBrody\LaravelFacturaMx\Models\InvoiceRelationship;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceTax;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceTaxDetail;
 use JiagBrody\LaravelFacturaMx\Sat\AttributeAssembly;
+use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\CfdiRelacionadosAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ConceptoAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoRetenidoAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoTrasladoAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\Rules\ComprobanteDeIngresoRuleHelper;
 
-class SaveIngreso implements SaveIngresoInterface
+class SaveCreateHelper
 {
     public function __construct(protected AttributeAssembly $attributeAssembly)
     {
     }
 
-    public function createNewInvoice($companyHelperId): Invoice
+    public function createInvoice(int $companyHelperId): Invoice
     {
         $attributes = $this->attributeAssembly->getComprobanteAtributos();
         $emisor = $this->attributeAssembly->getEmisorAtributos();
@@ -50,26 +50,11 @@ class SaveIngreso implements SaveIngresoInterface
         return $invoice;
     }
 
-    /*
-     * ESTE PROCESO DE GUARDAR RELACIONADOS PODRIA IR EN UNA CLASE APARTE Y TAL VEZ LLAMARLA CON UN "trait" YA QUE SE UTILIZARA EN LAS DEMAS FACTURAS:
-     * INGRESO, EGRESO, COMPLEMENTO PAGO.
-     */
-    public function upsertRelationshipsAddOn(Invoice $invoice, Collection $cfdiRelationships): void
-    {
-        // dd($cfdiRelationships);
-        if ($cfdiRelationships->has('CfdiRelacionados')) {
-
-            $cfdiRelationship = new InvoiceRelationship;
-            dd($cfdiRelationships);
-        }
-    }
-
-    public function upsertAdditionalTables(Invoice $invoice): void
+    public function saveIncome($invoice): void
     {
         // WILL ALWAYS BE SAVED
         $invoiceIncome = $invoice->invoiceIncome ?? new InvoiceIncome;
         $attributes = $this->attributeAssembly->getComprobanteAtributos();
-
         $invoiceIncome->invoice_id = $invoice->id;
         $invoiceIncome->forma_pago = $attributes->getFormaPago();
         // $invoiceIncome->condiciones_de_pago = $attributes->getCondicionesDePago();
@@ -86,9 +71,29 @@ class SaveIngreso implements SaveIngresoInterface
         $invoiceIncome->save();
     }
 
-    public function toInvoiceBalances(Invoice $invoice): void
+    /*
+     * ESTE PROCESO DE GUARDAR RELACIONADOS PODRIA IR EN UNA CLASE APARTE Y TAL VEZ LLAMARLA CON UN "trait" YA QUE SE UTILIZARA EN LAS DEMAS FACTURAS:
+     * INGRESO, EGRESO, COMPLEMENTO PAGO.
+     */
+    public function saveRelationshipsAddOn($invoice): void
     {
-        // WILL ALWAYS BE SAVED
+        if ($this->attributeAssembly->getCfdiRelacionados()->count()) {
+            $this->attributeAssembly->getCfdiRelacionados()->each(function (CfdiRelacionadosAtributos $item) use ($invoice) {
+                $item->getCfdiRelacionado()->each(function ($item2) use ($invoice) {
+                    $cfdi = InvoiceCfdi::where('uuid', $item2->first())->first();
+                    $cfdiRelationship = new InvoiceRelationship;
+                    $cfdiRelationship->origin_invoice_id = $invoice->id;
+                    $cfdiRelationship->related_invoice_id = $cfdi->invoice_id;
+                    $cfdiRelationship->invoice_relationship_type_id = 1;
+                    $cfdiRelationship->relationship_date = now();
+                    $cfdiRelationship->save();
+                });
+            });
+        }
+    }
+
+    public function saveInvoiceBalances(): void
+    {
         $invoiceBalance = $invoice->invoiceBalance ?? new InvoiceBalance;
         $concepts = $this->attributeAssembly->getConceptos();
 
@@ -104,7 +109,7 @@ class SaveIngreso implements SaveIngresoInterface
         $invoiceBalance->save();
     }
 
-    public function toInvoiceTaxes(Invoice $invoice): void
+    public function saveInvoiceTaxes(): void
     {
         // WILL ALWAYS BE SAVED
         $invoiceTax = $invoice->invoiceTax ?? new InvoiceTax;
@@ -115,10 +120,10 @@ class SaveIngreso implements SaveIngresoInterface
         $invoiceTax->total_impuestos_trasladados = $concepts->sum('total_transfer_taxes');
         $invoiceTax->save();
 
-        $this->saveInvoiceTaxDetails($invoiceTax, $concepts);
+        $this->toInvoiceTaxDetails($invoiceTax, $concepts);
     }
 
-    public function ToComplementLocalTax(Invoice $invoice, Collection $localTaxes): void
+    public function saveComplementLocalTax(): void
     {
         if ($localTaxes->isNotEmpty()) {
             $complementLocalTax = new InvoiceComplementLocalTax;
@@ -149,7 +154,7 @@ class SaveIngreso implements SaveIngresoInterface
         }
     }
 
-    private function saveInvoiceTaxDetails(InvoiceTax $invoiceTax, Collection $concepts): void
+    private function toInvoiceTaxDetails(InvoiceTax $invoiceTax, Collection $concepts): void
     {
         $concepts->each(function (Collection $concept) use ($invoiceTax) {
             $this->putRegisterTax($invoiceTax, $this->getAttributesConceptFromClient($concept));
@@ -182,8 +187,8 @@ class SaveIngreso implements SaveIngresoInterface
         $data->save();
     }
 
-    private function getAttributesConceptFromClient(Collection $collection): ConceptoAtributos
+    private function getAttributesConceptFromClient(): ConceptoAtributos
     {
-        return $collection->get('conceptSat');
+        // return $collection->get('conceptSat');
     }
 }

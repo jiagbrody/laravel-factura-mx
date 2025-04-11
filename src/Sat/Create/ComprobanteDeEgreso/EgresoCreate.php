@@ -4,26 +4,22 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeEgreso;
 
-use App\Enums\InvoiceCompanyEnum;
-use JiagBrody\LaravelFacturaMx\Sat\GettingSatCfdiInterface;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
+use JiagBrody\LaravelFacturaMx\Sat\Create\Helpers\GenericCreator;
 
-readonly class EgresoCreate implements GettingSatCfdiInterface
+readonly class EgresoCreate
 {
-    public function __construct(protected InvoiceCompanyEnum $invoiceCompanyEnum) {}
-
-    public function custom($company): EgresoCreateConcrete
+    public function custom(InvoiceCompany $company): GenericCreator
     {
-        return new EgresoCreateConcrete($this->invoiceCompanyEnum);
+        return new GenericCreator($company);
     }
 
-    public function fromComprobante(array $comprobante, $products = []): EgresoCreateConcrete
-    {
-        $concept = (! empty($products)) ? $products : $comprobante['Conceptos']['Concepto'][0];
-
-        return (new EgresoCreateConcrete($this->invoiceCompanyEnum))
-            ->addAtributos($comprobante)
-            ->addReceptor($comprobante['Receptor'])
-            ->addConceptos($concept)
-            ->addRelacionados($comprobante['CfdiRelacionados']);
-    }
+    // public function fromExistingInvoiceToRelate(Invoice $invoice): EgresoCreateConcrete
+    // {
+    //     return (new EgresoCreateConcrete($invoice->invoiceCompany))
+    //         ->addAtributos($comprobante)
+    //         ->addReceptor($comprobante['Receptor'])
+    //         ->addConceptos($products)
+    //         ->addRelacionados($comprobante['CfdiRelacionados']);
+    // }
 }

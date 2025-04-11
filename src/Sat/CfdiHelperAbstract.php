@@ -9,6 +9,8 @@ use CfdiUtils\CfdiCreator40;
 use CfdiUtils\XmlResolver\XmlResolver;
 use Illuminate\Support\Collection;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\CfdiRelacionadosAtributos;
+use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ComprobanteAtributos;
+use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ConceptoAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\EmisorAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoRetenidoAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoTrasladoAtributos;
@@ -36,27 +38,6 @@ abstract class CfdiHelperAbstract
         $this->addEmisor();
     }
 
-    public function addRelacionados(Collection $relacionados): self
-    {
-        $relacionados->each(function (CfdiRelacionadosAtributos $relacionado) {
-            // dd($relacionado, $relacionado->getTipoRelacion(), $relacionado->getCfdiRelacionado());
-            $this->creatorCfdi->comprobante()->addCfdiRelacionados([
-                'TipoRelacion' => $relacionado->getTipoRelacion(),
-            ])->multiCfdiRelacionado(...($relacionado->getCfdiRelacionado()->toArray()));
-        });
-
-        $this->attributeAssembly->setCfdiRelacionados($relacionados);
-
-        // foreach ($relacionados as $relacionado) {
-        //     dd($relacionado);
-        //     $this->creatorCfdi->comprobante()->addCfdiRelacionados([
-        //         'TipoRelacion' => $relacionado['TipoRelacion'],
-        //     ])->multiCfdiRelacionado(...$relacionado['CfdiRelacionado']);
-        // }
-
-        return $this;
-    }
-
     private function addEmisor(): void
     {
         $emisorAtributos = new EmisorAtributos;
@@ -65,15 +46,21 @@ abstract class CfdiHelperAbstract
         $emisorAtributos->setRegimenFiscal($this->companyHelper->regimenFiscal);
 
         $this->attributeAssembly->setEmisorAtributos($emisorAtributos);
-
         $this->creatorCfdi->comprobante()->addEmisor($emisorAtributos->getCollection()->toArray());
     }
 
     public function addReceptor(ReceptorAtributos $receptor): self
     {
         $this->attributeAssembly->setReceptorAtributos($receptor);
-
         $this->creatorCfdi->comprobante()->addReceptor($receptor->getCollection()->toArray());
+
+        return $this;
+    }
+
+    public function addAtributos(ComprobanteAtributos $attributes): self
+    {
+        $this->attributeAssembly->setComprobanteAtributos($attributes);
+        $this->creatorCfdi->comprobante()->addAttributes($attributes->getCollection()->toArray());
 
         return $this;
     }
@@ -81,14 +68,15 @@ abstract class CfdiHelperAbstract
     public function addConceptos(Collection $concepts): self
     {
         if ($concepts->count() > 0) {
-            $concepts->each(function ($concept) {
+            $concepts->each(function (ConceptoAtributos $concept) {
 
-                $item = $concept->get('conceptSat');
+                // $item = $concept->get('conceptSat');
+                // $item = $concept;
                 $invoiceConcept = $this->creatorCfdi->comprobante()
-                    ->addConcepto($item->getOnlySimplePropertiesCollection()->toArray());
+                    ->addConcepto($concept->getOnlySimplePropertiesCollection()->toArray());
 
                 $sumT = collect();
-                $item->getImpuestoTraslados()->each(function (ImpuestoTrasladoAtributos $transfer) use (
+                $concept->getImpuestoTraslados()->each(function (ImpuestoTrasladoAtributos $transfer) use (
                     $invoiceConcept,
                     $sumT
                 ) {
@@ -96,10 +84,10 @@ abstract class CfdiHelperAbstract
                     $sumT->push($array);
                     $invoiceConcept->addTraslado($array);
                 });
-                $concept->put('total_transfer_taxes', $sumT->sum('Importe'));
+                // $concept->put('total_transfer_taxes', $sumT->sum('Importe'));
 
                 $sumR = collect();
-                $item->getImpuestoRetenidos()->each(function (ImpuestoRetenidoAtributos $retention) use (
+                $concept->getImpuestoRetenidos()->each(function (ImpuestoRetenidoAtributos $retention) use (
                     $invoiceConcept,
                     $sumR
                 ) {
@@ -107,10 +95,23 @@ abstract class CfdiHelperAbstract
                     $sumR->push($array);
                     $invoiceConcept->addRetencion($array);
                 });
-                $concept->put('total_retention_taxes', $sumR->sum('Importe'));
+                // $concept->put('total_retention_taxes', $sumR->sum('Importe'));
             });
             $this->attributeAssembly->setConceptos($concepts);
         }
+
+        return $this;
+    }
+
+    public function addRelacionados(Collection $relacionados): self
+    {
+        $relacionados->each(function (CfdiRelacionadosAtributos $relacionado) {
+            $this->creatorCfdi->comprobante()->addCfdiRelacionados([
+                'TipoRelacion' => $relacionado->getTipoRelacion(),
+            ])->multiCfdiRelacionado(...($relacionado->getCfdiRelacionado()->toArray()));
+        });
+
+        $this->attributeAssembly->setCfdiRelacionados($relacionados);
 
         return $this;
     }

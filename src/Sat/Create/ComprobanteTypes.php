@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Create;
 
-use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeEgreso\EgresoHandler;
-use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeIngreso\IngresoHandler;
+use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeEgreso\EgresoCreate;
+use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeIngreso\IngresoCreate;
 
-class ComprobanteBuilder implements ComprobanteInterface
+class ComprobanteTypes
 {
-    public function ingreso(): IngresoHandler
+    public function ingreso(): IngresoCreate
     {
-        return new IngresoHandler;
+        return new IngresoCreate;
     }
 
-    public function egreso(): EgresoHandler
+    public function egreso(): EgresoCreate
     {
-        return new EgresoHandler;
+        return new EgresoCreate;
     }
 
     // public function recepcionDePagos(): PagoHandler

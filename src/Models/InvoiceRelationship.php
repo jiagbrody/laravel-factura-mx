@@ -10,6 +10,13 @@ class InvoiceRelationship extends Model
 {
     use AddReadableDatesHelperTrait, HasFactory;
 
+    protected $fillable = [
+        'origin_invoice_id',
+        'related_invoice_id',
+        'invoice_relationship_type_id',
+        'relationship_date',
+    ];
+
     protected $appends = [
         'created_at_format',
         'created_at_human',
@@ -17,6 +24,6 @@ class InvoiceRelationship extends Model
 
     public function getTable()
     {
-        return config('jiagbrody-laravel-factura-mx.table_names.invoice_relationship_types', parent::getTable());
+        return config('jiagbrody-laravel-factura-mx.table_names.invoice_relationships', parent::getTable());
     }
 }

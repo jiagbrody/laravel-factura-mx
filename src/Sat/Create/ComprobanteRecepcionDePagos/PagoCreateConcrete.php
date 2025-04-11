@@ -28,7 +28,7 @@ class PagoCreateConcrete extends CfdiHelperAbstract
     {
         $this->atributos = new ComprobanteAtributos('P');
         $this->currencyService = new CurrencyExchangeRateService;
-        parent::__construct($invoiceCompanyEnum);
+        parent::__construct();
     }
 
     public function addAtributos(array $atributos): self

@@ -16,7 +16,7 @@ use JiagBrody\LaravelFacturaMx\Sat\Helper\XmlFileSatHelperBuilder;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
 use PhpCfdi\Credentials\Credential;
 
-class PagoCreateBuild extends DraftBuild
+class PagoCreateBuild
 {
     use GenerateInvoicePdfFileHelperTrait;
 

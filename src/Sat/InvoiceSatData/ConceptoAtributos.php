@@ -6,6 +6,37 @@ namespace JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData;
 
 use Illuminate\Support\Collection;
 
+/*
+ * JSON EXAMPLE:
+ *
+
+"Conceptos": [
+        {
+            "ClaveProdServ": "84111506",
+            "NoIdentificacion": "1",
+            "Cantidad": "1",
+            "ClaveUnidad": "ACT",
+            "Unidad": "ACT",
+            "Descripcion": "84111506 DESCUENTOS Y BONIFICACIONES GAS NATURAL",
+            "ValorUnitario": "1308.35",
+            "Importe": "1308.35",
+            "Descuento": "0.00",
+            "ObjetoImp": "02",
+            "Impuestos": {
+            "Traslados": [
+                    {
+                        "Base": "1308.350000",
+                        "Importe": "209.34",
+                        "Impuesto": "002",
+                        "TasaOCuota": "0.160000",
+                        "TipoFactor": "Tasa"
+                    }
+                ],
+            }
+        }
+    ]
+*/
+
 final readonly class ConceptoAtributos
 {
     use AtributosHelperTrait;

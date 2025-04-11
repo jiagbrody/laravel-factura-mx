@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx;
 
+use JiagBrody\LaravelFacturaMx\Helpers\BasicFunctionsHelper;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\Cancel\CancelInvoiceBuilder;
-use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteBuilder;
+use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteTypes;
 use JiagBrody\LaravelFacturaMx\Sat\Read\ReadInvoiceBuilder;
 use JiagBrody\LaravelFacturaMx\Sat\Stamp\StampInvoiceBuilder;
 use JiagBrody\LaravelFacturaMx\Sat\Status\StatusInvoiceBuilder;
@@ -24,12 +25,14 @@ class LaravelFacturaMx
         return new DocumentService;
     }
 
-    public function create(): ComprobanteBuilder
+    public function create(): ComprobanteTypes
     {
-        return new ComprobanteBuilder;
+        return new ComprobanteTypes;
     }
 
-    public function editDraft() {}
+    public function editDraft()
+    {
+    }
 
     public function invoiceStamper(Invoice $invoice): StampInvoiceBuilder
     {
@@ -49,5 +52,10 @@ class LaravelFacturaMx
     public function status(): StatusInvoiceBuilder
     {
         return new StatusInvoiceBuilder;
+    }
+
+    public function basicFunctionsHelper(): BasicFunctionsHelper
+    {
+        return new BasicFunctionsHelper;
     }
 }

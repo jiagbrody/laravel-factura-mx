@@ -1,17 +1,13 @@
 <?php
 
-declare(strict_types=1);
+namespace JiagBrody\LaravelFacturaMx\Sat\Create\Helpers;
 
-namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeEgreso;
-
-// use App\Enums\InvoiceCompanyEnum;
-// use App\Services\CurrencyExchangeRateService;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 use JiagBrody\LaravelFacturaMx\Sat\CfdiHelperAbstract;
+use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeEgreso\EgresoCreateBuild;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
-use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ComprobanteAtributos;
 
-class EgresoCreateConcrete extends CfdiHelperAbstract
+class GenericCreator extends CfdiHelperAbstract
 {
     public function __construct(InvoiceCompany $invoiceCompany)
     {
@@ -19,14 +15,13 @@ class EgresoCreateConcrete extends CfdiHelperAbstract
         parent::__construct();
     }
 
-    public function builder(): EgresoCreateBuilder
+    public function build(): CreateBuild
     {
         $this->creatorCfdi->addSumasConceptos(null, 2);
         $this->creatorCfdi->moveSatDefinitionsToComprobante();
         $this->creatorCfdi->addSello($this->credential->privateKey()->pem(), $this->credential->privateKey()->passPhrase());
 
-        return new EgresoCreateBuilder(
-        // credential: $this->credential,
+        return new CreateBuild(
             xmlContent: $this->creatorCfdi->asXml(),
             companyHelper: $this->companyHelper,
             attributeAssembly: $this->attributeAssembly
