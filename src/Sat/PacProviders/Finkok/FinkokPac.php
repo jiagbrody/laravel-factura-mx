@@ -29,6 +29,8 @@ class FinkokPac implements ProviderPacInterface
 
     public readonly InvoiceCompanyHelper $invoiceCompanyHelper;
 
+    public float $total;
+
     protected string $pacEnvironment;
 
     protected string $usernameFinkok;
@@ -46,8 +48,8 @@ class FinkokPac implements ProviderPacInterface
     public function __construct(protected Invoice $invoice)
     {
         $this->response = new PacStampResponse;
-        $this->usernameFinkok = (string) config('jiagbrody-laravel-factura-mx.pac_providers.finkok.user');
-        $this->passwordFinkok = (string) config('jiagbrody-laravel-factura-mx.pac_providers.finkok.password');
+        $this->usernameFinkok = (string)config('jiagbrody-laravel-factura-mx.pac_providers.finkok.user');
+        $this->passwordFinkok = (string)config('jiagbrody-laravel-factura-mx.pac_providers.finkok.password');
 
         if (config('jiagbrody-laravel-factura-mx.pac_environment_production')) {
             $this->pacEnvironment = 'production';
@@ -69,6 +71,11 @@ class FinkokPac implements ProviderPacInterface
     public function setInvoiceCompanyHelper(InvoiceCompany $company): void
     {
         $this->invoiceCompanyHelper = new InvoiceCompanyHelper($company);
+    }
+
+    public function setTotal(float $total): void
+    {
+        $this->total = $total;
     }
 
     public function getStampTestData(): FinkokTestDataResponse

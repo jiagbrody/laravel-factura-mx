@@ -18,19 +18,20 @@ class SimpleRelationDataQuery
         $invoiceStatuses = config('jiagbrody-laravel-factura-mx.table_names.invoice_statuses');
         $invoiceCfdis = config('jiagbrody-laravel-factura-mx.table_names.invoice_cfdis');
         $invoiceCfdiCancels = config('jiagbrody-laravel-factura-mx.table_names.invoice_cfdi_cancels');
+        $invoiceCfdiCancelReceipts = config('jiagbrody-laravel-factura-mx.table_names.invoice_cfdi_cancel_receipts');
         $invoiceCfdiCancelTypes = config('jiagbrody-laravel-factura-mx.table_names.invoice_cfdi_cancel_types');
 
-        $this->querySource = DB::table($invoices.'invoices')
+        $this->querySource = DB::table($invoices . 'invoices')
             // $this->querySource = Invoice::query()
-            ->from($invoices.' as invoices')
+            ->from($invoices . ' as invoices')
             ->select($this->obtainSelectOfInvoices())
-            ->join($invoiceTypes.' as invoice_types', 'invoices.invoice_type_id', '=', 'invoice_types.id')
-            ->join($invoiceStatuses.' as invoice_statuses', 'invoices.invoice_status_id', '=', 'invoice_statuses.id')
-            ->join($invoiceCompanies.' as invoice_companies', 'invoices.invoice_company_id', '=', 'invoice_companies.id')
-            ->leftJoin($invoiceCfdis.' as invoice_cfdis', 'invoices.id', '=', 'invoice_cfdis.invoice_id')
-            // TODO: CHECAR SI LAS CANCELACIONES LAS DEJO COMO SOLO "hasOne" Y LOS ACUSES CREAR OTRA TABLA SEPARADA DE ACUSES.
-            ->leftJoin($invoiceCfdiCancels.' as invoice_cfdi_cancels', 'invoice_cfdis.id', '=', 'invoice_cfdi_cancels.invoice_cfdi_id')
-            ->leftJoin($invoiceCfdiCancelTypes.' as invoice_cfdi_cancel_types', 'invoice_cfdi_cancels.invoice_cfdi_cancel_type_id', '=', 'invoice_cfdi_cancel_types.id');
+            ->join($invoiceTypes . ' as invoice_types', 'invoices.invoice_type_id', '=', 'invoice_types.id')
+            ->join($invoiceStatuses . ' as invoice_statuses', 'invoices.invoice_status_id', '=', 'invoice_statuses.id')
+            ->join($invoiceCompanies . ' as invoice_companies', 'invoices.invoice_company_id', '=', 'invoice_companies.id')
+            ->leftJoin($invoiceCfdis . ' as invoice_cfdis', 'invoices.id', '=', 'invoice_cfdis.invoice_id')
+            ->leftJoin($invoiceCfdiCancels . ' as invoice_cfdi_cancels', 'invoice_cfdis.id', '=', 'invoice_cfdi_cancels.invoice_cfdi_id')
+            ->leftJoin($invoiceCfdiCancelReceipts . ' as invoice_cfdi_cancel_receipts', 'invoice_cfdi_cancels.invoice_cfdi_cancel_receipt_id', '=', 'invoice_cfdi_cancel_receipts.id')
+            ->leftJoin($invoiceCfdiCancelTypes . ' as invoice_cfdi_cancel_types', 'invoice_cfdi_cancel_receipts.invoice_cfdi_cancel_type_id', '=', 'invoice_cfdi_cancel_types.id');
     }
 
     private function obtainSelectOfInvoices(): array
@@ -51,14 +52,16 @@ class SimpleRelationDataQuery
             'invoice_companies.regimen_fiscal as invoice_company_regimen_fiscal',
             'invoice_statuses.id as invoice_status_id',
             'invoice_statuses.name as invoice_status_name',
-            // DB::raw('DATE_FORMAT(invoice_details.fecha, "%d/%c/%Y %r") as invoice_detail_fecha_format'),
+            'invoices.invoice_date',
+            DB::raw('DATE_FORMAT(invoices.invoice_date, "%d/%c/%Y %r") as invoice_date_format'),
             'invoice_cfdis.id as invoice_cfdi_id',
             'invoice_cfdis.user_id as invoice_cfdi_user_id',
             'invoice_cfdis.uuid as invoice_cfdi_uuid',
             'invoice_cfdi_cancels.id as invoice_cfdi_cancel_id',
+            'invoice_cfdi_cancel_receipts.replacement_invoice_cfdi_id as invoice_cfdi_cancel_receipt_replacement_invoice_cfdi_id',
+            'invoice_cfdi_cancel_receipts.receipt_date as invoice_cfdi_cancel_receipt_date',
             'invoice_cfdi_cancel_types.id as invoice_cfdi_cancel_type_id',
             'invoice_cfdi_cancel_types.name as invoice_cfdi_cancel_type_name',
-            'invoices.created_at as invoice_created_at',
         ];
     }
 

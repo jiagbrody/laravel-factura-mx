@@ -54,15 +54,15 @@ class SaveIngreso implements SaveIngresoInterface
      * ESTE PROCESO DE GUARDAR RELACIONADOS PODRIA IR EN UNA CLASE APARTE Y TAL VEZ LLAMARLA CON UN "trait" YA QUE SE UTILIZARA EN LAS DEMAS FACTURAS:
      * INGRESO, EGRESO, COMPLEMENTO PAGO.
      */
-    public function upsertRelationshipsAddOn(Invoice $invoice, Collection $cfdiRelationships): void
-    {
-        // dd($cfdiRelationships);
-        if ($cfdiRelationships->has('CfdiRelacionados')) {
-
-            $cfdiRelationship = new InvoiceRelationship;
-            dd($cfdiRelationships);
-        }
-    }
+    // public function upsertRelationshipsAddOn(Invoice $invoice, Collection $cfdiRelationships): void
+    // {
+    //     // dd($cfdiRelationships);
+    //     if ($cfdiRelationships->has('CfdiRelacionados')) {
+    //
+    //         $cfdiRelationship = new InvoiceRelationship;
+    //         dd($cfdiRelationships);
+    //     }
+    // }
 
     public function upsertAdditionalTables(Invoice $invoice): void
     {

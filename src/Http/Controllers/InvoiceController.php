@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceCfdiCancelTypeEnum;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceCfdi;
 
 class InvoiceController extends Controller
 {
@@ -51,7 +52,7 @@ class InvoiceController extends Controller
         $request->validate([
             'invoice_id' => ['required', 'integer'],
             'invoice_cfdi_cancel_type_id' => ['required', 'integer'],
-            'uuid' => ['required_if:cat_invoice_cfdi_cancel_type,'.InvoiceCfdiCancelTypeEnum::NEW_WITH_ERRORS_RELATED->value, 'sometimes', 'nullable'],
+            'uuid' => ['required_if:cat_invoice_cfdi_cancel_type,' . InvoiceCfdiCancelTypeEnum::NEW_WITH_ERRORS_RELATED->value, 'sometimes', 'nullable'],
         ]);
 
         $invoice->load('invoiceCfdi');
@@ -67,11 +68,11 @@ class InvoiceController extends Controller
                 ->setCancelTypeEnum($cancelType);
 
             if ($cancelType === InvoiceCfdiCancelTypeEnum::NEW_WITH_ERRORS_RELATED) {
-                $cancelBuilder->setReplacementUUID($request->input('uuid'));
+                $replacement = InvoiceCfdi::where('uuid', $request->input('uuid'))->first();
+                $cancelBuilder->setReplacementInvoiceCfdi($replacement);
             }
 
             $response = $cancelBuilder->build();
-            dd($response);
 
             if ($response->checkProcess === false) {
                 dd($response);

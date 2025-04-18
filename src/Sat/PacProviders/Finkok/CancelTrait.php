@@ -50,7 +50,6 @@ trait CancelTrait
             $client = new SoapClient($this->cancelUrlFinkok, ['trace' => 1]);
             $response = $client->__soapCall('get_receipt', [$params]);
             // dd($client->__getLastRequest(), $client->__getLastResponse());
-            // dd($response);
         } catch (exception $e) {
             abort(422, $e->getMessage());
         }

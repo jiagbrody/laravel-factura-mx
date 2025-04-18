@@ -6,35 +6,25 @@ namespace JiagBrody\LaravelFacturaMx\Actions;
 
 use Illuminate\Support\Facades\DB;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceStatusEnum;
-use JiagBrody\LaravelFacturaMx\Enums\InvoiceTypeEnum;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
-use JiagBrody\LaravelFacturaMx\Models\InvoiceRelatedConcept;
 
 class UpdateRecordsAfterCheckingInvoiceStatusAction
 {
     public function __invoke(Invoice $invoice): void
     {
         DB::transaction(function () use ($invoice) {
-            // ACTUALIZO EL NOMBRE DEL REGISTRO DE LA SOLICITUD PREVIA DEL PAC
+            #update to canceled
             $invoice->invoice_status_id = InvoiceStatusEnum::CANCELED->value;
             $invoice->save();
 
-            // QUITO LA RELACIÓN DE LOS PRODUCTOS DEL INVOICE PARA PODER GESTIONARLOS NUEVAMENTE (O HACER LA SUBSTITUCION DE LA FACTURA).
-            if ($invoice->invoice_type_id === InvoiceTypeEnum::INGRESO->value) {
-                // InvoiceRelatedConcept::whereInvoiceId($invoice->id)->delete();
-            }
+            #get latest receipt SAT
+            $receipt = $invoice->invoiceCfdi->invoiceCfdiCancelReceipts->last();
 
-            // TODO: CHECAR ESTA PARTE COMO SE DEBE QUEDAR BIEN LA CANCELACION DEL PAGO, SE SUPONE QUE SOLO ES UN CAMBIO DE REGISTRO, NO RECUERDO POR QUE EL "LOOP" PARA ACTUALIZAR.
-            // if ($invoice->invoice_cfdi_type_id === InvoiceTypeEnum::PAGO->value) {
-            //     $invoice->invoicePayments->each(function ($item) {
-            //         $item->invoicePaymentDocuments()->update(['is_active' => false]);
-            //     });
-            // }
 
-            // if ($invoice->invoiceCfdi->cfdiCancel && isset($sat->EstatusCancelacion)) {
-            //     $invoice->invoiceCfdi->cfdiCancel->estatus_cancelacion = $sat->EstatusCancelacion;
-            //     $invoice->invoiceCfdi->cfdiCancel->save();
-            // }
+            #create cancel relationship with receipt
+            $invoice->invoiceCfdi->invoiceCfdiCancel()->create([
+                'invoice_cfdi_cancel_receipt_id' => $receipt->id
+            ]);
         });
     }
 }

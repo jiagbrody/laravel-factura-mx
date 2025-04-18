@@ -2,11 +2,8 @@
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Create\Helpers;
 
-use Illuminate\Database\Eloquent\Model;
-use JiagBrody\LaravelFacturaMx\Enums\InvoiceDocumentTypeEnum;
 use JiagBrody\LaravelFacturaMx\Sat\AttributeAssembly;
 use JiagBrody\LaravelFacturaMx\Sat\Helper\ConvertXmlContentToObjectHelper;
-use JiagBrody\LaravelFacturaMx\Sat\Helper\GeneratePdfDocumentFromXmlObjectForIngresoHelper;
 
 trait CommonMethodsForBuildersTrait
 {

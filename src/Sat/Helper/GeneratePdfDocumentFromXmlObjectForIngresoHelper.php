@@ -28,7 +28,6 @@ final class GeneratePdfDocumentFromXmlObjectForIngresoHelper
         // $renderer = new GDLibRenderer(400);
         // $writer = new Writer($renderer);
         // $writer->writeFile('Hello World!', 'qrcode.png');
-        // dd('zaz');
 
         $episode = null;
         $statement = null;

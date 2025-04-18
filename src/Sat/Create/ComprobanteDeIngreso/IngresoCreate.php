@@ -6,12 +6,13 @@ namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeIngreso;
 
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 use JiagBrody\LaravelFacturaMx\Sat\CfdiHandlerInterface;
+use JiagBrody\LaravelFacturaMx\Sat\Create\Helpers\GenericCreator;
 
 class IngresoCreate implements CfdiHandlerInterface
 {
-    public function custom(InvoiceCompany $company): IngresoCreateConcrete
+    public function custom(InvoiceCompany $company): GenericCreator
     {
-        return new IngresoCreateConcrete($company);
+        return new GenericCreator($company);
     }
 
     // public function fromComprobante(ComprobanteAtributos|array $comprobante, Collection $products): IngresoCreateConcrete

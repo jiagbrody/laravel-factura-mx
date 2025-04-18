@@ -7,6 +7,7 @@ namespace JiagBrody\LaravelFacturaMx\Sat\Cancel;
 use JiagBrody\LaravelFacturaMx\Actions\UpdateRecordsIfTheInvoiceHasBeenSentByThePacToCancelAction;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceCfdiCancelTypeEnum;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceCfdi;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok\FinkokPac;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacCancelResponse;
 
@@ -17,6 +18,8 @@ final class CancelInvoiceBuilder
     protected readonly FinkokPac $pacProvider;
 
     protected readonly InvoiceCfdiCancelTypeEnum $cancelTypeEnum;
+
+    protected ?InvoiceCfdi $replacementInvoiceCfdi = null;
 
     protected ?string $replacementUUID = null;
 
@@ -44,9 +47,10 @@ final class CancelInvoiceBuilder
         return $this;
     }
 
-    public function setReplacementUUID(string $replacementUUID): self
+    public function setReplacementInvoiceCfdi(InvoiceCfdi $invoiceCfdi): self
     {
-        $this->replacementUUID = $replacementUUID;
+        $this->replacementInvoiceCfdi = $invoiceCfdi;
+        $this->replacementUUID = $invoiceCfdi->uuid;
 
         return $this;
     }
@@ -56,11 +60,12 @@ final class CancelInvoiceBuilder
         $this->cancelResponse = $this->pacProvider->cancelInvoice(cfdiCancelTypeEnum: $this->cancelTypeEnum, replacementUUID: $this->replacementUUID);
 
         if ($this->cancelResponse->checkProcess) {
-            (new UpdateRecordsIfTheInvoiceHasBeenSentByThePacToCancelAction)(
+            (new UpdateRecordsIfTheInvoiceHasBeenSentByThePacToCancelAction)->make(
                 invoiceCfdi: $this->invoice->invoiceCfdi,
                 cancelTypeEnum: $this->cancelTypeEnum,
+                replacementInvoiceCfdi: $this->replacementInvoiceCfdi,
                 xmlFile: $this->cancelResponse->acuse,
-                fileName: 'acuse-cancelacion'.'_'.$this->invoice->invoiceCfdi->uuid.'_'.date('Y-m-d-H_i_s')
+                fileName: 'acuse-cancelacion' . '_' . $this->invoice->invoiceCfdi->uuid . '_' . date('Y-m-d-H_i_s')
             );
         }
 

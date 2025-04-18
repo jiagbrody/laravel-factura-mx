@@ -40,23 +40,35 @@ class CreateBuild
     public function createNewInvoice(): Invoice
     {
         $invoice = $this->saveCreateHelper->createInvoice($this->companyHelper->id);
-        $this->documentService->setInvoice($invoice);
 
         return $invoice;
     }
 
-    public function saveAdditionalTables(Invoice $invoice): void
-    {
-        $this->saveCreateHelper->saveIncome($invoice);
-        $this->saveCreateHelper->saveRelationshipsAddOn($invoice);
-    }
-    
-    private function deleteDocuments($invoice): void
+    // public function saveAdditionalTables(Invoice $invoice): void
+    // {
+    //     $this->saveCreateHelper->saveIncome($invoice);
+    //     $this->saveCreateHelper->saveRelationshipsAddOn($invoice);
+    // }
+
+    public function deleteDocuments($invoice): void
     {
         $invoice->invoiceDocuments()->delete();
     }
 
-    public function saveDocumentXml(Invoice $invoice, string $fileName = ''): \JiagBrody\LaravelFacturaMx\Models\InvoiceDocument
+    public function createXmlDocument(Invoice $invoice, bool $alsoCreatePdf)
+    {
+        $this->documentService->setInvoice($invoice);
+
+        $this->saveDocumentXml($invoice);
+
+        if ($alsoCreatePdf) {
+            $this->saveDocumentPdf($invoice);
+        }
+
+
+    }
+
+    private function saveDocumentXml(Invoice $invoice, string $fileName = ''): \JiagBrody\LaravelFacturaMx\Models\InvoiceDocument
     {
         return $this->documentRepository->create(
             relationshipModel: $invoice->getMorphClass(),
@@ -71,7 +83,7 @@ class CreateBuild
         );
     }
 
-    public function saveDocumentPdf(Invoice $invoice, $fileName = ''): void
+    private function saveDocumentPdf(Invoice $invoice, $fileName = ''): void
     {
         $comprobante = ConvertXmlContentToObjectHelper::make($this->xmlContent, true);
         $documentPdf = (new GeneratePdfDocumentFromXmlObjectForIngresoHelper)(comprobante: $comprobante);

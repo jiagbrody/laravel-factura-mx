@@ -37,6 +37,7 @@ return [
         'invoice_cfdi_cancel_types' => 'jiagbrody_lfmx_invoice_cfdi_cancel_types',
         'invoice_cfdis' => 'jiagbrody_lfmx_invoice_cfdis',
         'invoice_cfdi_cancels' => 'jiagbrody_lfmx_invoice_cfdi_cancels',
+        'invoice_cfdi_cancel_receipts' => 'jiagbrody_lfmx_invoice_cfdi_cancel_receipts',
         'invoice_incidents' => 'jiagbrody_lfmx_invoice_incidents',
     ],
 
@@ -55,7 +56,7 @@ return [
      |
      */
 
-    'sat_files_path' => __DIR__.'/../storage/app/protected/sat-certificates',
+    'sat_files_path' => __DIR__ . '/../storage/app/protected/sat-certificates',
 
     /*
      |--------------------------------------------------------------------------
@@ -80,7 +81,7 @@ return [
      |
      */
 
-    'sat_local_resource_path' => __DIR__.'/../storage/app/protected/sat-resources',
+    'sat_local_resource_path' => __DIR__ . '/../storage/app/protected/sat-resources',
 
     /*
      |--------------------------------------------------------------------------

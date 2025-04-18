@@ -23,6 +23,16 @@ class DatabaseService extends SimpleRelationDataQuery
         return $this->querySource();
     }
 
+    public function getInfoDataBuilder()
+    {
+        return $this->querySource();
+    }
+
+    public function getInfoDataByInvoice()
+    {
+        return $this->querySource()->where('invoices.id', '=', $this->invoice->id)->first();
+    }
+
     public function chooseIngresoData(): object
     {
         return new IngresoDataQuery($this->invoice ?? null);

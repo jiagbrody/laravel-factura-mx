@@ -9,6 +9,8 @@ use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
 
 class GenericCreator extends CfdiHelperAbstract
 {
+    use AddComplementoImpuestosLocalesTrait;
+
     public function __construct(InvoiceCompany $invoiceCompany)
     {
         $this->companyHelper = new InvoiceCompanyHelper($invoiceCompany);

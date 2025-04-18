@@ -12,16 +12,22 @@ use JiagBrody\LaravelFacturaMx\Repositories\InvoiceDocument\DocumentRepository;
 
 class UpdateRecordsIfTheInvoiceHasBeenSentByThePacToCancelAction
 {
-    public function __invoke(
-        InvoiceCfdi $invoiceCfdi,
+    public function make(
+        InvoiceCfdi               $invoiceCfdi,
         InvoiceCfdiCancelTypeEnum $cancelTypeEnum,
-        string $xmlFile,
-        ?string $fileName = null
-    ): void {
-        DB::transaction(function () use ($invoiceCfdi, $cancelTypeEnum, $xmlFile, $fileName) {
+        ?InvoiceCfdi              $replacementInvoiceCfdi,
+        string                    $xmlFile,
+        ?string                   $fileName = null
+    ): void
+    {
+        DB::transaction(function () use ($replacementInvoiceCfdi, $invoiceCfdi, $cancelTypeEnum, $xmlFile, $fileName) {
             // NOTA: Aunque procede el acuse no significa que ya esté cancelada la factura. Hay que
             // estar revisando el STATUS de la factura para que cambie a "cancelado".
-            $cancel = $invoiceCfdi->invoiceCfdiCancel()->create(['invoice_cfdi_cancel_type_id' => $cancelTypeEnum->value]);
+            $cancel = $invoiceCfdi->InvoiceCfdiCancelReceipts()->create([
+                'invoice_cfdi_cancel_type_id' => $cancelTypeEnum->value,
+                'replacement_invoice_cfdi_id' => ($replacementInvoiceCfdi !== null) ? $replacementInvoiceCfdi->id : null,
+                'receipt_date' => now()
+            ]);
 
             // Guardo del Acuse de la cancelación
             (new DocumentRepository)->create(

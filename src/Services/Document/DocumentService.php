@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceDocumentTypeEnum;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceCfdiCancelReceipt;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceDocument;
 use JiagBrody\LaravelFacturaMx\Repositories\InvoiceDocument\DocumentRepository;
 use JiagBrody\LaravelFacturaMx\Sat\Helper\GeneratePdfDocumentFromXmlObjectForIngresoHelper;
@@ -22,7 +23,9 @@ class DocumentService
 
     protected Collection $documents;
 
-    protected Collection $cancellationDocuments;
+    // protected Collection $cancellationDocuments;
+
+    protected Collection $cancelReceiptDocuments;
 
     protected InvoiceDocument $xmlFile;
 
@@ -49,13 +52,19 @@ class DocumentService
             $this->documents = $invoice->invoiceCfdi->invoiceDocuments ?? new Collection;
             $this->xmlFile = $invoice->invoiceCfdi->xmlInvoiceDocument ?? new InvoiceDocument;
             $this->pdfFile = $invoice->invoiceCfdi->pdfInvoiceDocument ?? new InvoiceDocument;
-            $this->cancellationDocuments = $invoice->invoiceCfdi->invoiceCfdiCancel->invoiceDocuments ?? new Collection;
+            // $this->cancellationDocuments = $invoice->invoiceCfdi->invoiceCfdiCancel->invoiceDocuments ?? new Collection;
+            $this->cancelReceiptDocuments = InvoiceCfdiCancelReceipt::with([
+                'invoiceDocuments',
+                'invoiceCfdiCancelType',
+                'replacementInvoiceCfdi',
+            ])->where('invoice_cfdi_id', $invoice->invoiceCfdi->id)->get();
         } else {
             // OBTIENE BORRADOR
             $this->documents = $invoice->invoiceDocuments ?? new Collection;
             $this->xmlFile = $invoice->xmlInvoiceDocument ?? new InvoiceDocument;
             $this->pdfFile = $invoice->pdfInvoiceDocument ?? new InvoiceDocument;
-            $this->cancellationDocuments = new Collection;
+            // $this->cancellationDocuments = new Collection;
+            $this->cancelReceiptDocuments = new Collection;
         }
     }
 
@@ -69,9 +78,14 @@ class DocumentService
         return $this->documents;
     }
 
-    public function getCancellationDocuments(): Collection
+    // public function getCancellationDocuments(): Collection
+    // {
+    //     return $this->cancellationDocuments;
+    // }
+
+    public function getCancelReceiptDocuments(): Collection
     {
-        return $this->cancellationDocuments;
+        return $this->cancelReceiptDocuments;
     }
 
     public function getXmlFile(): InvoiceDocument

@@ -103,15 +103,16 @@ abstract class CfdiHelperAbstract
         return $this;
     }
 
-    public function addRelacionados(Collection $relacionados): self
+    public function addRelacionados(Collection $relationships): self
     {
-        $relacionados->each(function (CfdiRelacionadosAtributos $relacionado) {
+        $relationships->each(function (CfdiRelacionadosAtributos $relacionado) {
             $this->creatorCfdi->comprobante()->addCfdiRelacionados([
                 'TipoRelacion' => $relacionado->getTipoRelacion(),
             ])->multiCfdiRelacionado(...($relacionado->getCfdiRelacionado()->toArray()));
         });
 
-        $this->attributeAssembly->setCfdiRelacionados($relacionados);
+
+        $this->attributeAssembly->setCfdiRelacionados($relationships);
 
         return $this;
     }

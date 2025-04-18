@@ -24,6 +24,11 @@ class InvoiceCfdi extends Model
         return $this->hasOne(InvoiceCfdiCancel::class);
     }
 
+    public function invoiceCfdiCancelReceipts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(invoiceCfdiCancelReceipt::class);
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

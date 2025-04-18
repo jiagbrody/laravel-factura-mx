@@ -12,6 +12,8 @@ final readonly class StatusInvoiceBuilder
 {
     protected Invoice $invoice;
 
+    protected string $total;
+
     protected FinkokPac $pacProvider;
 
     protected PacStatusResponse $statusResponse;
@@ -27,6 +29,14 @@ final readonly class StatusInvoiceBuilder
     {
         $this->pacProvider = new FinkokPac($this->invoice);
         $this->pacProvider->setInvoiceCompanyHelper($this->invoice->invoiceCompany);
+        $this->pacProvider->setTotal($this->total);
+
+        return $this;
+    }
+
+    public function setTotal(float $total): self
+    {
+        $this->total = $total;
 
         return $this;
     }
@@ -35,7 +45,7 @@ final readonly class StatusInvoiceBuilder
     {
         $this->statusResponse = $this->pacProvider->statusInvoice();
 
-        if ($this->statusResponse->checkProcess && $this->statusResponse->invoiceStatusEnum === InvoiceStatusEnum::CANCELED) {
+        if (($this->statusResponse->getCheckProcess() && $this->statusResponse->getInvoiceStatusEnum() === InvoiceStatusEnum::CANCELED) && $this->invoice->invoice_status_id !== InvoiceStatusEnum::CANCELED->value) {
             (new UpdateRecordsAfterCheckingInvoiceStatusAction)($this->invoice);
         }
 

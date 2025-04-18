@@ -29,6 +29,11 @@ readonly class PacStatusResponse
         $this->checkProcess = $checkProcess;
     }
 
+    public function getCheckProcess(): bool
+    {
+        return $this->checkProcess;
+    }
+
     public function setInvoiceStatusEnum(InvoiceStatusEnum $invoiceStatusEnum): void
     {
         $this->invoiceStatusEnum = $invoiceStatusEnum;
