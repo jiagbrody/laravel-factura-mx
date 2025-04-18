@@ -30,11 +30,10 @@ readonly class IngresoCreateBuilder
 
     public function __construct(
         // protected Credential           $credential,
-        protected string               $xmlContent,
+        protected string $xmlContent,
         protected InvoiceCompanyHelper $companyHelper,
-        protected AttributeAssembly    $attributeAssembly
-    )
-    {
+        protected AttributeAssembly $attributeAssembly
+    ) {
         $this->saveIngreso = new SaveCreateHelper($this->attributeAssembly);
         $this->documentRepository = new DocumentRepository;
         $this->documentService = new DocumentService;
@@ -50,7 +49,7 @@ readonly class IngresoCreateBuilder
         // GUARDO TABLA DE COMPLEMENTO DE RELACIÓN
         $this->saveIngreso->upsertRelationshipsAddOn($this->invoice, $this->attributeAssembly->getCfdiRelacionados());
 
-        //GUARDO TABLA INFORMACIÓN ADICIONAL PARA FACTURA INGRESO
+        // GUARDO TABLA INFORMACIÓN ADICIONAL PARA FACTURA INGRESO
         $this->saveIngreso->upsertAdditionalTables($this->invoice);
 
         // $this->saveIngreso->toInvoiceBalances($this->invoice);

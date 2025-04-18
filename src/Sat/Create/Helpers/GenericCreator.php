@@ -4,7 +4,6 @@ namespace JiagBrody\LaravelFacturaMx\Sat\Create\Helpers;
 
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 use JiagBrody\LaravelFacturaMx\Sat\CfdiHelperAbstract;
-use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeEgreso\EgresoCreateBuild;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
 
 class GenericCreator extends CfdiHelperAbstract

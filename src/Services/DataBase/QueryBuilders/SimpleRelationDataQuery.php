@@ -21,17 +21,17 @@ class SimpleRelationDataQuery
         $invoiceCfdiCancelReceipts = config('jiagbrody-laravel-factura-mx.table_names.invoice_cfdi_cancel_receipts');
         $invoiceCfdiCancelTypes = config('jiagbrody-laravel-factura-mx.table_names.invoice_cfdi_cancel_types');
 
-        $this->querySource = DB::table($invoices . 'invoices')
+        $this->querySource = DB::table($invoices.'invoices')
             // $this->querySource = Invoice::query()
-            ->from($invoices . ' as invoices')
+            ->from($invoices.' as invoices')
             ->select($this->obtainSelectOfInvoices())
-            ->join($invoiceTypes . ' as invoice_types', 'invoices.invoice_type_id', '=', 'invoice_types.id')
-            ->join($invoiceStatuses . ' as invoice_statuses', 'invoices.invoice_status_id', '=', 'invoice_statuses.id')
-            ->join($invoiceCompanies . ' as invoice_companies', 'invoices.invoice_company_id', '=', 'invoice_companies.id')
-            ->leftJoin($invoiceCfdis . ' as invoice_cfdis', 'invoices.id', '=', 'invoice_cfdis.invoice_id')
-            ->leftJoin($invoiceCfdiCancels . ' as invoice_cfdi_cancels', 'invoice_cfdis.id', '=', 'invoice_cfdi_cancels.invoice_cfdi_id')
-            ->leftJoin($invoiceCfdiCancelReceipts . ' as invoice_cfdi_cancel_receipts', 'invoice_cfdi_cancels.invoice_cfdi_cancel_receipt_id', '=', 'invoice_cfdi_cancel_receipts.id')
-            ->leftJoin($invoiceCfdiCancelTypes . ' as invoice_cfdi_cancel_types', 'invoice_cfdi_cancel_receipts.invoice_cfdi_cancel_type_id', '=', 'invoice_cfdi_cancel_types.id');
+            ->join($invoiceTypes.' as invoice_types', 'invoices.invoice_type_id', '=', 'invoice_types.id')
+            ->join($invoiceStatuses.' as invoice_statuses', 'invoices.invoice_status_id', '=', 'invoice_statuses.id')
+            ->join($invoiceCompanies.' as invoice_companies', 'invoices.invoice_company_id', '=', 'invoice_companies.id')
+            ->leftJoin($invoiceCfdis.' as invoice_cfdis', 'invoices.id', '=', 'invoice_cfdis.invoice_id')
+            ->leftJoin($invoiceCfdiCancels.' as invoice_cfdi_cancels', 'invoice_cfdis.id', '=', 'invoice_cfdi_cancels.invoice_cfdi_id')
+            ->leftJoin($invoiceCfdiCancelReceipts.' as invoice_cfdi_cancel_receipts', 'invoice_cfdi_cancels.invoice_cfdi_cancel_receipt_id', '=', 'invoice_cfdi_cancel_receipts.id')
+            ->leftJoin($invoiceCfdiCancelTypes.' as invoice_cfdi_cancel_types', 'invoice_cfdi_cancel_receipts.invoice_cfdi_cancel_type_id', '=', 'invoice_cfdi_cancel_types.id');
     }
 
     private function obtainSelectOfInvoices(): array

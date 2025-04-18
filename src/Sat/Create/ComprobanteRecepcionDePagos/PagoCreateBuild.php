@@ -10,7 +10,6 @@ use CfdiUtils\CfdiCreator40;
 use JiagBrody\LaravelFacturaMx\Models\Cfdi;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Models\InvoicePayment;
-use JiagBrody\LaravelFacturaMx\Sat\Helper\DraftBuild;
 use JiagBrody\LaravelFacturaMx\Sat\Helper\GenerateInvoicePdfFileHelperTrait;
 use JiagBrody\LaravelFacturaMx\Sat\Helper\XmlFileSatHelperBuilder;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;

@@ -4,14 +4,9 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeIngreso;
 
-use CfdiUtils\Elements\ImpLocal10\ImpuestosLocales;
-use Illuminate\Support\Collection;
-use JiagBrody\LaravelFacturaMx\Enums\InvoiceTaxTypeEnum;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 use JiagBrody\LaravelFacturaMx\Sat\CfdiHelperAbstract;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
-use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\RetencionesLocalesAtributos;
-use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\TrasladosLocalesAtributos;
 
 class IngresoCreateConcrete extends CfdiHelperAbstract
 {
@@ -32,7 +27,7 @@ class IngresoCreateConcrete extends CfdiHelperAbstract
         $this->attributeAssembly->getComprobanteAtributos()->setInternallyAddTotalSubtotalDiscountValues($this->creatorCfdi->comprobante());
 
         return new IngresoCreateBuilder(
-        // credential: $this->credential,
+            // credential: $this->credential,
             xmlContent: $this->creatorCfdi->asXml(),
             companyHelper: $this->companyHelper,
             attributeAssembly: $this->attributeAssembly
