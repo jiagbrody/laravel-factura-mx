@@ -2,7 +2,6 @@
 
 namespace JiagBrody\LaravelFacturaMx\Helpers;
 
-use App\Services\Billing\BillingCreateIngresoService;
 use Carbon\Carbon;
 use JiagBrody\LaravelFacturaMx\Enums\CfdiGenericRfcEnum;
 
@@ -10,7 +9,7 @@ class BasicFunctionsHelper
 {
     public function changeDateIfItIsGreaterThanTheDeadline($date): string
     {
-        $deadline = 72; //72 horas permitidas para el SAT para facturas hechas y no timbradas.
+        $deadline = 72; // 72 horas permitidas para el SAT para facturas hechas y no timbradas.
 
         $xmlCarbonDate = Carbon::make($date);
         $deadlineCarbonDate = Carbon::make($date)->addHours($deadline);

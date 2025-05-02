@@ -24,9 +24,7 @@ use JiagBrody\LaravelFacturaMx\Sat\Rules\ComprobanteDeIngresoRuleHelper;
 
 class SaveIngreso implements SaveIngresoInterface
 {
-    public function __construct(protected AttributeAssembly $attributeAssembly)
-    {
-    }
+    public function __construct(protected AttributeAssembly $attributeAssembly) {}
 
     public function createNewInvoice($companyHelperId): Invoice
     {

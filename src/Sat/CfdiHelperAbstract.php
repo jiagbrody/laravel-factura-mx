@@ -111,7 +111,6 @@ abstract class CfdiHelperAbstract
             ])->multiCfdiRelacionado(...($relacionado->getCfdiRelacionado()->toArray()));
         });
 
-
         $this->attributeAssembly->setCfdiRelacionados($relationships);
 
         return $this;

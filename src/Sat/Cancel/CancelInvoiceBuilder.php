@@ -78,7 +78,7 @@ final class CancelInvoiceBuilder
                 cancelTypeEnum: $this->cancelTypeEnum,
                 replacementInvoiceCfdi: $this->replacementInvoiceCfdi,
                 xmlFile: $this->cancelResponse->acuse,
-                fileName: 'acuse-cancelacion' . '_' . $this->invoice->invoiceCfdi->uuid . '_' . date('Y-m-d-H_i_s')
+                fileName: 'acuse-cancelacion'.'_'.$this->invoice->invoiceCfdi->uuid.'_'.date('Y-m-d-H_i_s')
             );
         }
 
