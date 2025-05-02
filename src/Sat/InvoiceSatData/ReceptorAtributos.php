@@ -59,7 +59,7 @@ final readonly class ReceptorAtributos
 
     public function getResidenciaFiscal(): string
     {
-        return $this->ResidenciaFiscal;
+        return $this->ResidenciaFiscal ?? '';
     }
 
     public function setNumRegIdTrib(string $NumRegIdTrib): void
@@ -69,7 +69,7 @@ final readonly class ReceptorAtributos
 
     public function getNumRegIdTrib(): string
     {
-        return $this->NumRegIdTrib;
+        return $this->NumRegIdTrib ?? '';
     }
 
     public function setRegimenFiscalReceptor(string $RegimenFiscalReceptor): void

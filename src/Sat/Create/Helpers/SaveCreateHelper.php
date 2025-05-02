@@ -36,7 +36,7 @@ class SaveCreateHelper
 
         $invoice = new Invoice;
         $invoice->user_id = auth()->id();
-        $invoice->invoice_type_id = InvoiceTypeEnum::INGRESO->value;
+        $invoice->invoice_type_id = InvoiceTypeEnum::getFirstBySatCode(satCode: $attributes->getTipoDeComprobante())->value;
         $invoice->invoice_company_id = $companyHelperId;
         $invoice->invoice_status_id = InvoiceStatusEnum::DRAFT->value;
         $invoice->invoice_date = $attributes->getFecha();

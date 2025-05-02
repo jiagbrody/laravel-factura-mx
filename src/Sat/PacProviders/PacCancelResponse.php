@@ -23,6 +23,11 @@ readonly class PacCancelResponse
         $this->checkProcess = $checkProcess;
     }
 
+    public function getCheckProcess(): bool
+    {
+        return $this->checkProcess;
+    }
+
     public function setUUID(string $uuid): void
     {
         $this->uuid = $uuid;

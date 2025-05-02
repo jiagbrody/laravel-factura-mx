@@ -10,11 +10,10 @@ use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCfdi;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok\FinkokPac;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacCancelResponse;
+use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStampResponse;
 
 final class CancelInvoiceBuilder
 {
-    protected readonly Invoice $invoice;
-
     protected readonly FinkokPac $pacProvider;
 
     protected readonly InvoiceCfdiCancelTypeEnum $cancelTypeEnum;
@@ -25,26 +24,40 @@ final class CancelInvoiceBuilder
 
     protected readonly PacCancelResponse $cancelResponse;
 
-    public function setInvoice(Invoice $invoice): self
-    {
-        $this->invoice = $invoice;
+    protected PacStampResponse $stampResponse;
 
-        return $this;
+    public function __construct(readonly Invoice $invoice)
+    {
+        // VALIDAR SI SE QUITA EL INVOICE, YA LO TENGO DECLARADO COMO "$this-invoice"
+        $this->pacProvider = new FinkokPac($invoice);
+        $this->pacProvider->setInvoiceCompanyHelper($invoice->invoiceCompany);
     }
 
-    public function setPacProvider(): self
-    {
-        $this->pacProvider = new FinkokPac($this->invoice);
-        $this->pacProvider->setInvoiceCompanyHelper($this->invoice->invoiceCompany);
+    // public function setInvoice(Invoice $invoice): self
+    // {
+    //     $this->invoice = $invoice;
+    //
+    //     return $this;
+    // }
 
-        return $this;
-    }
+    // public function setPacProvider(): self
+    // {
+    //     $this->pacProvider = new FinkokPac($this->invoice);
+    //     $this->pacProvider->setInvoiceCompanyHelper($this->invoice->invoiceCompany);
+    //
+    //     return $this;
+    // }
 
     public function setCancelTypeEnum(InvoiceCfdiCancelTypeEnum $cancelTypeEnum): self
     {
         $this->cancelTypeEnum = $cancelTypeEnum;
 
         return $this;
+    }
+
+    public function getCancelTypeEnum(): InvoiceCfdiCancelTypeEnum
+    {
+        return $this->cancelTypeEnum;
     }
 
     public function setReplacementInvoiceCfdi(InvoiceCfdi $invoiceCfdi): self

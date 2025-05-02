@@ -30,4 +30,15 @@ enum InvoiceTypeEnum: int
             self::PAGO => 'Pago',
         };
     }
+
+    static public function getFirstBySatCode(string $satCode): InvoiceTypeEnum
+    {
+        return match ($satCode) {
+            'I' => self::INGRESO,
+            'E' => self::EGRESO,
+            'T' => self::TRASLADO,
+            'N' => self::NOMINA,
+            'P' => self::PAGO,
+        };
+    }
 }

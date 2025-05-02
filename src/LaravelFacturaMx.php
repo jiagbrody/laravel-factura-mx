@@ -44,9 +44,9 @@ class LaravelFacturaMx
         return new ReadInvoiceBuilder;
     }
 
-    public function cancel(): CancelInvoiceBuilder
+    public function invoiceCanceller(Invoice $invoice): CancelInvoiceBuilder
     {
-        return new CancelInvoiceBuilder;
+        return new CancelInvoiceBuilder(invoice: $invoice);
     }
 
     public function status(): StatusInvoiceBuilder
