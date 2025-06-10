@@ -11,7 +11,6 @@ use JiagBrody\LaravelFacturaMx\Models\InvoiceBalance;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCfdi;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceComplementLocalTax;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceComplementLocalTaxDetail;
-use JiagBrody\LaravelFacturaMx\Models\InvoiceIncome;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceRelationship;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceTax;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceTaxDetail;
@@ -22,9 +21,13 @@ use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoRetenidoAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoTrasladoAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\Rules\ComprobanteDeIngresoRuleHelper;
 
+// use JiagBrody\LaravelFacturaMx\Models\InvoiceIncome;
+
 class SaveCreateHelper
 {
-    public function __construct(protected AttributeAssembly $attributeAssembly) {}
+    public function __construct(protected AttributeAssembly $attributeAssembly)
+    {
+    }
 
     public function createInvoice(int $companyHelperId): Invoice
     {
@@ -48,26 +51,26 @@ class SaveCreateHelper
         return $invoice;
     }
 
-    public function saveIncome($invoice): void
-    {
-        // WILL ALWAYS BE SAVED
-        $invoiceIncome = $invoice->invoiceIncome ?? new InvoiceIncome;
-        $attributes = $this->attributeAssembly->getComprobanteAtributos();
-        $invoiceIncome->invoice_id = $invoice->id;
-        $invoiceIncome->forma_pago = $attributes->getFormaPago();
-        // $invoiceIncome->condiciones_de_pago = $attributes->getCondicionesDePago();
-        $invoiceIncome->sub_total = $attributes->getSubTotal();
-        $invoiceIncome->descuento = $attributes->getDescuento();
-        $invoiceIncome->moneda = $attributes->getMoneda();
-        $invoiceIncome->tipo_cambio = $attributes->getTipoCambio();
-        $invoiceIncome->total = $attributes->getTotal();
-        // $invoiceIncome->tipo_de_comprobante = $attributes->getTipoDeComprobante();
-        $invoiceIncome->exportacion = $attributes->getExportacion();
-        $invoiceIncome->metodo_pago = $attributes->getMetodoPago();
-        $invoiceIncome->lugar_expedicion = $attributes->getLugarExpedicion();
-        // $invoiceIncome->receptor_rfc = $this->attributeAssembly->getReceptorAtributos()->getRfc();
-        $invoiceIncome->save();
-    }
+    // public function saveIncome($invoice): void
+    // {
+    //     // WILL ALWAYS BE SAVED
+    //     $invoiceIncome = $invoice->invoiceIncome ?? new InvoiceIncome;
+    //     $attributes = $this->attributeAssembly->getComprobanteAtributos();
+    //     $invoiceIncome->invoice_id = $invoice->id;
+    //     $invoiceIncome->forma_pago = $attributes->getFormaPago();
+    //     // $invoiceIncome->condiciones_de_pago = $attributes->getCondicionesDePago();
+    //     $invoiceIncome->sub_total = $attributes->getSubTotal();
+    //     $invoiceIncome->descuento = $attributes->getDescuento();
+    //     $invoiceIncome->moneda = $attributes->getMoneda();
+    //     $invoiceIncome->tipo_cambio = $attributes->getTipoCambio();
+    //     $invoiceIncome->total = $attributes->getTotal();
+    //     // $invoiceIncome->tipo_de_comprobante = $attributes->getTipoDeComprobante();
+    //     $invoiceIncome->exportacion = $attributes->getExportacion();
+    //     $invoiceIncome->metodo_pago = $attributes->getMetodoPago();
+    //     $invoiceIncome->lugar_expedicion = $attributes->getLugarExpedicion();
+    //     // $invoiceIncome->receptor_rfc = $this->attributeAssembly->getReceptorAtributos()->getRfc();
+    //     $invoiceIncome->save();
+    // }
 
     /*
      * ESTE PROCESO DE GUARDAR RELACIONADOS PODRIA IR EN UNA CLASE APARTE Y TAL VEZ LLAMARLA CON UN "trait" YA QUE SE UTILIZARA EN LAS DEMAS FACTURAS:

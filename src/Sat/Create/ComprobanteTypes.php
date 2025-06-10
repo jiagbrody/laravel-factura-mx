@@ -6,6 +6,7 @@ namespace JiagBrody\LaravelFacturaMx\Sat\Create;
 
 use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeEgreso\EgresoCreate;
 use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeIngreso\IngresoCreate;
+use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteRecepcionDePagos\RecepcionDePagosCreate;
 
 class ComprobanteTypes
 {
@@ -19,10 +20,10 @@ class ComprobanteTypes
         return new EgresoCreate;
     }
 
-    // public function recepcionDePagos(): PagoHandler
-    // {
-    //     return new PagoHandler;
-    // }
+    public function recepcionDePagos()
+    {
+        return new RecepcionDePagosCreate;
+    }
 
     // public function traslado()
     // {

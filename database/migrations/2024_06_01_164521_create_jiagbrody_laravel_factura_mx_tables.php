@@ -92,23 +92,23 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create($tableNames['invoice_balances'], function (Blueprint $table) use ($tableNames) {
-            $table->id();
-            $table->unsignedBigInteger('invoice_id')->unique();
-            $table->unsignedBigInteger('invoice_payment_type_id')->comment('Tipo de pago: una exhibición o a crédito.');
-            $table->decimal('gross_sub_total', 24, 6)->nullable();
-            $table->decimal('sub_total', 24, 6)->nullable();
-            $table->decimal('discount', 24, 6)->nullable();
-            $table->decimal('tax', 24, 6)->nullable();
-            $table->decimal('total', 24, 6)->nullable();
-            // $table->decimal('local_tax', 24, 6)->nullable();
-            $table->decimal('final_total_balance', 24, 6)->nullable()->comment('Puede haber variaciones del "Total" por ejemplo con las retenciones de los impuestos locales, etc.');
-            $table->boolean('is_paid')->comment('Cuenta liquidada o pagada.');
-            $table->timestamps();
-
-            $table->foreign('invoice_id', 'lfmx_invoice_balances_invoice_id_foreign')->references('id')->on($tableNames['invoices'])->onDelete('cascade');
-            $table->foreign('invoice_payment_type_id', 'lfmx_invoice_balances_invoice_payment_type_id_foreign')->references('id')->on($tableNames['invoice_payment_types'])->onDelete('cascade');
-        });
+        // Schema::create($tableNames['invoice_balances'], function (Blueprint $table) use ($tableNames) {
+        //     $table->id();
+        //     $table->unsignedBigInteger('invoice_id')->unique();
+        //     $table->unsignedBigInteger('invoice_payment_type_id')->comment('Tipo de pago: una exhibición o a crédito.');
+        //     $table->decimal('gross_sub_total', 24, 6)->nullable();
+        //     $table->decimal('sub_total', 24, 6)->nullable();
+        //     $table->decimal('discount', 24, 6)->nullable();
+        //     $table->decimal('tax', 24, 6)->nullable();
+        //     $table->decimal('total', 24, 6)->nullable();
+        //     // $table->decimal('local_tax', 24, 6)->nullable();
+        //     $table->decimal('final_total_balance', 24, 6)->nullable()->comment('Puede haber variaciones del "Total" por ejemplo con las retenciones de los impuestos locales, etc.');
+        //     $table->boolean('is_paid')->comment('Cuenta liquidada o pagada.');
+        //     $table->timestamps();
+        //
+        //     $table->foreign('invoice_id', 'lfmx_invoice_balances_invoice_id_foreign')->references('id')->on($tableNames['invoices'])->onDelete('cascade');
+        //     $table->foreign('invoice_payment_type_id', 'lfmx_invoice_balances_invoice_payment_type_id_foreign')->references('id')->on($tableNames['invoice_payment_types'])->onDelete('cascade');
+        // });
 
         Schema::create($tableNames['invoice_tax_types'], function (Blueprint $table) {
             $table->id();
@@ -298,7 +298,7 @@ return new class extends Migration
     {
         $tableNames = config('jiagbrody-laravel-factura-mx.table_names');
 
-        Schema::dropIfExists($tableNames['invoice_balances']);
+        // Schema::dropIfExists($tableNames['invoice_balances']);
         Schema::dropIfExists($tableNames['invoice_cfdi_cancels']);
         Schema::dropIfExists($tableNames['invoice_cfdis']);
         Schema::dropIfExists($tableNames['invoice_details']);

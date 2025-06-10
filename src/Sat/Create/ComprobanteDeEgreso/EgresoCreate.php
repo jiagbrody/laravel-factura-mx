@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteDeEgreso;
 
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
+use JiagBrody\LaravelFacturaMx\Sat\CfdiHandlerInterface;
 use JiagBrody\LaravelFacturaMx\Sat\Create\Helpers\GenericCreator;
 
-readonly class EgresoCreate
+readonly class EgresoCreate implements CfdiHandlerInterface
 {
     public function custom(InvoiceCompany $company): GenericCreator
     {

@@ -48,10 +48,10 @@ class Invoice extends Model
         return $this->morphTo();
     }
 
-    public function invoiceIncome(): HasOne
-    {
-        return $this->hasOne(InvoiceIncome::class);
-    }
+    // public function invoiceIncome(): HasOne
+    // {
+    //     return $this->hasOne(InvoiceIncome::class);
+    // }
 
     public function invoiceCfdi(): HasOne
     {
