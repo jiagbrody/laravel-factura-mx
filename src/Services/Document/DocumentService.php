@@ -52,8 +52,8 @@ class DocumentService
             $this->documents = $invoice->invoiceCfdi->invoiceDocuments ?? new Collection;
             $xmlFile = $this->documents->where('invoice_document_type_id', InvoiceDocumentTypeEnum::XML_FILE->value)->first();
             $pdfFile = $this->documents->where('invoice_document_type_id', InvoiceDocumentTypeEnum::PDF_FILE->value)->first();
-            $this->xmlFile = (!is_null($xmlFile) ? $xmlFile : new InvoiceDocument);
-            $this->pdfFile = (!is_null($pdfFile)) ? $pdfFile : new InvoiceDocument;
+            $this->xmlFile = (! is_null($xmlFile) ? $xmlFile : new InvoiceDocument);
+            $this->pdfFile = (! is_null($pdfFile)) ? $pdfFile : new InvoiceDocument;
             // $this->xmlFile = $invoice->invoiceCfdi->xmlInvoiceDocument ?? new InvoiceDocument;
             // $this->pdfFile = $invoice->invoiceCfdi->pdfInvoiceDocument ?? new InvoiceDocument;
             // $this->cancellationDocuments = $invoice->invoiceCfdi->invoiceCfdiCancel->invoiceDocuments ?? new Collection;

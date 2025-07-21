@@ -31,7 +31,7 @@ enum InvoiceTypeEnum: int
         };
     }
 
-    static public function getFirstBySatCode(string $satCode): InvoiceTypeEnum
+    public static function getFirstBySatCode(string $satCode): InvoiceTypeEnum
     {
         return match ($satCode) {
             'I' => self::INGRESO,
