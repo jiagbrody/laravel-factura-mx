@@ -99,7 +99,7 @@ final readonly class ConceptoAtributos
         if (is_float($Cantidad)) {
             $this->Cantidad = PatronDeDatosHelper::t_import($Cantidad);
         } else {
-            $this->Cantidad = (string)$Cantidad;
+            $this->Cantidad = (string) $Cantidad;
         }
     }
 
@@ -143,7 +143,7 @@ final readonly class ConceptoAtributos
         if (is_float($ValorUnitario)) {
             $this->ValorUnitario = PatronDeDatosHelper::t_import($ValorUnitario);
         } else {
-            $this->ValorUnitario = (string)$ValorUnitario;
+            $this->ValorUnitario = (string) $ValorUnitario;
         }
     }
 
@@ -165,9 +165,9 @@ final readonly class ConceptoAtributos
     public function setImporte(string|int|float $Importe): void
     {
         if (is_float($Importe)) {
-            $this->Importe = (string)PatronDeDatosHelper::t_import($Importe);
+            $this->Importe = (string) PatronDeDatosHelper::t_import($Importe);
         } else {
-            $this->Importe = (string)$Importe;
+            $this->Importe = (string) $Importe;
         }
     }
 
@@ -178,7 +178,7 @@ final readonly class ConceptoAtributos
 
     public function setDescuento(float $Descuento): void
     {
-        $this->Descuento = (string)PatronDeDatosHelper::t_import($Descuento);
+        $this->Descuento = (string) PatronDeDatosHelper::t_import($Descuento);
     }
 
     public function getDescuento(): string

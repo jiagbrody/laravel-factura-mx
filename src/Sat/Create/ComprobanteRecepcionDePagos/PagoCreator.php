@@ -24,7 +24,7 @@ class PagoCreator extends CfdiHelperAbstract
     {
         $this->companyHelper = new InvoiceCompanyHelper($invoiceCompany);
         parent::__construct();
-        $this->complementoPagos = new Pagos();
+        $this->complementoPagos = new Pagos;
     }
 
     public function addPay(array $pay): \CfdiUtils\Elements\Pagos20\Pago
@@ -44,7 +44,7 @@ class PagoCreator extends CfdiHelperAbstract
         $xmlObject = $laravelFacturaMx->getXmlObject();
 
         // Obtengo el porcentaje de que se está pagando de la deuda total.
-        $payoutPercentage = (float)$docRelacionado->attributes()->get('ImpPagado') / (float)$xmlObject->Total;
+        $payoutPercentage = (float) $docRelacionado->attributes()->get('ImpPagado') / (float) $xmlObject->Total;
 
         $collect = collect();
         foreach ($xmlObject->Impuestos->Traslados as $traslado) {
@@ -63,15 +63,14 @@ class PagoCreator extends CfdiHelperAbstract
                     $object->setImporteDR(PatronDeDatosHelper::t_import($baseDR * $object->getTasaOCuotaDR()));
                 }
 
-                $collect->push((array)$object);
+                $collect->push((array) $object);
 
                 $TrasladoDR = $docRelacionado->addImpuestosDR()->addTrasladosDR()->addTrasladoDR(
-                    (array)$object
+                    (array) $object
                 );
             }
         }
     }
-
 
     /*
      * GUARDO EL COMPLEMENTO DE PAGOS TAL CUAL ENVIADO POR NAVEGADOR, ES MUY COMPLEJO HACER CLASES PARA ESTRUCTURARLO.
@@ -81,7 +80,6 @@ class PagoCreator extends CfdiHelperAbstract
     {
         $this->attributeAssembly->setComplementoRecepcionDePagos($formData);
     }
-
 
     public function build(): CreateBuild
     {
@@ -95,13 +93,11 @@ class PagoCreator extends CfdiHelperAbstract
         $this->creatorCfdi->moveSatDefinitionsToComprobante();
         $this->creatorCfdi->addSello($this->credential->privateKey()->pem(), $this->credential->privateKey()->passPhrase());
 
-
         // perform validations, it should not have any error nor warnings
         $findings = $this->creatorCfdi->validate();
         // if ($findings->hasErrors()) {
         //     dd($findings);
         // }
-
 
         return new CreateBuild(
             xmlContent: $this->creatorCfdi->asXml(),
