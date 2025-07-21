@@ -27,6 +27,8 @@ readonly class AttributeAssembly
 
     protected Collection $complementoImpuestosLocales;
 
+    protected Collection $complementoRecepcionDePagos;
+
     public function setComprobanteAtributos(ComprobanteAtributos $comprobanteAtributos): void
     {
         $this->comprobanteAtributos = $comprobanteAtributos;
@@ -120,6 +122,16 @@ readonly class AttributeAssembly
         }
 
         return $this->complementoImpuestosLocales;
+    }
+
+    public function setComplementoRecepcionDePagos(Collection $complementoRecepcionDePagos)
+    {
+        $this->complementoRecepcionDePagos = $complementoRecepcionDePagos;
+    }
+
+    public function getComplementoRecepcionDePagos(): Collection
+    {
+        return $this->complementoRecepcionDePagos;
     }
 
     /*

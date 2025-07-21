@@ -9,8 +9,6 @@ it('create object', function () {
 
     // $user = User::factory()->create();
 
-    // dd(auth()->id());
-
     $facturaMx = new \JiagBrody\LaravelFacturaMx\LaravelFacturaMx;
 
     $company = InvoiceCompany::factory()->create();

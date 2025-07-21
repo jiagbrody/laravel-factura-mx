@@ -266,7 +266,6 @@ class PagoCreateConcrete extends CfdiHelperAbstract
                         if ($item->TipoFactorDR !== 'Exento') {
                             $id = $item->ImpuestoDR . '_' . $item->TipoFactorDR . '_' . $item->TasaOCuotaDR;
                             $impuestosP[$keyPago]['traslados'][$id]['TasaOCuotaP'] = $item->TasaOCuotaDR;
-
                             $importeP = $this->checkIfDifferentCurrencyToTruncate($item->ImporteDR, $propertiesPay, $documentR);
                             $impuestosP[$keyPago]['traslados'][$id]['ImporteP'] = $importeP + @$impuestosP[$keyPago]['traslados'][$id]['ImporteP'];
                         }
@@ -356,10 +355,7 @@ class PagoCreateConcrete extends CfdiHelperAbstract
             $totales[$key] = round($total, 2);
         }
 
-        // dd($complementoPagos);
-
         // Se puede usar el método estático
-        // dd($complementoPagos->);
         PagosWriter::calculateAndPut($complementoPagos);
 
         // Se puede calcular y mandar a escribir
@@ -369,7 +365,7 @@ class PagoCreateConcrete extends CfdiHelperAbstract
         );
         $result = $pagosCalculator->calculate($complementoPagos);
         $pagosWriter = new PagosWriter($complementoPagos);
-        $pagosWriter->writePago();
+        $pagosWriter->writePago($result);
 
     }
 }

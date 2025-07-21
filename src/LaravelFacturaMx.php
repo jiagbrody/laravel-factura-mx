@@ -9,6 +9,7 @@ use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\Cancel\CancelInvoiceBuilder;
 use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteTypes;
 use JiagBrody\LaravelFacturaMx\Sat\Read\ReadInvoiceBuilder;
+use JiagBrody\LaravelFacturaMx\Sat\SatCatalogsService;
 use JiagBrody\LaravelFacturaMx\Sat\Stamp\StampInvoiceBuilder;
 use JiagBrody\LaravelFacturaMx\Sat\Status\StatusInvoiceBuilder;
 use JiagBrody\LaravelFacturaMx\Services\Document\DocumentService;
@@ -23,6 +24,11 @@ class LaravelFacturaMx
     public function documentService(): DocumentService
     {
         return new DocumentService;
+    }
+
+    public function getCatalogService(): SatCatalogsService
+    {
+        return new SatCatalogsService;
     }
 
     public function create(): ComprobanteTypes

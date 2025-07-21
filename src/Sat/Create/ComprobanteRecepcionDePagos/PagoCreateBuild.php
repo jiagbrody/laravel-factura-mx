@@ -74,7 +74,6 @@ class PagoCreateBuild
                     if (isset($doctoRelacionado->ImpuestosDR->TrasladosDR->TrasladoDR)) {
                         foreach ($doctoRelacionado->ImpuestosDR->TrasladosDR->TrasladoDR as $traslado) {
                             $data = $doctoR->invoicePaymentDocumentTaxes()->make();
-                            // dd($doctoRelacionado->ImpuestosDR->TrasladosDR->TrasladoDR, $data, InvoiceTaxTypeEnum::TRASLADO, $traslado);
                             $this->saveImpuestoDR($data, InvoiceTaxTypeEnum::TRASLADO, $traslado);
                         }
                     }

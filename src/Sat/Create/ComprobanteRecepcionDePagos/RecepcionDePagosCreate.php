@@ -8,8 +8,8 @@ use JiagBrody\LaravelFacturaMx\Sat\Create\Helpers\GenericCreator;
 
 class RecepcionDePagosCreate implements CfdiHandlerInterface
 {
-    public function custom(InvoiceCompany $company): GenericCreator
+    public function custom(InvoiceCompany $company): PagoCreator
     {
-        return new GenericCreator($company);
+        return new PagoCreator($company);
     }
 }

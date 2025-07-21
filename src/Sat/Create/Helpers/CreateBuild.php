@@ -22,13 +22,19 @@ class CreateBuild
     protected DocumentService $documentService;
 
     public function __construct(
-        protected string $xmlContent,
+        protected string               $xmlContent,
         protected InvoiceCompanyHelper $companyHelper,
-        protected AttributeAssembly $attributeAssembly
-    ) {
+        protected AttributeAssembly    $attributeAssembly
+    )
+    {
         $this->saveCreateHelper = new SaveCreateHelper(attributeAssembly: $attributeAssembly);
         $this->documentRepository = new DocumentRepository;
         $this->documentService = new DocumentService;
+    }
+
+    public function getXmlContent(): string
+    {
+        return $this->xmlContent;
     }
 
     public function getAttributeAssembly(): AttributeAssembly
