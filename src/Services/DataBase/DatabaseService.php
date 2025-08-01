@@ -26,7 +26,7 @@ class DatabaseService extends SimpleRelationDataQuery
             'invoice_id' => $this->invoice->id,
             'invoice_version' => $this->invoice->version,
             'invoice_date' => $this->invoice->invoice_date,
-            'invoice_date_format' => $this->invoice->invoice_date->format("d-m-Y H:i:s a"),
+            'invoice_date_format' => $this->invoice->invoice_date->format('d-m-Y H:i:s a'),
             'invoice_date_human' => $this->invoice->invoice_date->diffForHumans(),
             'serie' => $this->invoice->serie,
             'folio' => $this->invoice->folio,
