@@ -26,7 +26,7 @@ final class CancelInvoiceBuilder
 
     protected PacStampResponse $stampResponse;
 
-    public function __construct(readonly Invoice $invoice)
+    public function __construct(public readonly Invoice $invoice)
     {
         // VALIDAR SI SE QUITA EL INVOICE, YA LO TENGO DECLARADO COMO "$this-invoice"
         $this->pacProvider = new FinkokPac($invoice);

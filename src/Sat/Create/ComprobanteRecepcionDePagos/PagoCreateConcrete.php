@@ -43,7 +43,7 @@ class PagoCreateConcrete extends CfdiHelperAbstract
         // $this->atributos->Total = '0';
         // $this->atributos->Exportacion = '01';
 
-        $this->creatorCfdi->comprobante()->addAttributes((array)$this->atributos);
+        $this->creatorCfdi->comprobante()->addAttributes((array) $this->atributos);
 
         return $this;
     }
@@ -58,7 +58,7 @@ class PagoCreateConcrete extends CfdiHelperAbstract
         $this->conceptoAtributos->Importe = '0';
         $this->conceptoAtributos->ObjetoImp = '01';
 
-        $this->creatorCfdi->comprobante()->addConcepto((array)$this->conceptoAtributos);
+        $this->creatorCfdi->comprobante()->addConcepto((array) $this->conceptoAtributos);
 
         return $this;
     }
@@ -90,7 +90,7 @@ class PagoCreateConcrete extends CfdiHelperAbstract
 
             $propertiesPay = (new DefinePagoProperties)->setDinamicPropertiesValues($pago);
 
-            $pay = $complementoPagos->addPago((array)$propertiesPay);
+            $pay = $complementoPagos->addPago((array) $propertiesPay);
 
             $doctoRelacionados = collect($pago['DoctoRelacionado']);
 
@@ -112,14 +112,14 @@ class PagoCreateConcrete extends CfdiHelperAbstract
                 $trasladosDR = GetImpuestosDRHelper::traslados($invoice, $documentR);
                 $retencionesDR = (new DefineImpuestosDRProperties)->getImpuestosDRRetenciones($invoice, $documentR);
 
-                $docrelacionado = $pay->addDoctoRelacionado((array)$documentR);
+                $docrelacionado = $pay->addDoctoRelacionado((array) $documentR);
 
                 if ($trasladosDR->isNotEmpty()) {
                     foreach ($trasladosDR as $item) {
-                        $id = $item->ImpuestoDR . '_' . $item->TipoFactorDR;
+                        $id = $item->ImpuestoDR.'_'.$item->TipoFactorDR;
 
                         if ($item->TipoFactorDR !== 'Exento') {
-                            $id = $item->ImpuestoDR . '_' . $item->TipoFactorDR . '_' . $item->TasaOCuotaDR;
+                            $id = $item->ImpuestoDR.'_'.$item->TipoFactorDR.'_'.$item->TasaOCuotaDR;
                             $impuestosP[$keyPago]['traslados'][$id]['TasaOCuotaP'] = $item->TasaOCuotaDR;
 
                             $importeP = $this->checkIfDifferentCurrencyToTruncate($item->ImporteDR, $propertiesPay, $documentR);
@@ -131,7 +131,7 @@ class PagoCreateConcrete extends CfdiHelperAbstract
                         $impuestosP[$keyPago]['traslados'][$id]['ImpuestoP'] = $item->ImpuestoDR;
                         $impuestosP[$keyPago]['traslados'][$id]['TipoFactorP'] = $item->TipoFactorDR;
 
-                        $docrelacionado->addImpuestosDR()->addTrasladosDR()->addTrasladoDR((array)$item);
+                        $docrelacionado->addImpuestosDR()->addTrasladosDR()->addTrasladoDR((array) $item);
                     }
                 }
 
@@ -143,7 +143,7 @@ class PagoCreateConcrete extends CfdiHelperAbstract
                         $importeP = $this->checkIfDifferentCurrencyToTruncate($item->ImporteDR, $propertiesPay, $documentR);
                         $impuestosP[$keyPago]['retenciones'][$id]['ImporteP'] = $importeP + @$impuestosP[$keyPago]['retenciones'][$id]['ImporteP'];
 
-                        $docrelacionado->addImpuestosDR()->addRetencionesDR()->addRetencionDR((array)$item);
+                        $docrelacionado->addImpuestosDR()->addRetencionesDR()->addRetencionDR((array) $item);
                     }
                 }
             } // ENDFOREACH DOCUMENT RELATED
@@ -235,7 +235,7 @@ class PagoCreateConcrete extends CfdiHelperAbstract
 
             $propertiesPay = (new DefinePagoProperties)->setDinamicPropertiesValues($pago);
 
-            $pay = $complementoPagos->addPago((array)$propertiesPay);
+            $pay = $complementoPagos->addPago((array) $propertiesPay);
 
             $doctoRelacionados = collect($pago['DoctoRelacionado']);
 
@@ -257,14 +257,14 @@ class PagoCreateConcrete extends CfdiHelperAbstract
                 $trasladosDR = GetImpuestosDRHelper::traslados($invoice, $documentR);
                 $retencionesDR = (new DefineImpuestosDRProperties)->getImpuestosDRRetenciones($invoice, $documentR);
 
-                $docrelacionado = $pay->addDoctoRelacionado((array)$documentR);
+                $docrelacionado = $pay->addDoctoRelacionado((array) $documentR);
 
                 if ($trasladosDR->isNotEmpty()) {
                     foreach ($trasladosDR as $item) {
-                        $id = $item->ImpuestoDR . '_' . $item->TipoFactorDR;
+                        $id = $item->ImpuestoDR.'_'.$item->TipoFactorDR;
 
                         if ($item->TipoFactorDR !== 'Exento') {
-                            $id = $item->ImpuestoDR . '_' . $item->TipoFactorDR . '_' . $item->TasaOCuotaDR;
+                            $id = $item->ImpuestoDR.'_'.$item->TipoFactorDR.'_'.$item->TasaOCuotaDR;
                             $impuestosP[$keyPago]['traslados'][$id]['TasaOCuotaP'] = $item->TasaOCuotaDR;
                             $importeP = $this->checkIfDifferentCurrencyToTruncate($item->ImporteDR, $propertiesPay, $documentR);
                             $impuestosP[$keyPago]['traslados'][$id]['ImporteP'] = $importeP + @$impuestosP[$keyPago]['traslados'][$id]['ImporteP'];
@@ -275,7 +275,7 @@ class PagoCreateConcrete extends CfdiHelperAbstract
                         $impuestosP[$keyPago]['traslados'][$id]['ImpuestoP'] = $item->ImpuestoDR;
                         $impuestosP[$keyPago]['traslados'][$id]['TipoFactorP'] = $item->TipoFactorDR;
 
-                        $docrelacionado->addImpuestosDR()->addTrasladosDR()->addTrasladoDR((array)$item);
+                        $docrelacionado->addImpuestosDR()->addTrasladosDR()->addTrasladoDR((array) $item);
                     }
                 }
 
@@ -287,7 +287,7 @@ class PagoCreateConcrete extends CfdiHelperAbstract
                         $importeP = $this->checkIfDifferentCurrencyToTruncate($item->ImporteDR, $propertiesPay, $documentR);
                         $impuestosP[$keyPago]['retenciones'][$id]['ImporteP'] = $importeP + @$impuestosP[$keyPago]['retenciones'][$id]['ImporteP'];
 
-                        $docrelacionado->addImpuestosDR()->addRetencionesDR()->addRetencionDR((array)$item);
+                        $docrelacionado->addImpuestosDR()->addRetencionesDR()->addRetencionDR((array) $item);
                     }
                 }
             } // ENDFOREACH DOCUMENT RELATED
