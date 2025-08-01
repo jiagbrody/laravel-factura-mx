@@ -24,10 +24,32 @@ class BasicFunctionsHelper
 
     public function checkIfItIsAGenericRfc(string $rfc): bool
     {
-        if ($rfc === CfdiGenericRfcEnum::NACIONAL->value || $rfc === CfdiGenericRfcEnum::EXTRANJERO->value) {
+        if (self::validateNationalGenericRfc($rfc) || self::validateForeignGenericRfc($rfc)) {
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Validates if the given RFC corresponds to the national generic RFC.
+     *
+     * @param string $rfc The RFC string to be validated.
+     * @return bool Returns true if the RFC matches the national generic RFC, otherwise returns false.
+     */
+    public function validateNationalGenericRfc(string $rfc): bool
+    {
+        return $rfc === CfdiGenericRfcEnum::NACIONAL->value;
+    }
+
+    /**
+     * Validates if the given RFC corresponds to the foreign generic RFC.
+     *
+     * @param string $rfc The RFC string to be validated.
+     * @return bool Returns true if the RFC matches the foreign generic RFC, otherwise returns false.
+     */
+    public function validateForeignGenericRfc(string $rfc): bool
+    {
+        return $rfc === CfdiGenericRfcEnum::EXTRANJERO->value;
     }
 }
