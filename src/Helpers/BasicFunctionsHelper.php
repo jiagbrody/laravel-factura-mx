@@ -34,7 +34,7 @@ class BasicFunctionsHelper
     /**
      * Validates if the given RFC corresponds to the national generic RFC.
      *
-     * @param string $rfc The RFC string to be validated.
+     * @param  string  $rfc  The RFC string to be validated.
      * @return bool Returns true if the RFC matches the national generic RFC, otherwise returns false.
      */
     public function validateNationalGenericRfc(string $rfc): bool
@@ -45,7 +45,7 @@ class BasicFunctionsHelper
     /**
      * Validates if the given RFC corresponds to the foreign generic RFC.
      *
-     * @param string $rfc The RFC string to be validated.
+     * @param  string  $rfc  The RFC string to be validated.
      * @return bool Returns true if the RFC matches the foreign generic RFC, otherwise returns false.
      */
     public function validateForeignGenericRfc(string $rfc): bool
