@@ -5,7 +5,6 @@ namespace JiagBrody\LaravelFacturaMx\Sat\RecoveryStampedXmlFile;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok\FinkokPac;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacRecoveryCfdiXmlResponse;
-use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStatusResponse;
 
 class RecoveryStampedXmlFileBuilder
 {

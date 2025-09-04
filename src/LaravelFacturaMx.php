@@ -61,7 +61,7 @@ class LaravelFacturaMx
 
     public function RecoveryCfdiXmlFile(): RecoveryStampedXmlFileBuilder
     {
-        return new RecoveryStampedXmlFileBuilder();
+        return new RecoveryStampedXmlFileBuilder;
     }
 
     public function basicFunctionsHelper(): BasicFunctionsHelper

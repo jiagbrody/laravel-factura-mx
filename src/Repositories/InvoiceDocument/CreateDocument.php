@@ -13,16 +13,15 @@ final class CreateDocument
 
     public function __construct(
         protected string $relationshipModel,
-        protected int    $relationshipId,
-        protected        $documentTypeId,
+        protected int $relationshipId,
+        protected $documentTypeId,
         protected string $fileName,
         protected string $filePath,
         protected string $mimeType,
         protected string $extension,
         protected string $storage,
         protected string $fileContent
-    )
-    {
+    ) {
         $this->exists = InvoiceDocument::where([
             ['documentable_type', $this->relationshipModel],
             ['documentable_id', $this->relationshipId],
@@ -47,11 +46,11 @@ final class CreateDocument
             return $this->exists;
         }
 
-        $archive = $this->filePath . '/' . $this->fileName . '.' . $this->extension;
+        $archive = $this->filePath.'/'.$this->fileName.'.'.$this->extension;
 
         // Save the file to disk and verify the result.
         // If Storage::put() returns `false`, we throw an exception.
-        if (!Storage::disk($this->storage)->put($archive, $this->fileContent)) {
+        if (! Storage::disk($this->storage)->put($archive, $this->fileContent)) {
             // This exception will cause the transaction to roll back.
             throw new \Exception('Error saving file. File of the own billing library "CreateDocument.php". on action Storage::put()');
         }

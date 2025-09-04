@@ -34,7 +34,7 @@ trait StampTrait
             $client = new SoapClient($this->stampUrlFinkok, ['trace' => 1]);
             $response = $client->__soapCall('stamp', [$params]);
 
-            if (!isset($response->stampResult)) {
+            if (! isset($response->stampResult)) {
                 throw new \Exception('El pac no devuelve: "stampResult"');
             }
 
@@ -43,7 +43,7 @@ trait StampTrait
             return $this->setStampResponse($response);
 
         } catch (\SoapFault $e) {
-            throw new \Exception('Fallo en el timbrado por un error del servicio SOAP al proveedor PAC. error: ' . $e->getMessage() . ' error detallado: ' . $e->getTraceAsString());
+            throw new \Exception('Fallo en el timbrado por un error del servicio SOAP al proveedor PAC. error: '.$e->getMessage().' error detallado: '.$e->getTraceAsString());
         }
     }
 
@@ -71,7 +71,7 @@ trait StampTrait
         $response->setIncidenciaIdIncidencia($incidencia->IdIncidencia);
         $message = $incidencia->MensajeIncidencia;
         if ($incidencia->MensajeIncidencia) {
-            $message .= ' - ' . $incidencia->ExtraInfo;
+            $message .= ' - '.$incidencia->ExtraInfo;
         }
         $response->setIncidenciaMensaje($message);
         $response->setIncidenciaCodigoError($incidencia->CodigoError);

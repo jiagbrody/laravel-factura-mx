@@ -7,7 +7,6 @@ use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacRecoveryCfdiXmlResponse;
 use JiagBrody\LaravelFacturaMx\Services\SaveSoapRequestResponseLogService;
 use SoapClient;
 
-
 trait XmlStampedTrait
 {
     private function getXmlStampedCfdiSat()

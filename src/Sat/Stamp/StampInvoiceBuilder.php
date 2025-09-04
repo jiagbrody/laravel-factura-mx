@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Stamp;
 
-use JiagBrody\LaravelFacturaMx\Actions\UpdateRecordsWhenStampingRevenueInvoiceAction;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok\FinkokPac;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStampResponse;

@@ -15,11 +15,10 @@ class CreateBuild
     // protected DocumentService $documentService;
 
     public function __construct(
-        protected string               $xmlContent,
+        protected string $xmlContent,
         protected InvoiceCompanyHelper $companyHelper,
-        protected AttributeAssembly    $attributeAssembly
-    )
-    {
+        protected AttributeAssembly $attributeAssembly
+    ) {
         // $this->documentService = new DocumentService;
     }
 
