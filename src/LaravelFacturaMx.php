@@ -9,6 +9,7 @@ use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\Cancel\CancelInvoiceBuilder;
 use JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteTypes;
 use JiagBrody\LaravelFacturaMx\Sat\Read\ReadInvoiceBuilder;
+use JiagBrody\LaravelFacturaMx\Sat\RecoveryStampedXmlFile\RecoveryStampedXmlFileBuilder;
 use JiagBrody\LaravelFacturaMx\Sat\SatCatalogsService;
 use JiagBrody\LaravelFacturaMx\Sat\Stamp\StampInvoiceBuilder;
 use JiagBrody\LaravelFacturaMx\Sat\Status\StatusInvoiceBuilder;
@@ -36,7 +37,7 @@ class LaravelFacturaMx
         return new ComprobanteTypes;
     }
 
-    public function editDraft() {}
+    // public function editDraft() {}
 
     public function invoiceStamper(Invoice $invoice): StampInvoiceBuilder
     {
@@ -56,6 +57,11 @@ class LaravelFacturaMx
     public function status(): StatusInvoiceBuilder
     {
         return new StatusInvoiceBuilder;
+    }
+
+    public function RecoveryCfdiXmlFile(): RecoveryStampedXmlFileBuilder
+    {
+        return new RecoveryStampedXmlFileBuilder();
     }
 
     public function basicFunctionsHelper(): BasicFunctionsHelper

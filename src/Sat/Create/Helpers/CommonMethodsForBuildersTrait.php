@@ -21,4 +21,9 @@ trait CommonMethodsForBuildersTrait
     {
         return $this->attributeAssembly;
     }
+
+    public function getXmlContent(): string
+    {
+        return $this->xmlContent;
+    }
 }

@@ -27,8 +27,8 @@ trait StatusTrait
         $params = [
             'username' => $this->usernameFinkok,
             'password' => $this->passwordFinkok,
-            'taxpayer_id' => $this->invoice->rfc_emisor,
-            'rtaxpayer_id' => $this->invoice->rfc_receptor,
+            'taxpayer_id' => $this->invoice->invoiceCompany->rfc,
+            'rtaxpayer_id' => $this->receptorRfc,
             'uuid' => $this->invoice->invoiceCfdi->uuid,
             'total' => $this->total,
         ];

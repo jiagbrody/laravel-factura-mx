@@ -8,6 +8,9 @@ use JiagBrody\LaravelFacturaMx\Models\InvoiceDocument;
 
 class DocumentRepository implements DocumentRepositoryInterface
 {
+    /**
+     * @throws \Exception
+     */
     public function create(
         string $relationshipModel,
         int $relationshipId,
@@ -32,6 +35,9 @@ class DocumentRepository implements DocumentRepositoryInterface
         ))();
     }
 
+    /**
+     * @throws \Exception
+     */
     public function update(
         InvoiceDocument $invoiceDocument,
         string $relationshipModel,

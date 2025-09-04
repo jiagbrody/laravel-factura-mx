@@ -23,4 +23,9 @@ interface ProviderPacInterface
      * Checar estatus de la factura que se hizo solicitud de cancelar.
      */
     public function statusInvoice();
+
+    /*
+     * Devuelve el xml timbrado previamente.
+     */
+    public function getXmlStamped();
 }

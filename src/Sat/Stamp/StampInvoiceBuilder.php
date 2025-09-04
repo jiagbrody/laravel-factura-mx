@@ -24,17 +24,11 @@ class StampInvoiceBuilder
 
     public function build(): PacStampResponse
     {
-        $this->stampResponse = $this->pacProvider->stampInvoice();
-
-        if ($this->stampResponse->getCheckProcess()) {
-            (new UpdateRecordsWhenStampingRevenueInvoiceAction)(
-                invoice: $this->invoice,
-                uuid: $this->stampResponse->getUuid(),
-                xml: $this->stampResponse->getXml(),
-                fileName: null
-            );
-        }
-
-        return $this->stampResponse;
+        return $this->pacProvider->stampInvoice();
     }
+
+    // public function getStampResponse(): PacStampResponse
+    // {
+    //     return $this->stampResponse;
+    // }
 }

@@ -12,6 +12,8 @@ final readonly class StatusInvoiceBuilder
 {
     protected Invoice $invoice;
 
+    protected string $receptorRfc;
+
     protected string $total;
 
     protected FinkokPac $pacProvider;
@@ -29,9 +31,15 @@ final readonly class StatusInvoiceBuilder
     {
         $this->pacProvider = new FinkokPac($this->invoice);
         $this->pacProvider->setInvoiceCompanyHelper($this->invoice->invoiceCompany);
+        $this->pacProvider->setReceptorRfc($this->receptorRfc);
         $this->pacProvider->setTotal($this->total);
 
         return $this;
+    }
+
+    public function setReceptorRfc(string $receptorRfc): void
+    {
+        $this->receptorRfc = $receptorRfc;
     }
 
     public function setTotal(float $total): self

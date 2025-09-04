@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Repositories\InvoiceDocument;
 
-use Exception;
 use Illuminate\Support\Facades\Storage;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceDocument;
 
@@ -14,15 +13,16 @@ final class CreateDocument
 
     public function __construct(
         protected string $relationshipModel,
-        protected int $relationshipId,
-        protected $documentTypeId,
+        protected int    $relationshipId,
+        protected        $documentTypeId,
         protected string $fileName,
         protected string $filePath,
         protected string $mimeType,
         protected string $extension,
         protected string $storage,
         protected string $fileContent
-    ) {
+    )
+    {
         $this->exists = InvoiceDocument::where([
             ['documentable_type', $this->relationshipModel],
             ['documentable_id', $this->relationshipId],
@@ -35,6 +35,9 @@ final class CreateDocument
         ])->first();
     }
 
+    /**
+     * @throws \Exception
+     */
     public function __invoke(): InvoiceDocument
     {
         // NOTA: SI EXISTE UN ARCHIVO CON EL MISMO NOMBRE, MODELO Y ID SIMPLEMENTE REGENERO EL ARCHIVO SIN GUARDAR OTRO REGISTRO EN LA BASE DE DATOS.
@@ -44,22 +47,19 @@ final class CreateDocument
             return $this->exists;
         }
 
-        $archive = $this->filePath.'/'.$this->fileName.'.'.$this->extension;
-        $documentCreated = new InvoiceDocument;
+        $archive = $this->filePath . '/' . $this->fileName . '.' . $this->extension;
 
-        if (Storage::disk($this->storage)->put($archive, $this->fileContent)) {
-            try {
-                $documentCreated = $this->saveDocumentInstance();
-            } catch (Exception $e) {
-                Storage::disk($this->storage)->delete($archive);
-                abort(403, 'Error al generar el archivo: '.$e->getMessage());
-            }
+        // Save the file to disk and verify the result.
+        // If Storage::put() returns `false`, we throw an exception.
+        if (!Storage::disk($this->storage)->put($archive, $this->fileContent)) {
+            // This exception will cause the transaction to roll back.
+            throw new \Exception('Error saving file. File of the own billing library "CreateDocument.php". on action Storage::put()');
         }
 
-        return $documentCreated;
+        return $this->saveDocumentInstance();
     }
 
-    private function saveDocumentInstance(): ?InvoiceDocument
+    private function saveDocumentInstance(): InvoiceDocument
     {
         $document = new InvoiceDocument;
 

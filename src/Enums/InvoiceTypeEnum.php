@@ -31,6 +31,17 @@ enum InvoiceTypeEnum: int
         };
     }
 
+    public function getSatCode(): string
+    {
+        return match ($this) {
+            self::INGRESO => 'I',
+            self::EGRESO => 'E',
+            self::TRASLADO => 'T',
+            self::NOMINA => 'N',
+            self::PAGO => 'P',
+        };
+    }
+
     public static function getFirstBySatCode(string $satCode): InvoiceTypeEnum
     {
         return match ($satCode) {

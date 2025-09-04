@@ -56,7 +56,7 @@ return [
      |
      */
 
-    'sat_files_path' => __DIR__.'/../storage/app/protected/sat-certificates',
+    'sat_files_path' => __DIR__ . '/../storage/app/protected/sat-certificates',
 
     /*
      |--------------------------------------------------------------------------
@@ -81,7 +81,7 @@ return [
      |
      */
 
-    'sat_local_resource_path' => __DIR__.'/../storage/app/protected/sat-resources',
+    'sat_local_resource_path' => __DIR__ . '/../storage/app/protected/sat-resources',
 
     /*
      |--------------------------------------------------------------------------
@@ -100,7 +100,7 @@ return [
      |
      */
     'filesystem_disk' => 'public',
-    'invoices_files_path' => 'files/invoices',
+    'invoices_files_path' => 'sat-documents/invoices',
 
     /*
      |--------------------------------------------------------------------------

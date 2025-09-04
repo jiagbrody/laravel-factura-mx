@@ -25,9 +25,11 @@ use JiagBrody\LaravelFacturaMx\Sat\PacProviders\ProviderPacInterface;
 
 class FinkokPac implements ProviderPacInterface
 {
-    use CancelTrait, StampTrait, StatusTrait;
+    use CancelTrait, StampTrait, StatusTrait, XmlStampedTrait;
 
     public readonly InvoiceCompanyHelper $invoiceCompanyHelper;
+
+    public string $receptorRfc;
 
     public float $total;
 
@@ -43,24 +45,28 @@ class FinkokPac implements ProviderPacInterface
 
     protected string $statusUrlFinkok;
 
+    protected string $utilitiesUrlFinkok;
+
     protected PacStampResponse $response;
 
     public function __construct(protected Invoice $invoice)
     {
         $this->response = new PacStampResponse;
-        $this->usernameFinkok = (string) config('jiagbrody-laravel-factura-mx.pac_providers.finkok.user');
-        $this->passwordFinkok = (string) config('jiagbrody-laravel-factura-mx.pac_providers.finkok.password');
+        $this->usernameFinkok = (string)config('jiagbrody-laravel-factura-mx.pac_providers.finkok.user');
+        $this->passwordFinkok = (string)config('jiagbrody-laravel-factura-mx.pac_providers.finkok.password');
 
         if (config('jiagbrody-laravel-factura-mx.pac_environment_production')) {
             $this->pacEnvironment = 'production';
             $this->stampUrlFinkok = '';
             $this->cancelUrlFinkok = '';
             $this->statusUrlFinkok = '';
+            $this->utilitiesUrlFinkok = '';
         } else {
             $this->pacEnvironment = 'development';
             $this->stampUrlFinkok = 'https://demo-facturacion.finkok.com/servicios/soap/stamp.wsdl';
             $this->cancelUrlFinkok = 'https://demo-facturacion.finkok.com/servicios/soap/cancel.wsdl';
             $this->statusUrlFinkok = 'https://demo-facturacion.finkok.com/servicios/soap/cancel.wsdl';
+            $this->utilitiesUrlFinkok = 'https://demo-facturacion.finkok.com/servicios/soap/utilities.wsdl';
         }
 
         // $settings = new FinkokSettings($this->usernameFinkok, $this->passwordFinkok,
@@ -71,6 +77,11 @@ class FinkokPac implements ProviderPacInterface
     public function setInvoiceCompanyHelper(InvoiceCompany $company): void
     {
         $this->invoiceCompanyHelper = new InvoiceCompanyHelper($company);
+    }
+
+    public function setReceptorRfc(string $receptorRfc): void
+    {
+        $this->receptorRfc = $receptorRfc;
     }
 
     public function setTotal(float $total): void
@@ -122,5 +133,15 @@ class FinkokPac implements ProviderPacInterface
     public function statusInvoice(): PacStatusResponse
     {
         return $this->getStatusCfdiSat();
+    }
+
+    /*
+     * Devuelve un XML previamente timbrado (El tiempo de resguardo para rescatarlo es menor a 3 meses).
+     *
+     * https://wiki.finkok.com/en/home/webservices/utilerias/get_xml
+     */
+    public function getXmlStamped()
+    {
+        return $this->getXmlStampedCfdiSat();
     }
 }
