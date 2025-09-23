@@ -2,8 +2,6 @@
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Status;
 
-use JiagBrody\LaravelFacturaMx\Actions\UpdateRecordsAfterCheckingInvoiceStatusAction;
-use JiagBrody\LaravelFacturaMx\Enums\InvoiceStatusEnum;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok\FinkokPac;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStatusResponse;
