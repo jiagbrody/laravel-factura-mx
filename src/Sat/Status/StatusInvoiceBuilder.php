@@ -53,10 +53,6 @@ final readonly class StatusInvoiceBuilder
     {
         $this->statusResponse = $this->pacProvider->statusInvoice();
 
-        if (($this->statusResponse->getCheckProcess() && $this->statusResponse->getInvoiceStatusEnum() === InvoiceStatusEnum::CANCELED) && $this->invoice->invoice_status_id !== InvoiceStatusEnum::CANCELED->value) {
-            (new UpdateRecordsAfterCheckingInvoiceStatusAction)($this->invoice);
-        }
-
         return $this->statusResponse;
     }
 }
