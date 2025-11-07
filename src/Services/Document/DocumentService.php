@@ -45,8 +45,8 @@ class DocumentService
     public function setInvoice(Invoice $invoice): void
     {
         $this->invoice = $invoice;
-        $this->hasCfdi = (bool)$invoice->invoiceCfdi;
-        $this->hasCfdiCanceled = (bool)$invoice->invoiceCfdi?->invoiceCfdiCancel;
+        $this->hasCfdi = (bool) $invoice->invoiceCfdi;
+        $this->hasCfdiCanceled = (bool) $invoice->invoiceCfdi?->invoiceCfdiCancel;
 
         if ($this->hasCfdi) {
             // OBTIENE LOS ARCHIVOS DEL CFDI
