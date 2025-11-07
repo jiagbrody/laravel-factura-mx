@@ -15,7 +15,7 @@ return new class extends Migration
 
         Schema::table($tableNames['invoice_cfdi_cancels'], function (Blueprint $table) use ($tableNames) {
             $table->dropForeign('lfmx_invoice_cfdi_cancels_invoice_cfdi_cancel_type_id_foreign');
-            $table->dropIndex('lfmx_invoice_cfdi_cancels_invoice_cfdi_cancel_type_id_foreign');
+            // $table->dropIndex('lfmx_invoice_cfdi_cancels_invoice_cfdi_cancel_type_id_foreign');
             $table->dropColumn('invoice_cfdi_cancel_type_id');
 
             $table->unsignedBigInteger('invoice_cfdi_cancel_receipt_id')->after('invoice_cfdi_id');

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Services\Document;
 
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceDocumentTypeEnum;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
@@ -12,7 +13,6 @@ use JiagBrody\LaravelFacturaMx\Models\InvoiceCfdiCancelReceipt;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceDocument;
 use JiagBrody\LaravelFacturaMx\Repositories\InvoiceDocument\CreateDocument;
 use JiagBrody\LaravelFacturaMx\Repositories\InvoiceDocument\DocumentRepository;
-use JiagBrody\LaravelFacturaMx\Sat\Helper\GeneratePdfDocumentFromXmlObjectForIngresoHelper;
 
 class DocumentService
 {
@@ -45,8 +45,8 @@ class DocumentService
     public function setInvoice(Invoice $invoice): void
     {
         $this->invoice = $invoice;
-        $this->hasCfdi = (bool) $invoice->invoiceCfdi;
-        $this->hasCfdiCanceled = (bool) $invoice->invoiceCfdi?->invoiceCfdiCancel;
+        $this->hasCfdi = (bool)$invoice->invoiceCfdi;
+        $this->hasCfdiCanceled = (bool)$invoice->invoiceCfdi?->invoiceCfdiCancel;
 
         if ($this->hasCfdi) {
             // OBTIENE LOS ARCHIVOS DEL CFDI
@@ -113,7 +113,7 @@ class DocumentService
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function createXmlDocument(Invoice|InvoiceCfdi|InvoiceCfdiCancelReceipt $modelToSave, string $filePath, string $fileName, string $storage, string $xmlContent): InvoiceDocument
     {
@@ -131,7 +131,7 @@ class DocumentService
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function createPdfDocumentFromXmlFile(InvoiceDocument $xmlFile, string $pdfContent): InvoiceDocument
     {
@@ -148,26 +148,24 @@ class DocumentService
         ))();
     }
 
-    public function regenerateAndSaveInvoicePdf(string $filenamePdf = '', $documentPdf = null): void
+    /**
+     * @throws Exception
+     */
+    public function regenerateAndSaveInvoicePdf(InvoiceDocument $invoiceDocument, string $documentPdf): void
     {
-        $model = ($this->invoice->invoiceCfdi) ? $this->invoice->invoiceCfdi->getMorphClass() : $this->invoice->getMorphClass();
-        $id = ($this->invoice->invoiceCfdi) ? $this->invoice->invoiceCfdi->id : $this->invoice->id;
-
-        if ($documentPdf === null) {
-            $documentPdf = (new GeneratePdfDocumentFromXmlObjectForIngresoHelper)(comprobante: (array) $this->getXmlArray());
-        }
-
         $documentRepository = new DocumentRepository;
-        $documentRepository->create(
-            relationshipModel: $model,
-            relationshipId: $id,
+        $documentRepository->update(
+            invoiceDocument: $invoiceDocument,
+            relationshipModel: $invoiceDocument->documentable_type,
+            relationshipId: $invoiceDocument->documentable_id,
             documentTypeId: InvoiceDocumentTypeEnum::PDF_FILE->value,
-            fileName: ($filenamePdf !== '') ? $filenamePdf : $this->xmlFile->file_name,
-            filePath: config('jiagbrody-laravel-factura-mx.invoices_files_path'),
-            mimeType: 'pdf',
-            extension: 'pdf',
-            storage: config('jiagbrody-laravel-factura-mx.filesystem_disk'),
-            fileContent: $documentPdf
+            fileName: $invoiceDocument->file_name,
+            filePath: $invoiceDocument->file_path,
+            mimeType: $invoiceDocument->mime_type,
+            extension: $invoiceDocument->extension,
+            storage: $invoiceDocument->storage,
+            fileContent: $documentPdf,
+            overwriteFileOnDisk: true
         );
     }
 }
