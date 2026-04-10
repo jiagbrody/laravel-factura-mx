@@ -27,13 +27,13 @@ trait GenerateInvoicePdfFileHelperTrait
                 );
                 $episode = null;
                 $statement = null;
-                $pdfFile = PDF::loadView('pdf.invoices.invoice_ingreso',
+                $pdfFile = Pdf::loadView('pdf.invoices.invoice_ingreso',
                     compact('comprobante', 'episode', 'statement', 'readableText'));
                 break;
             case InvoiceCfdiTypeEnum::PAGO->value:
                 $readableText = ConvertNumberToReadableTextHelper::make(number_format((float) $comprobante['Total'], 2,
                     '.', ''), 'pesos', 'con', 'centavos');
-                $pdfFile = PDF::loadView('pdf.invoices.invoice_ingreso',
+                $pdfFile = Pdf::loadView('pdf.invoices.invoice_ingreso',
                     compact('comprobante', 'readableText'));
                 break;
             default:

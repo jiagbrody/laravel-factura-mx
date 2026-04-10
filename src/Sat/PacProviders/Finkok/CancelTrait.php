@@ -50,7 +50,7 @@ trait CancelTrait
             $client = new SoapClient($this->cancelUrlFinkok, ['trace' => 1]);
             $response = $client->__soapCall('get_receipt', [$params]);
             // dd($client->__getLastRequest(), $client->__getLastResponse());
-        } catch (exception $e) {
+        } catch (Exception $e) {
             abort(422, $e->getMessage());
         }
     }
@@ -80,7 +80,7 @@ trait CancelTrait
             (new SaveSoapRequestResponseLogService)->make($client, 'Finkok:sign_cancel', 'cfdi_finkok_sign_cancel');
 
             $this->setResponsePac($response->sign_cancelResult);
-        } catch (exception $e) {
+        } catch (Exception $e) {
             abort(422, $e->getMessage());
         }
     }

@@ -47,7 +47,7 @@ readonly class AttributeAssembly
     public function getCfdiRelacionados(): Collection
     {
         // ESTA PROPIEDAD ES OPCIONAL Y PUEDE O NO ESTAR INICIALIZADA
-        $rp = new \ReflectionProperty(self::class, 'cfdiRelacionados');
+        $rp = new ReflectionProperty(self::class, 'cfdiRelacionados');
         if ($rp->isInitialized($this) === false) {
             return collect();
         }
@@ -116,7 +116,7 @@ readonly class AttributeAssembly
     public function getComplementoImpuestosLocales(): Collection
     {
         // ESTA PROPIEDAD ES OPCIONAL Y PUEDE O NO ESTAR INICIALIZADA
-        $rp = new \ReflectionProperty(self::class, 'complementoImpuestosLocales');
+        $rp = new ReflectionProperty(self::class, 'complementoImpuestosLocales');
         if ($rp->isInitialized($this) === false) {
             return collect();
         }

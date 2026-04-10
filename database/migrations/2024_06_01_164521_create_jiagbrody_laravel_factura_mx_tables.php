@@ -9,6 +9,13 @@ use JiagBrody\LaravelFacturaMx\Enums\InvoicePaymentTypeEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceStatusEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceTaxTypeEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceTypeEnum;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceCfdiCancelType;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceDocumentType;
+use JiagBrody\LaravelFacturaMx\Models\InvoicePaymentType;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceStatus;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceTaxType;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceType;
 
 return new class extends Migration
 {
@@ -229,7 +236,7 @@ return new class extends Migration
         });
 
         // include('./database/seeders/include_inserts_to_tables.php');
-        \JiagBrody\LaravelFacturaMx\Models\InvoiceCompany::insert([
+        InvoiceCompany::insert([
             [
                 'name' => 'Emisor 1',
                 'rfc' => 'EKU9003173C9',
@@ -254,7 +261,7 @@ return new class extends Migration
             ],
         ]);
 
-        \JiagBrody\LaravelFacturaMx\Models\InvoiceType::insert([
+        InvoiceType::insert([
             ['id' => InvoiceTypeEnum::INGRESO->value, 'name' => InvoiceTypeEnum::INGRESO->getName(), 'created_at' => now(), 'updated_at' => now()],
             ['id' => InvoiceTypeEnum::EGRESO->value, 'name' => InvoiceTypeEnum::EGRESO->getName(), 'created_at' => now(), 'updated_at' => now()],
             ['id' => InvoiceTypeEnum::TRASLADO->value, 'name' => InvoiceTypeEnum::TRASLADO->getName(), 'created_at' => now(), 'updated_at' => now()],
@@ -262,28 +269,28 @@ return new class extends Migration
             ['id' => InvoiceTypeEnum::PAGO->value, 'name' => InvoiceTypeEnum::PAGO->getName(), 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        \JiagBrody\LaravelFacturaMx\Models\InvoiceStatus::insert([
+        InvoiceStatus::insert([
             ['id' => InvoiceStatusEnum::DRAFT->value, 'name' => InvoiceStatusEnum::DRAFT->getName(), 'created_at' => now(), 'updated_at' => now()],
             ['id' => InvoiceStatusEnum::VIGENT->value, 'name' => InvoiceStatusEnum::VIGENT->getName(), 'created_at' => now(), 'updated_at' => now()],
             ['id' => InvoiceStatusEnum::CANCELED->value, 'name' => InvoiceStatusEnum::CANCELED->getName(), 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        \JiagBrody\LaravelFacturaMx\Models\InvoicePaymentType::insert([
+        InvoicePaymentType::insert([
             ['id' => InvoicePaymentTypeEnum::PAGO_EN_UNA_EXHIBICION->value, 'name' => InvoicePaymentTypeEnum::PAGO_EN_UNA_EXHIBICION->getName(), 'created_at' => now(), 'updated_at' => now()],
             ['id' => InvoicePaymentTypeEnum::PAGO_A_LINEA_DE_CREDITO->value, 'name' => InvoicePaymentTypeEnum::PAGO_A_LINEA_DE_CREDITO->getName(), 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        \JiagBrody\LaravelFacturaMx\Models\InvoiceTaxType::insert([
+        InvoiceTaxType::insert([
             ['id' => InvoiceTaxTypeEnum::TRASLADO->value, 'name' => InvoiceTaxTypeEnum::TRASLADO->getName(), 'created_at' => now(), 'updated_at' => now()],
             ['id' => InvoiceTaxTypeEnum::RETENCION->value, 'name' => InvoiceTaxTypeEnum::RETENCION->getName(), 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        \JiagBrody\LaravelFacturaMx\Models\InvoiceDocumentType::insert([
+        InvoiceDocumentType::insert([
             ['id' => InvoiceDocumentTypeEnum::XML_FILE->value, 'name' => InvoiceDocumentTypeEnum::XML_FILE->getName(), 'created_at' => now(), 'updated_at' => now()],
             ['id' => InvoiceDocumentTypeEnum::PDF_FILE->value, 'name' => InvoiceDocumentTypeEnum::PDF_FILE->getName(), 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        \JiagBrody\LaravelFacturaMx\Models\InvoiceCfdiCancelType::insert([
+        InvoiceCfdiCancelType::insert([
             ['id' => InvoiceCfdiCancelTypeEnum::NEW_WITH_ERRORS_RELATED->value, 'name' => InvoiceCfdiCancelTypeEnum::NEW_WITH_ERRORS_RELATED->getName(), 'created_at' => now(), 'updated_at' => now()],
             ['id' => InvoiceCfdiCancelTypeEnum::NEW_WITH_ERRORS_UNRELATED->value, 'name' => InvoiceCfdiCancelTypeEnum::NEW_WITH_ERRORS_UNRELATED->getName(), 'created_at' => now(), 'updated_at' => now()],
             ['id' => InvoiceCfdiCancelTypeEnum::NEW_NOT_EXECUTED->value, 'name' => InvoiceCfdiCancelTypeEnum::NEW_NOT_EXECUTED->getName(), 'created_at' => now(), 'updated_at' => now()],

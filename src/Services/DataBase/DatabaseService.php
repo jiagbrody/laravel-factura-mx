@@ -18,7 +18,7 @@ class DatabaseService extends SimpleRelationDataQuery
         $this->invoice = $invoice;
     }
 
-    public function getInvoiceInformationCollect(): \Illuminate\Support\Collection
+    public function getInvoiceInformationCollect(): Collection
     {
         return collect([
             'id' => $this->invoice->id,

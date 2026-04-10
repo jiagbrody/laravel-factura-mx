@@ -38,7 +38,7 @@ trait StatusTrait
             $response = $client->__soapCall('get_sat_status', [$params]);
 
             (new SaveSoapRequestResponseLogService)->make($client, 'Finkok:get_sat_status', 'cfdi_finkok_get_sat_status');
-        } catch (exception $e) {
+        } catch (Exception $e) {
             abort(422, $e->getMessage());
         }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Enums;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use JiagBrody\LaravelFacturaMx\Models\InvoicePaymentType;
 
@@ -12,7 +13,7 @@ enum InvoicePaymentTypeEnum: int
     case PAGO_EN_UNA_EXHIBICION = 1;
     case PAGO_A_LINEA_DE_CREDITO = 2;
 
-    public static function getCatalog(): \Illuminate\Support\Collection
+    public static function getCatalog(): Collection
     {
         return DB::table((new InvoicePaymentType)->getTable())->get(['id', 'name']);
     }

@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Services\DataBase\QueryBuilders;
 
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 
 class SimpleRelationDataQuery
 {
-    private \Illuminate\Database\Query\Builder $querySource;
+    private Builder $querySource;
 
     public function __construct()
     {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteRecepcionDePagos;
 
+use CfdiUtils\Elements\Pagos20\Pago;
 use CfdiUtils\Elements\Pagos20\Pagos;
 use CfdiUtils\SumasPagos20\PagosWriter;
 use JiagBrody\LaravelFacturaMx\Facades\LaravelFacturaMx;
@@ -27,7 +28,7 @@ class PagoCreator extends CfdiHelperAbstract
         $this->complementoPagos = new Pagos;
     }
 
-    public function addPay(array $pay): \CfdiUtils\Elements\Pagos20\Pago
+    public function addPay(array $pay): Pago
     {
         return $this->complementoPagos->addPago($pay);
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Enums;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceStatus;
 
@@ -14,7 +15,7 @@ enum InvoiceStatusEnum: int
     case CANCELED = 3;
     case PRIOR_CANCELLATION = 4;
 
-    public static function getCatalog(): \Illuminate\Support\Collection
+    public static function getCatalog(): Collection
     {
         return DB::table((new InvoiceStatus)->getTable())->get(['id', 'name']);
     }

@@ -37,7 +37,7 @@ final class GeneratePdfDocumentFromXmlObjectForIngresoHelper
             separatorLabel: 'con',
             decimalLabel: 'centavos'
         );
-        $pdfFile = PDF::loadView('jiagbrody-laravel-factura-mx.pdf.invoices.invoice_ingreso',
+        $pdfFile = Pdf::loadView('jiagbrody-laravel-factura-mx.pdf.invoices.invoice_ingreso',
             compact('comprobante', 'episode', 'statement', 'readableText', 'qrCode'));
 
         return $pdfFile->output();

@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData;
 
+use Illuminate\Support\Collection;
+
 trait AtributosHelperTrait
 {
     /*
      * Para pasar los valores a la utilidad de la creación de la factura con la librería PHPCFDI
      */
-    public function getCollection(): \Illuminate\Support\Collection
+    public function getCollection(): Collection
     {
         $collection = collect();
         foreach ($this as $key => $value) {

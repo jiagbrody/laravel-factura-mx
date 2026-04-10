@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat;
 
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use stdClass;
 
 final class SatCatalogsService
 {
-    private static function connection(string $tableName): \Illuminate\Database\Query\Builder
+    private static function connection(string $tableName): Builder
     {
         return DB::connection('sqlite-sat-catalogs')->table($tableName);
     }
@@ -17,7 +19,7 @@ final class SatCatalogsService
     public static function getClaveUnidad(array $filterByIds = [])
     {
         $claveUnidadesQuery = self::connection('cfdi_40_claves_unidades');
-        if (!empty($filterByIds)) {
+        if (! empty($filterByIds)) {
             $claveUnidadesQuery->whereIn('id', $filterByIds);
         }
         $claveUnidades = $claveUnidadesQuery->get();
@@ -27,7 +29,7 @@ final class SatCatalogsService
         });
     }
 
-    public static function getRegimenFiscal(): \Illuminate\Support\Collection
+    public static function getRegimenFiscal(): Collection
     {
         $regimenFiscales = self::connection('cfdi_40_regimenes_fiscales')->get();
 
@@ -49,7 +51,7 @@ final class SatCatalogsService
         });
     }
 
-    public static function getUsoCfdi(null|string|array $hasId = null): \Illuminate\Support\Collection|StdClass
+    public static function getUsoCfdi(null|string|array $hasId = null): Collection|stdClass
     {
         $usosCfdiQuery = self::connection('cfdi_40_usos_cfdi');
         if ($hasId !== null) {
@@ -68,10 +70,10 @@ final class SatCatalogsService
         });
     }
 
-    public static function getMetodoPago(array $filterByIds = []): \Illuminate\Support\Collection
+    public static function getMetodoPago(array $filterByIds = []): Collection
     {
         $query = self::connection('cfdi_40_metodos_pago');
-        if (!empty($filterByIds)) {
+        if (! empty($filterByIds)) {
             $query->whereIn('id', $filterByIds);
         }
 
@@ -80,7 +82,7 @@ final class SatCatalogsService
         });
     }
 
-    public static function getPais(): \Illuminate\Support\Collection
+    public static function getPais(): Collection
     {
         $metodoPago = self::connection('cfdi_40_paises')->get();
 
@@ -89,10 +91,10 @@ final class SatCatalogsService
         });
     }
 
-    public static function getMoneda(array $filterByIds = []): \Illuminate\Support\Collection
+    public static function getMoneda(array $filterByIds = []): Collection
     {
         $query = self::connection('cfdi_40_monedas');
-        if (!empty($filterByIds)) {
+        if (! empty($filterByIds)) {
             $query->whereIn('id', $filterByIds);
         }
 
@@ -101,10 +103,10 @@ final class SatCatalogsService
         });
     }
 
-    public static function getFormaPago(array $filterByIds = []): \Illuminate\Support\Collection
+    public static function getFormaPago(array $filterByIds = []): Collection
     {
         $query = self::connection('cfdi_40_formas_pago');
-        if (!empty($filterByIds)) {
+        if (! empty($filterByIds)) {
             $query->whereIn('id', $filterByIds);
         }
 
@@ -113,10 +115,10 @@ final class SatCatalogsService
         });
     }
 
-    public static function getExportacion(array $filterByIds = []): \Illuminate\Support\Collection
+    public static function getExportacion(array $filterByIds = []): Collection
     {
         $query = self::connection('cfdi_40_exportaciones');
-        if (!empty($filterByIds)) {
+        if (! empty($filterByIds)) {
             $query->whereIn('id', $filterByIds);
         }
 
@@ -125,7 +127,7 @@ final class SatCatalogsService
         });
     }
 
-    public static function getTipoRelacion(): \Illuminate\Support\Collection
+    public static function getTipoRelacion(): Collection
     {
         $tipoRelacion = self::connection('cfdi_40_tipos_relaciones')->get();
 
@@ -134,7 +136,7 @@ final class SatCatalogsService
         });
     }
 
-    public static function getObjetoImpuesto(): \Illuminate\Support\Collection
+    public static function getObjetoImpuesto(): Collection
     {
         $tipoRelacion = self::connection('cfdi_40_objetos_impuestos')->get();
 
@@ -143,7 +145,7 @@ final class SatCatalogsService
         });
     }
 
-    public static function getImpuesto(): \Illuminate\Support\Collection
+    public static function getImpuesto(): Collection
     {
         $tipoRelacion = self::connection('cfdi_40_impuestos')->get();
 
@@ -152,7 +154,7 @@ final class SatCatalogsService
         });
     }
 
-    public static function getTipoFactor(): \Illuminate\Support\Collection
+    public static function getTipoFactor(): Collection
     {
         $tipoRelacion = self::connection('cfdi_40_tipos_factores')->get();
 
@@ -164,7 +166,7 @@ final class SatCatalogsService
     public static function getPagosTipoCadenaPago(array $filterByIds = [])
     {
         $query = self::connection('pagos_tipos_cadena_pago');
-        if (!empty($filterByIds)) {
+        if (! empty($filterByIds)) {
             $query->whereIn('id', $filterByIds);
         }
 
@@ -213,7 +215,7 @@ final class SatCatalogsService
     /*
      * There is no filter by ID because it does not exist in the SAT catalogs.
      */
-    public static function getTasaOCuota(): \Illuminate\Support\Collection
+    public static function getTasaOCuota(): Collection
     {
         $query = self::connection('cfdi_40_reglas_tasa_cuota')->get();
 
@@ -223,10 +225,10 @@ final class SatCatalogsService
         });
     }
 
-    public static function getTipoDeComprobante(array $filterByIds = []): \Illuminate\Support\Collection
+    public static function getTipoDeComprobante(array $filterByIds = []): Collection
     {
         $query = self::connection('cfdi_40_tipos_comprobantes');
-        if (!empty($filterByIds)) {
+        if (! empty($filterByIds)) {
             $query->whereIn('id', $filterByIds);
         }
 

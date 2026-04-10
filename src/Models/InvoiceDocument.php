@@ -6,6 +6,8 @@ namespace JiagBrody\LaravelFacturaMx\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -39,12 +41,12 @@ class InvoiceDocument extends Model
         return config('jiagbrody-laravel-factura-mx.table_names.invoice_documents', parent::getTable());
     }
 
-    public function documentable(): \Illuminate\Database\Eloquent\Relations\MorphTo
+    public function documentable(): MorphTo
     {
         return $this->morphTo();
     }
 
-    public function invoiceDocumentType(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function invoiceDocumentType(): BelongsTo
     {
         return $this->belongsTo(InvoiceDocumentType::class);
     }

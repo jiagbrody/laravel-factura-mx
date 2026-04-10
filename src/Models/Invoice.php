@@ -6,8 +6,11 @@ namespace JiagBrody\LaravelFacturaMx\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceDocumentTypeEnum;
 use JiagBrody\LaravelFacturaMx\Helpers\AddReadableDatesHelperTrait;
@@ -68,22 +71,22 @@ class Invoice extends Model
         return $this->hasOne(InvoiceComplementLocalTax::class);
     }
 
-    public function invoiceType(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function invoiceType(): BelongsTo
     {
         return $this->belongsTo(InvoiceType::class);
     }
 
-    public function invoiceCompany(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function invoiceCompany(): BelongsTo
     {
         return $this->belongsTo(InvoiceCompany::class);
     }
 
-    public function invoiceStatus(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function invoiceStatus(): BelongsTo
     {
         return $this->belongsTo(InvoiceStatus::class);
     }
 
-    public function invoiceDocuments(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    public function invoiceDocuments(): MorphMany
     {
         return $this->morphMany(InvoiceDocument::class, 'documentable');
     }
@@ -98,7 +101,7 @@ class Invoice extends Model
     //     return $this->morphMany(InvoiceDocument::class, 'documentable');
     // }
 
-    public function pdfInvoiceDocument(): \Illuminate\Database\Eloquent\Relations\MorphOne
+    public function pdfInvoiceDocument(): MorphOne
     {
         return $this->morphOne(InvoiceDocument::class, 'documentable')->ofMany([
             'created_at' => 'max',
@@ -108,7 +111,7 @@ class Invoice extends Model
         });
     }
 
-    public function xmlInvoiceDocument(): \Illuminate\Database\Eloquent\Relations\MorphOne
+    public function xmlInvoiceDocument(): MorphOne
     {
         return $this->morphOne(InvoiceDocument::class, 'documentable')->ofMany([
             'created_at' => 'max',

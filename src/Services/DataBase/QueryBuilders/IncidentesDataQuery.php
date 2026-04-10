@@ -2,6 +2,7 @@
 
 namespace JiagBrody\LaravelFacturaMx\Services\DataBase\QueryBuilders;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceIncident;
@@ -15,7 +16,7 @@ class IncidentesDataQuery extends SimpleRelationDataQuery
         parent::__construct();
     }
 
-    public function getByInvoice(): \Illuminate\Support\Collection
+    public function getByInvoice(): Collection
     {
         $this->checkLogicalErrorTrait();
 

@@ -7,6 +7,7 @@ namespace JiagBrody\LaravelFacturaMx\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceCfdiCancelTypeEnum;
+use JiagBrody\LaravelFacturaMx\LaravelFacturaMx;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCfdi;
 
@@ -59,7 +60,7 @@ class InvoiceController extends Controller
         $response = null;
 
         if ($invoice->invoiceCfdi) {
-            $facturaMx = new \JiagBrody\LaravelFacturaMx\LaravelFacturaMx;
+            $facturaMx = new LaravelFacturaMx;
             $cancelType = InvoiceCfdiCancelTypeEnum::from($request->input('invoice_cfdi_cancel_type_id'));
 
             $cancelBuilder = $facturaMx->cancel()
@@ -89,7 +90,7 @@ class InvoiceController extends Controller
 
     public function getStatus(Invoice $invoice)
     {
-        $facturaMx = new \JiagBrody\LaravelFacturaMx\LaravelFacturaMx;
+        $facturaMx = new LaravelFacturaMx;
 
         $response = $facturaMx->status()
             ->setInvoice($invoice)

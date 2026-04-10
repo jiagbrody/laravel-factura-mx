@@ -7,7 +7,6 @@ namespace JiagBrody\LaravelFacturaMx\Services\Document;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceDocumentTypeEnum;
-use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCfdiCancelReceipt;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceDocument;
 use JiagBrody\LaravelFacturaMx\Repositories\InvoiceDocument\CreateDocument;

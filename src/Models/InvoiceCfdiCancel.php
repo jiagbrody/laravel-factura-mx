@@ -6,6 +6,7 @@ namespace JiagBrody\LaravelFacturaMx\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class InvoiceCfdiCancel extends Model
@@ -21,7 +22,7 @@ class InvoiceCfdiCancel extends Model
         return config('jiagbrody-laravel-factura-mx.table_names.invoice_cfdi_cancels', parent::getTable());
     }
 
-    public function invoiceCfdi(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function invoiceCfdi(): BelongsTo
     {
         return $this->belongsTo(InvoiceCfdi::class);
     }

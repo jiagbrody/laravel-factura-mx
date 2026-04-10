@@ -40,7 +40,7 @@ class LaravelFacturaMxServiceProvider extends PackageServiceProvider
 
         // Publicaciones personalizadas
         $this->publishes([
-            __DIR__.'/../resources/js/Pages/jiagbrody-laravel-factura-mx' => resource_path('js/Pages/jiagbrody-laravel-factura-mx')
+            __DIR__.'/../resources/js/Pages/jiagbrody-laravel-factura-mx' => resource_path('js/Pages/jiagbrody-laravel-factura-mx'),
         ], 'jiagbrody-laravel-factura-mx-inertia-views');
     }
 }

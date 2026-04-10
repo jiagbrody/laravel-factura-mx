@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceRelationshipTypeEnum;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceRelationshipType;
 
 return new class extends Migration
 {
@@ -32,7 +33,7 @@ return new class extends Migration
             $table->foreign('invoice_relationship_type_id', 'jiagbrody_lfmx_invoice_rel_invoice_rel_type_id_foreign')->references('id')->on($tableNames['invoice_relationship_types']);
         });
 
-        \JiagBrody\LaravelFacturaMx\Models\InvoiceRelationshipType::insert([
+        InvoiceRelationshipType::insert([
             ['id' => InvoiceRelationshipTypeEnum::NOTA_DE_CREDITO->value, 'name' => InvoiceRelationshipTypeEnum::NOTA_DE_CREDITO->getName(), 'created_at' => now(), 'updated_at' => now()],
             ['id' => InvoiceRelationshipTypeEnum::NOTA_DE_DEBITO->value, 'name' => InvoiceRelationshipTypeEnum::NOTA_DE_DEBITO->getName(), 'created_at' => now(), 'updated_at' => now()],
             ['id' => InvoiceRelationshipTypeEnum::DEVOLUCION_DE_MERCANCIA->value, 'name' => InvoiceRelationshipTypeEnum::DEVOLUCION_DE_MERCANCIA->getName(), 'created_at' => now(), 'updated_at' => now()],

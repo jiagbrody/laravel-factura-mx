@@ -6,6 +6,7 @@ namespace JiagBrody\LaravelFacturaMx\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class InvoiceIncident extends Model
 {
@@ -16,7 +17,7 @@ class InvoiceIncident extends Model
         return config('jiagbrody-laravel-factura-mx.table_names.invoice_incidents', parent::getTable());
     }
 
-    public function invoice(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function invoice(): BelongsTo
     {
         return $this->belongsTo(Invoice::class);
     }

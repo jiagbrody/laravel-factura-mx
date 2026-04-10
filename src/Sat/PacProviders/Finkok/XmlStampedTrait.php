@@ -35,7 +35,7 @@ trait XmlStampedTrait
             (new SaveSoapRequestResponseLogService)->make($client, 'Finkok:get_xml', 'cfdi_finkok_get_xml');
 
             return $response;
-        } catch (exception $e) {
+        } catch (Exception $e) {
             abort(422, $e->getMessage());
         }
     }

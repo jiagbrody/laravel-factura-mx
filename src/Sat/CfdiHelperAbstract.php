@@ -21,7 +21,7 @@ abstract class CfdiHelperAbstract
 {
     protected Credential $credential;
 
-    protected \CfdiUtils\CfdiCreator40 $creatorCfdi;
+    protected CfdiCreator40 $creatorCfdi;
 
     protected InvoiceCompanyHelper $companyHelper;
 

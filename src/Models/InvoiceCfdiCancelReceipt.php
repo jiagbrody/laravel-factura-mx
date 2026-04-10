@@ -24,12 +24,12 @@ class InvoiceCfdiCancelReceipt extends Model
         return $this->belongsTo(InvoiceCfdiCancelType::class);
     }
 
-    public function replacementInvoiceCfdi(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function replacementInvoiceCfdi(): BelongsTo
     {
         return $this->belongsTo(InvoiceCfdi::class, 'replacement_invoice_cfdi_id');
     }
 
-    public function invoiceCfdi(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function invoiceCfdi(): BelongsTo
     {
         return $this->belongsTo(InvoiceCfdi::class);
     }

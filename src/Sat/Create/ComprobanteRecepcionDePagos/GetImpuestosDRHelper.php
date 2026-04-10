@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteRecepcionDePagos;
 
 use App\Enums\InvoiceTaxTypeEnum;
+use Illuminate\Support\Collection;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\PatronDeDatosHelper;
 
@@ -12,7 +13,7 @@ final class GetImpuestosDRHelper
 {
     const TIPO_FACTOR_EXENTO = 'Exento';
 
-    public static function traslados(Invoice $invoice, DefineDoctoRelacionadoProperties $documentoR): \Illuminate\Support\Collection
+    public static function traslados(Invoice $invoice, DefineDoctoRelacionadoProperties $documentoR): Collection
     {
         $traslados = $invoice->invoiceTax?->invoiceTaxDetails->where('invoice_tax_type_id', InvoiceTaxTypeEnum::TRASLADO->value);
 

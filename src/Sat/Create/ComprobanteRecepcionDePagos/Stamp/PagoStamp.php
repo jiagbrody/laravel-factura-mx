@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteRecepcionDePagos\Stamp;
 
+use App\Services\PAC\Providers\PacStampResponse;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\Helper\PacProviderHelper;
 use JiagBrody\LaravelFacturaMx\Sat\StampCfdiInterface;
@@ -17,7 +18,7 @@ class PagoStamp extends PacProviderHelper implements StampCfdiInterface
         parent::__construct($this->invoice);
     }
 
-    public function getPacResponse(): \App\Services\PAC\Providers\PacStampResponse
+    public function getPacResponse(): PacStampResponse
     {
         $pacResponse = $this->pacProvider->stampInvoice();
         $this->concrete = new PagoStampConcrete($this->invoice, $pacResponse);

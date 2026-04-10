@@ -1,7 +1,9 @@
 <?php
 
+use JiagBrody\LaravelFacturaMx\LaravelFacturaMx;
+
 describe('object creation', function () {
-    $facturaMx = new \JiagBrody\LaravelFacturaMx\LaravelFacturaMx;
+    $facturaMx = new LaravelFacturaMx;
     it('ingreso', function () use ($facturaMx) {
         $object = $facturaMx->create();
 

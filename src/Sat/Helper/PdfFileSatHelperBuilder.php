@@ -61,13 +61,13 @@ final class PdfFileSatHelperBuilder
                 $readableText = ConvertNumberToReadableTextHelper::make(number_format((float) $comprobante['Total'], 2, '.', ''), 'pesos', 'con', 'centavos');
                 $episode = null;
                 $statement = null;
-                $pdfFile = PDF::loadView('pdf.invoices.invoice_ingreso', compact('comprobante', 'episode', 'statement', 'readableText'));
+                $pdfFile = Pdf::loadView('pdf.invoices.invoice_ingreso', compact('comprobante', 'episode', 'statement', 'readableText'));
                 break;
             case InvoiceCfdiTypeEnum::PAGO->value:
                 $readableText = null;
                 $episode = null;
                 $statement = null;
-                $pdfFile = PDF::loadView('pdf.invoices.invoice_ingreso', compact('comprobante', 'episode', 'statement', 'readableText'));
+                $pdfFile = Pdf::loadView('pdf.invoices.invoice_ingreso', compact('comprobante', 'episode', 'statement', 'readableText'));
                 break;
             default:
                 $pdfFile = null;
