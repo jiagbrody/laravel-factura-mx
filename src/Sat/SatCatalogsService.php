@@ -17,7 +17,7 @@ final class SatCatalogsService
     public static function getClaveUnidad(array $filterByIds = [])
     {
         $claveUnidadesQuery = self::connection('cfdi_40_claves_unidades');
-        if (! empty($filterByIds)) {
+        if (!empty($filterByIds)) {
             $claveUnidadesQuery->whereIn('id', $filterByIds);
         }
         $claveUnidades = $claveUnidadesQuery->get();
@@ -68,11 +68,14 @@ final class SatCatalogsService
         });
     }
 
-    public static function getMetodoPago(): \Illuminate\Support\Collection
+    public static function getMetodoPago(array $filterByIds = []): \Illuminate\Support\Collection
     {
-        $metodoPago = self::connection('cfdi_40_metodos_pago')->get();
+        $query = self::connection('cfdi_40_metodos_pago');
+        if (!empty($filterByIds)) {
+            $query->whereIn('id', $filterByIds);
+        }
 
-        return $metodoPago->each(function ($item) {
+        return $query->get()->each(function ($item) {
             $item->name = $item->id.' - '.$item->texto;
         });
     }
@@ -89,7 +92,7 @@ final class SatCatalogsService
     public static function getMoneda(array $filterByIds = []): \Illuminate\Support\Collection
     {
         $query = self::connection('cfdi_40_monedas');
-        if (! empty($filterByIds)) {
+        if (!empty($filterByIds)) {
             $query->whereIn('id', $filterByIds);
         }
 
@@ -101,7 +104,7 @@ final class SatCatalogsService
     public static function getFormaPago(array $filterByIds = []): \Illuminate\Support\Collection
     {
         $query = self::connection('cfdi_40_formas_pago');
-        if (! empty($filterByIds)) {
+        if (!empty($filterByIds)) {
             $query->whereIn('id', $filterByIds);
         }
 
@@ -110,11 +113,14 @@ final class SatCatalogsService
         });
     }
 
-    public static function getExportacion(): \Illuminate\Support\Collection
+    public static function getExportacion(array $filterByIds = []): \Illuminate\Support\Collection
     {
-        $formaPago = self::connection('cfdi_40_exportaciones')->get();
+        $query = self::connection('cfdi_40_exportaciones');
+        if (!empty($filterByIds)) {
+            $query->whereIn('id', $filterByIds);
+        }
 
-        return $formaPago->each(function ($item) {
+        return $query->get()->each(function ($item) {
             $item->name = $item->id.' - '.$item->texto;
         });
     }
@@ -158,7 +164,7 @@ final class SatCatalogsService
     public static function getPagosTipoCadenaPago(array $filterByIds = [])
     {
         $query = self::connection('pagos_tipos_cadena_pago');
-        if (! empty($filterByIds)) {
+        if (!empty($filterByIds)) {
             $query->whereIn('id', $filterByIds);
         }
 
@@ -217,11 +223,14 @@ final class SatCatalogsService
         });
     }
 
-    public static function getTipoDeComprobante(): \Illuminate\Support\Collection
+    public static function getTipoDeComprobante(array $filterByIds = []): \Illuminate\Support\Collection
     {
-        $tipoRelacion = self::connection('cfdi_40_tipos_comprobantes')->get();
+        $query = self::connection('cfdi_40_tipos_comprobantes');
+        if (!empty($filterByIds)) {
+            $query->whereIn('id', $filterByIds);
+        }
 
-        return $tipoRelacion->each(function ($item) {
+        return $query->get()->each(function ($item) {
             $item->name = $item->id.' - '.$item->texto;
         });
     }

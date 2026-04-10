@@ -4,7 +4,6 @@ namespace JiagBrody\LaravelFacturaMx\Services\DataBase;
 
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
-use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Services\DataBase\QueryBuilders\IncidentesDataQuery;
 use JiagBrody\LaravelFacturaMx\Services\DataBase\QueryBuilders\IngresoDataQuery;
 use JiagBrody\LaravelFacturaMx\Services\DataBase\QueryBuilders\RelacionesDataQuery;
@@ -12,9 +11,9 @@ use JiagBrody\LaravelFacturaMx\Services\DataBase\QueryBuilders\SimpleRelationDat
 
 class DatabaseService extends SimpleRelationDataQuery
 {
-    protected Invoice $invoice;
+    protected mixed $invoice;
 
-    public function setInvoice(Invoice $invoice): void
+    public function setInvoice($invoice): void
     {
         $this->invoice = $invoice;
     }

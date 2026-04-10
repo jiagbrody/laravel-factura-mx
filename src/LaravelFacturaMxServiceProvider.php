@@ -1,7 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JiagBrody\LaravelFacturaMx;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
+use JiagBrody\LaravelFacturaMx\Models\Invoice;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceCfdi;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -9,40 +14,33 @@ class LaravelFacturaMxServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
         $package
-            ->name('jiagbrody-laravel-factura-mx');
-        // ->hasConfigFile('jiagbrody-laravel-factura-mx')
-        // ->hasViews()
-        // ->hasMigration('create_laravel-factura-mx_table')
-        // ->hasCommand(LaravelFacturaMxCommand::class)
+            ->name('jiagbrody-laravel-factura-mx')
+            ->hasConfigFile()
+            ->hasViews()
+            ->hasRoutes('web');
+        // Nota: Si usas hasMigrations, Spatie las busca automáticamente
+        // en database/migrations de tu paquete.
     }
 
-    public function boot(): void
+    public function registeringPackage(): void
     {
-        /*
-        |--------------------------------------------------------------------------
-        | Migrations Provider need on boot() method
-        |--------------------------------------------------------------------------
-        */
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
-        $this->mergeConfigFrom(__DIR__.'/../config/jiagbrody-laravel-factura-mx.php', 'jiagbrody-laravel-factura-mx');
-        // $this->loadViewsFrom(__DIR__ . '/../resources/views', 'jiagbrody-laravel-factura-mx');
-        // $this->loadViewsFrom(__DIR__ . '/../resources/js/Pages', 'laravel-factura-mx');
+        // Registramos el mapa en la fase de registro para que esté
+        // disponible incluso antes del arranque (booting)
+        Relation::enforceMorphMap([
+            'invoice' => Invoice::class,
+            'invoiceCfdi' => InvoiceCfdi::class,
+        ]);
+    }
 
-        /**
-         * View list all providers and tags: php artisan vendor:publish
-         * Example of use for only 1 tag: php artisan vendor:publish --provider="JiagBrody\LaravelFacturaMx\LaravelFacturaMxServiceProvider" --tag="jiagbrody-laravel-factura-mx-inertia-views"
-         * Example of use for copy all files: php artisan vendor:publish --provider="JiagBrody\LaravelFacturaMx\LaravelFacturaMxServiceProvider"
-         */
-        $this->publishes([__DIR__.'/../config/jiagbrody-laravel-factura-mx.php' => config_path('jiagbrody-laravel-factura-mx.php')], 'jiagbrody-laravel-factura-mx-config');
-        $this->publishes([__DIR__.'/../resources/js/Pages/jiagbrody-laravel-factura-mx' => resource_path('js/Pages/jiagbrody-laravel-factura-mx')], 'jiagbrody-laravel-factura-mx-inertia-views');
-        $this->publishes([__DIR__.'/../resources/css/jiagbrody-laravel-factura-mx' => resource_path('css/jiagbrody-laravel-factura-mx')], 'jiagbrody-laravel-factura-mx-tailwind-styles');
-        $this->publishes([__DIR__.'/../resources/views/jiagbrody-laravel-factura-mx' => resource_path('views/jiagbrody-laravel-factura-mx')], 'jiagbrody-laravel-factura-mx-views');
+    public function packageBooted(): void
+    {
+        // Aquí cargas lo que Spatie no maneja por convención
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+
+        // Publicaciones personalizadas
+        $this->publishes([
+            __DIR__.'/../resources/js/Pages/jiagbrody-laravel-factura-mx' => resource_path('js/Pages/jiagbrody-laravel-factura-mx')
+        ], 'jiagbrody-laravel-factura-mx-inertia-views');
     }
 }

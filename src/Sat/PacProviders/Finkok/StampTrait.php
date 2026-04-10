@@ -34,7 +34,7 @@ trait StampTrait
             $client = new SoapClient($this->stampUrlFinkok, ['trace' => 1]);
             $response = $client->__soapCall('stamp', [$params]);
 
-            if (! isset($response->stampResult)) {
+            if (!isset($response->stampResult)) {
                 throw new \Exception('El pac no devuelve: "stampResult"');
             }
 

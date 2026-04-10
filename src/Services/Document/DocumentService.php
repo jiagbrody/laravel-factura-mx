@@ -8,7 +8,6 @@ use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceDocumentTypeEnum;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
-use JiagBrody\LaravelFacturaMx\Models\InvoiceCfdi;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCfdiCancelReceipt;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceDocument;
 use JiagBrody\LaravelFacturaMx\Repositories\InvoiceDocument\CreateDocument;
@@ -16,7 +15,7 @@ use JiagBrody\LaravelFacturaMx\Repositories\InvoiceDocument\DocumentRepository;
 
 class DocumentService
 {
-    protected readonly Invoice $invoice;
+    protected mixed $invoice;
 
     public readonly bool $hasCfdi;
 
@@ -42,7 +41,7 @@ class DocumentService
         $this->pdfFile = new InvoiceDocument;
     }
 
-    public function setInvoice(Invoice $invoice): void
+    public function setInvoice($invoice): void
     {
         $this->invoice = $invoice;
         $this->hasCfdi = (bool) $invoice->invoiceCfdi;
@@ -67,7 +66,7 @@ class DocumentService
         }
     }
 
-    public function getInvoice(): Invoice
+    public function getInvoice()
     {
         return $this->invoice;
     }
@@ -115,8 +114,13 @@ class DocumentService
     /**
      * @throws Exception
      */
-    public function createXmlDocument(Invoice|InvoiceCfdi|InvoiceCfdiCancelReceipt $modelToSave, string $filePath, string $fileName, string $storage, string $xmlContent): InvoiceDocument
-    {
+    public function createXmlDocument(
+        $modelToSave,
+        string $filePath,
+        string $fileName,
+        string $storage,
+        string $xmlContent
+    ): InvoiceDocument {
         return (new CreateDocument(
             relationshipModel: $modelToSave->getMorphClass(),
             relationshipId: $modelToSave->id,

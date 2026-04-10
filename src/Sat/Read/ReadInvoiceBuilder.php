@@ -2,13 +2,12 @@
 
 namespace JiagBrody\LaravelFacturaMx\Sat\Read;
 
-use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Services\DataBase\DatabaseService;
 use JiagBrody\LaravelFacturaMx\Services\Document\DocumentService;
 
-readonly class ReadInvoiceBuilder
+class ReadInvoiceBuilder
 {
-    protected Invoice $invoice;
+    protected $invoice;
 
     public readonly DocumentService $documentService;
 
@@ -16,17 +15,17 @@ readonly class ReadInvoiceBuilder
 
     public function __construct()
     {
-        // LIBRERIA EXTERNA PARA OBTENER INFORMACION DE LOS DOCUMENTOS (SE USA EN VARIAS PARTES DE LA LIBRERIA)
+        // LIBRERÍA EXTERNA PARA OBTENER INFORMACIÓN DE LOS DOCUMENTOS (SE USA EN VARIAS PARTES DE LA LIBRERÍA)
         $this->documentService = new DocumentService;
 
-        // OBTENER INFORMACIÓN DE LA LIBRERIA DESDE EL CLIENTE
+        // OBTENER INFORMACIÓN DE LA LIBRERÍA DESDE EL CLIENTE
         $this->databaseService = new DatabaseService;
     }
 
     /*
      * Declaro
      */
-    public function setInvoice(Invoice $invoice): void
+    public function setInvoice($invoice): void
     {
         $this->invoice = $invoice;
 
