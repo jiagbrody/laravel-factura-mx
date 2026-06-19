@@ -37,6 +37,14 @@ class SimpleRelationDataQuery
 
     private function obtainSelectOfInvoices(): array
     {
+        // El formato de fecha debe ser driver-aware: MySQL usa DATE_FORMAT (y comillas dobles
+        // como literal de string), mientras que PostgreSQL usa to_char (las comillas dobles allá
+        // son identificadores, no strings). Mantenemos MySQL intacto y añadimos el equivalente pgsql.
+        $driver = DB::connection()->getDriverName();
+        $invoiceDateFormatExpr = $driver === 'pgsql'
+            ? "to_char(invoices.invoice_date, 'DD/FMMM/YYYY HH12:MI:SS AM') as invoice_date_format"
+            : 'DATE_FORMAT(invoices.invoice_date, "%d/%c/%Y %r") as invoice_date_format';
+
         return [
             'invoices.id',
             'invoices.id as invoice_id',
@@ -54,7 +62,7 @@ class SimpleRelationDataQuery
             'invoice_statuses.id as invoice_status_id',
             'invoice_statuses.name as invoice_status_name',
             'invoices.invoice_date',
-            DB::raw('DATE_FORMAT(invoices.invoice_date, "%d/%c/%Y %r") as invoice_date_format'),
+            DB::raw($invoiceDateFormatExpr),
             'invoice_cfdis.id as invoice_cfdi_id',
             'invoice_cfdis.user_id as invoice_cfdi_user_id',
             'invoice_cfdis.uuid as invoice_cfdi_uuid',

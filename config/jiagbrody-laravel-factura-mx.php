@@ -145,8 +145,8 @@ return [
     'pac_chosen' => 'finkok',
     'pac_providers' => [
         'finkok' => [
-            'user' => 'israel.alvarez@hospitalcmq.com',
-            'password' => '0o$69Uh06o*r',
+            'user' => env('FACTURA_MX_FINKOK_USER'),
+            'password' => env('FACTURA_MX_FINKOK_PASSWORD'),
         ],
     ],
 

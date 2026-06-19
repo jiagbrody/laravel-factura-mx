@@ -18,6 +18,7 @@ return new class extends Migration
         Schema::create($tableNames['invoice_relationship_types'], function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('sat_code', 5)->default('')->after('name');
             $table->string('description')->nullable();
             $table->timestamps();
         });
@@ -33,7 +34,7 @@ return new class extends Migration
             $table->foreign('invoice_relationship_type_id', 'jiagbrody_lfmx_invoice_rel_invoice_rel_type_id_foreign')->references('id')->on($tableNames['invoice_relationship_types']);
         });
 
-        InvoiceRelationshipType::insert([
+        InvoiceRelationshipType::insertOrIgnore([
             ['id' => InvoiceRelationshipTypeEnum::NOTA_DE_CREDITO->value, 'name' => InvoiceRelationshipTypeEnum::NOTA_DE_CREDITO->getName(), 'created_at' => now(), 'updated_at' => now()],
             ['id' => InvoiceRelationshipTypeEnum::NOTA_DE_DEBITO->value, 'name' => InvoiceRelationshipTypeEnum::NOTA_DE_DEBITO->getName(), 'created_at' => now(), 'updated_at' => now()],
             ['id' => InvoiceRelationshipTypeEnum::DEVOLUCION_DE_MERCANCIA->value, 'name' => InvoiceRelationshipTypeEnum::DEVOLUCION_DE_MERCANCIA->getName(), 'created_at' => now(), 'updated_at' => now()],

@@ -46,6 +46,7 @@ return new class extends Migration
         Schema::create($tableNames['invoice_types'], function (Blueprint $table) {
             $table->id();
             $table->string('name', 60);
+            $table->string('sat_code', 5)->default('')->after('name');
             $table->timestamps();
         });
 
@@ -96,6 +97,7 @@ return new class extends Migration
         Schema::create($tableNames['invoice_payment_types'], function (Blueprint $table) {
             $table->id();
             $table->string('name', 60);
+            $table->string('sat_code', 5)->default('')->after('name');
             $table->timestamps();
         });
 
@@ -261,7 +263,7 @@ return new class extends Migration
             ],
         ]);
 
-        InvoiceType::insert([
+        InvoiceType::insertOrIgnore([
             ['id' => InvoiceTypeEnum::INGRESO->value, 'name' => InvoiceTypeEnum::INGRESO->getName(), 'created_at' => now(), 'updated_at' => now()],
             ['id' => InvoiceTypeEnum::EGRESO->value, 'name' => InvoiceTypeEnum::EGRESO->getName(), 'created_at' => now(), 'updated_at' => now()],
             ['id' => InvoiceTypeEnum::TRASLADO->value, 'name' => InvoiceTypeEnum::TRASLADO->getName(), 'created_at' => now(), 'updated_at' => now()],
@@ -269,28 +271,28 @@ return new class extends Migration
             ['id' => InvoiceTypeEnum::PAGO->value, 'name' => InvoiceTypeEnum::PAGO->getName(), 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        InvoiceStatus::insert([
+        InvoiceStatus::insertOrIgnore([
             ['id' => InvoiceStatusEnum::DRAFT->value, 'name' => InvoiceStatusEnum::DRAFT->getName(), 'created_at' => now(), 'updated_at' => now()],
             ['id' => InvoiceStatusEnum::VIGENT->value, 'name' => InvoiceStatusEnum::VIGENT->getName(), 'created_at' => now(), 'updated_at' => now()],
             ['id' => InvoiceStatusEnum::CANCELED->value, 'name' => InvoiceStatusEnum::CANCELED->getName(), 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        InvoicePaymentType::insert([
+        InvoicePaymentType::insertOrIgnore([
             ['id' => InvoicePaymentTypeEnum::PAGO_EN_UNA_EXHIBICION->value, 'name' => InvoicePaymentTypeEnum::PAGO_EN_UNA_EXHIBICION->getName(), 'created_at' => now(), 'updated_at' => now()],
             ['id' => InvoicePaymentTypeEnum::PAGO_A_LINEA_DE_CREDITO->value, 'name' => InvoicePaymentTypeEnum::PAGO_A_LINEA_DE_CREDITO->getName(), 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        InvoiceTaxType::insert([
+        InvoiceTaxType::insertOrIgnore([
             ['id' => InvoiceTaxTypeEnum::TRASLADO->value, 'name' => InvoiceTaxTypeEnum::TRASLADO->getName(), 'created_at' => now(), 'updated_at' => now()],
             ['id' => InvoiceTaxTypeEnum::RETENCION->value, 'name' => InvoiceTaxTypeEnum::RETENCION->getName(), 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        InvoiceDocumentType::insert([
+        InvoiceDocumentType::insertOrIgnore([
             ['id' => InvoiceDocumentTypeEnum::XML_FILE->value, 'name' => InvoiceDocumentTypeEnum::XML_FILE->getName(), 'created_at' => now(), 'updated_at' => now()],
             ['id' => InvoiceDocumentTypeEnum::PDF_FILE->value, 'name' => InvoiceDocumentTypeEnum::PDF_FILE->getName(), 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        InvoiceCfdiCancelType::insert([
+        InvoiceCfdiCancelType::insertOrIgnore([
             ['id' => InvoiceCfdiCancelTypeEnum::NEW_WITH_ERRORS_RELATED->value, 'name' => InvoiceCfdiCancelTypeEnum::NEW_WITH_ERRORS_RELATED->getName(), 'created_at' => now(), 'updated_at' => now()],
             ['id' => InvoiceCfdiCancelTypeEnum::NEW_WITH_ERRORS_UNRELATED->value, 'name' => InvoiceCfdiCancelTypeEnum::NEW_WITH_ERRORS_UNRELATED->getName(), 'created_at' => now(), 'updated_at' => now()],
             ['id' => InvoiceCfdiCancelTypeEnum::NEW_NOT_EXECUTED->value, 'name' => InvoiceCfdiCancelTypeEnum::NEW_NOT_EXECUTED->getName(), 'created_at' => now(), 'updated_at' => now()],

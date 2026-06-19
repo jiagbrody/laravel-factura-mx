@@ -49,6 +49,30 @@ Optionally, you can publish the views using
 php artisan vendor:publish --tag="laravel-factura-mx-views"
 ```
 
+## Configuration
+
+### PAC credentials (environment variables)
+
+The PAC (stamping provider) credentials are read from environment variables, so they are never committed to your repository. Add them to your app's `.env`:
+
+```dotenv
+FACTURA_MX_FINKOK_USER=your_finkok_user
+FACTURA_MX_FINKOK_PASSWORD=your_finkok_password
+```
+
+These map to the `pac_providers.finkok` entry in `config/jiagbrody-laravel-factura-mx.php`:
+
+```php
+'pac_providers' => [
+    'finkok' => [
+        'user' => env('FACTURA_MX_FINKOK_USER'),
+        'password' => env('FACTURA_MX_FINKOK_PASSWORD'),
+    ],
+],
+```
+
+> Set `pac_environment_production` to `true` for the production PAC environment, or `false` for the testing/sandbox environment.
+
 ## Usage
 
 ```php
