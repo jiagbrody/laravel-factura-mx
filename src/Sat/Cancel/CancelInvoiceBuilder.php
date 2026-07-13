@@ -8,13 +8,13 @@ use JiagBrody\LaravelFacturaMx\Actions\UpdateRecordsIfTheInvoiceHasBeenSentByThe
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceCfdiCancelTypeEnum;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCfdi;
-use JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok\FinkokPac;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacCancelResponse;
-use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStampResponse;
+use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacProviderFactory;
+use JiagBrody\LaravelFacturaMx\Sat\PacProviders\ProviderPacInterface;
 
 final class CancelInvoiceBuilder
 {
-    protected readonly FinkokPac $pacProvider;
+    protected readonly ProviderPacInterface $pacProvider;
 
     protected readonly InvoiceCfdiCancelTypeEnum $cancelTypeEnum;
 
@@ -24,29 +24,10 @@ final class CancelInvoiceBuilder
 
     protected readonly PacCancelResponse $cancelResponse;
 
-    protected PacStampResponse $stampResponse;
-
     public function __construct(public readonly Invoice $invoice)
     {
-        // VALIDAR SI SE QUITA EL INVOICE, YA LO TENGO DECLARADO COMO "$this-invoice"
-        $this->pacProvider = new FinkokPac($invoice);
-        $this->pacProvider->setInvoiceCompanyHelper($invoice->invoiceCompany);
+        $this->pacProvider = PacProviderFactory::make($invoice);
     }
-
-    // public function setInvoice(Invoice $invoice): self
-    // {
-    //     $this->invoice = $invoice;
-    //
-    //     return $this;
-    // }
-
-    // public function setPacProvider(): self
-    // {
-    //     $this->pacProvider = new FinkokPac($this->invoice);
-    //     $this->pacProvider->setInvoiceCompanyHelper($this->invoice->invoiceCompany);
-    //
-    //     return $this;
-    // }
 
     public function setCancelTypeEnum(InvoiceCfdiCancelTypeEnum $cancelTypeEnum): self
     {
@@ -72,8 +53,8 @@ final class CancelInvoiceBuilder
     {
         $this->cancelResponse = $this->pacProvider->cancelInvoice(cfdiCancelTypeEnum: $this->cancelTypeEnum, replacementUUID: $this->replacementUUID);
 
-        // Sin hasAcuse() el caso "UUID previamente cancelado" (202) fatalizaba
-        // al leer una propiedad sin inicializar; ahí no hay acuse que guardar.
+        // El caso "UUID previamente cancelado" (202) es exitoso pero sin acuse:
+        // el recibo original se conserva y no hay nada nuevo que persistir.
         if ($this->cancelResponse->checkProcess && $this->cancelResponse->hasAcuse()) {
             (new UpdateRecordsIfTheInvoiceHasBeenSentByThePacToCancelAction)->make(
                 invoiceCfdi: $this->invoice->invoiceCfdi,

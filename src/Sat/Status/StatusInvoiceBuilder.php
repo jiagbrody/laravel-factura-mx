@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JiagBrody\LaravelFacturaMx\Sat\Status;
 
+use JiagBrody\LaravelFacturaMx\Exceptions\FacturaMxException;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
-use JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok\FinkokPac;
+use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacProviderFactory;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStatusResponse;
 
 final class StatusInvoiceBuilder
@@ -14,10 +17,6 @@ final class StatusInvoiceBuilder
 
     protected string $total;
 
-    protected FinkokPac $pacProvider;
-
-    protected PacStatusResponse $statusResponse;
-
     public function setInvoice(Invoice $invoice): self
     {
         $this->invoice = $invoice;
@@ -25,32 +24,46 @@ final class StatusInvoiceBuilder
         return $this;
     }
 
+    /**
+     * Conservado por compatibilidad: el proveedor ahora se resuelve en
+     * build(), por lo que el orden de los setters ya no importa.
+     */
     public function setPacProvider(): self
     {
-        $this->pacProvider = new FinkokPac($this->invoice);
-        $this->pacProvider->setInvoiceCompanyHelper($this->invoice->invoiceCompany);
-        $this->pacProvider->setReceptorRfc($this->receptorRfc);
-        $this->pacProvider->setTotal($this->total);
+        return $this;
+    }
+
+    public function setReceptorRfc(string $receptorRfc): self
+    {
+        $this->receptorRfc = $receptorRfc;
 
         return $this;
     }
 
-    public function setReceptorRfc(string $receptorRfc): void
+    /**
+     * Total EXACTO impreso en el CFDI (string recomendado, p. ej. "1234.50").
+     */
+    public function setTotal(float|string $total): self
     {
-        $this->receptorRfc = $receptorRfc;
-    }
-
-    public function setTotal(float $total): self
-    {
-        $this->total = $total;
+        $this->total = is_float($total) ? number_format($total, 2, '.', '') : $total;
 
         return $this;
     }
 
     public function build(): PacStatusResponse
     {
-        $this->statusResponse = $this->pacProvider->statusInvoice();
+        if (! isset($this->invoice)) {
+            throw new FacturaMxException('Llama a setInvoice() antes de build().');
+        }
 
-        return $this->statusResponse;
+        if (! isset($this->receptorRfc) || ! isset($this->total)) {
+            throw new FacturaMxException('Llama a setReceptorRfc() y setTotal() antes de build(): el SAT los requiere para localizar el CFDI.');
+        }
+
+        $pacProvider = PacProviderFactory::make($this->invoice);
+        $pacProvider->setReceptorRfc($this->receptorRfc);
+        $pacProvider->setTotal($this->total);
+
+        return $pacProvider->statusInvoice();
     }
 }

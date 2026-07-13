@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JiagBrody\LaravelFacturaMx\Sat\RecoveryStampedXmlFile;
 
+use JiagBrody\LaravelFacturaMx\Exceptions\FacturaMxException;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
-use JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok\FinkokPac;
+use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacProviderFactory;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacRecoveryCfdiXmlResponse;
 
 class RecoveryStampedXmlFileBuilder
 {
-    protected FinkokPac $pacProvider;
-
     protected Invoice $invoice;
 
     public function setInvoice(Invoice $invoice): self
@@ -19,16 +20,20 @@ class RecoveryStampedXmlFileBuilder
         return $this;
     }
 
+    /**
+     * Conservado por compatibilidad: el proveedor ahora se resuelve en build().
+     */
     public function setPacProvider(): self
     {
-        $this->pacProvider = new FinkokPac($this->invoice);
-        $this->pacProvider->setInvoiceCompanyHelper($this->invoice->invoiceCompany);
-
         return $this;
     }
 
     public function build(): PacRecoveryCfdiXmlResponse
     {
-        return $this->pacProvider->getXmlStamped();
+        if (! isset($this->invoice)) {
+            throw new FacturaMxException('Llama a setInvoice() antes de build().');
+        }
+
+        return PacProviderFactory::make($this->invoice)->getXmlStamped();
     }
 }
