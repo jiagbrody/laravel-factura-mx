@@ -1,17 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 use JiagBrody\LaravelFacturaMx\LaravelFacturaMx;
 
 describe('object creation', function () {
-    $facturaMx = new LaravelFacturaMx;
-    it('ingreso', function () use ($facturaMx) {
-        $object = $facturaMx->create();
+    it('ingreso', function () {
+        $object = (new LaravelFacturaMx)->create();
 
         expect($object)->toBeObject();
     });
 
-    it('create', function () use ($facturaMx) {
-        $object = $facturaMx->create()->ingreso();
+    it('create', function () {
+        $object = (new LaravelFacturaMx)->create()->ingreso();
 
         expect($object)->toBeObject();
     });

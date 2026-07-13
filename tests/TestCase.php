@@ -32,8 +32,6 @@ class TestCase extends Orchestra
 
     public function getEnvironmentSetUp($app)
     {
-        // config()->set('database.default', 'testbench');
-
         // Setup default database to use sqlite :memory:
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
@@ -41,8 +39,5 @@ class TestCase extends Orchestra
             'database' => ':memory:',
             'prefix' => '',
         ]);
-
-        $migration = include __DIR__.'/../database/migrations/create_factura_mx_table.php.stub';
-        $migration->up();
     }
 }

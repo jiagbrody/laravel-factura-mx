@@ -213,14 +213,17 @@ return new class extends Migration
             $table->foreign('invoice_id', 'lfmx_invoice_cfdis_invoice_id_foreign')->references('id')->on($tableNames['invoices'])->onDelete('cascade');
         });
 
+        // NOTA: "invoice_cfdi_cancel_type_id" existió aquí originalmente y se
+        // eliminó en la migración 2025_04_15_102054. Ya no se crea en builds
+        // frescos (SQLite no puede eliminar columnas referenciadas por una FK);
+        // dicha migración usa hasColumn() para que las instalaciones antiguas,
+        // donde sí existe, la sigan eliminando.
         Schema::create($tableNames['invoice_cfdi_cancels'], function (Blueprint $table) use ($tableNames) {
             $table->id();
             $table->unsignedBigInteger('invoice_cfdi_id');
-            $table->unsignedBigInteger('invoice_cfdi_cancel_type_id');
             $table->timestamps();
 
             $table->foreign('invoice_cfdi_id', 'lfmx_invoice_cfdi_cancels_invoice_cfdi_id_foreign')->references('id')->on($tableNames['invoice_cfdis']);
-            $table->foreign('invoice_cfdi_cancel_type_id', 'lfmx_invoice_cfdi_cancels_invoice_cfdi_cancel_type_id_foreign')->references('id')->on($tableNames['invoice_cfdi_cancel_types']);
         });
 
         Schema::create($tableNames['invoice_incidents'], function (Blueprint $table) use ($tableNames) {

@@ -19,4 +19,4 @@ describe('existing SAT files', function () {
 
         expect($companyHelper->keyPath)->toBeFile();
     });
-});
+})->skip(fn (): bool => ! satTestCsdFilesExist(), 'SAT test CSD files (EKU9003173C9) not found in sat_files_path; see tests/Pest.php');

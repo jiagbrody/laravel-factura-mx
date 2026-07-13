@@ -14,10 +14,15 @@ class LaravelFacturaMxServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
+        // OJO: no usar hasConfigFile()/hasViews() sin argumento: shortName()
+        // de laravel-package-tools recorta todo hasta "laravel-" y buscaría
+        // "config/factura-mx.php", por lo que el config del paquete nunca se
+        // fusionaría (config('jiagbrody-laravel-factura-mx') sería null para
+        // cualquier app que no copie el archivo a su carpeta config/).
         $package
             ->name('jiagbrody-laravel-factura-mx')
-            ->hasConfigFile()
-            ->hasViews();
+            ->hasConfigFile('jiagbrody-laravel-factura-mx')
+            ->hasViews('jiagbrody-laravel-factura-mx');
         // Nota: Si usas hasMigrations, Spatie las busca automáticamente
         // en database/migrations de tu paquete.
     }

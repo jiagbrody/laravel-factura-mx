@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Support\Collection;
 use JiagBrody\LaravelFacturaMx\LaravelFacturaMx;
+use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ComprobanteAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ConceptoAtributos;
@@ -23,6 +24,7 @@ it('create object', function () {
     $voucher = $facturaMx->create()->ingreso()->custom($company);
 
     $atributos = new ComprobanteAtributos;
+    $atributos->setFecha(date('Y-m-d\TH:i:s'));
     $atributos->setFolio('2');
     $atributos->setSerie('PATIENT');
     $atributos->setFormaPago('01');
@@ -87,10 +89,11 @@ it('create object', function () {
 
     $voucher->addComplementoImpuestosLocales($localTaxes);
 
-    $voucher->build()->saveInvoice();
+    $invoice = $voucher->build()->createNewInvoice();
 
-    expect($voucher)->toBeObject();
-});
+    expect($invoice)->toBeInstanceOf(Invoice::class)
+        ->and($invoice->exists)->toBeTrue();
+})->skip(fn (): bool => ! satTestCsdFilesExist(), 'SAT test CSD files (EKU9003173C9) not found in sat_files_path; see tests/Pest.php');
 
 function getProducts(): Collection
 {
