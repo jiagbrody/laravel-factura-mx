@@ -10,10 +10,6 @@ use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
 use Barryvdh\DomPDF\Facade\Pdf;
 
-// use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
-// use BaconQrCode\Renderer\GDLibRenderer;
-// use BaconQrCode\Writer;
-
 final class GeneratePdfDocumentFromXmlObjectForIngresoHelper
 {
     public function __invoke(array $comprobante): string
@@ -22,12 +18,7 @@ final class GeneratePdfDocumentFromXmlObjectForIngresoHelper
             new RendererStyle(140),
             new SvgImageBackEnd
         );
-        $qrCode = (new Writer($renderer))->writeString('google.com', 'UTF-8');
-        // $writer->writeFile('Hello World!', 'qrcode.svg');
-
-        // $renderer = new GDLibRenderer(400);
-        // $writer = new Writer($renderer);
-        // $writer->writeFile('Hello World!', 'qrcode.png');
+        $qrCode = (new Writer($renderer))->writeString($this->buildSatVerificationUrl($comprobante), 'UTF-8');
 
         $episode = null;
         $statement = null;
@@ -37,14 +28,36 @@ final class GeneratePdfDocumentFromXmlObjectForIngresoHelper
             separatorLabel: 'con',
             decimalLabel: 'centavos'
         );
-        $pdfFile = Pdf::loadView('jiagbrody-laravel-factura-mx.pdf.invoices.invoice_ingreso',
-            compact('comprobante', 'episode', 'statement', 'readableText', 'qrCode'));
+
+        // Si el app anfitrión tiene su propia copia de la vista (versiones
+        // previas del paquete pedían copiarla a resources/views), se respeta;
+        // de lo contrario se usa la vista incluida en el paquete. Para
+        // personalizarla, publícala en resources/views/vendor/jiagbrody-laravel-factura-mx.
+        $viewName = view()->exists('jiagbrody-laravel-factura-mx.pdf.invoices.invoice_ingreso')
+            ? 'jiagbrody-laravel-factura-mx.pdf.invoices.invoice_ingreso'
+            : 'jiagbrody-laravel-factura-mx::pdf.invoices.invoice_ingreso';
+
+        $pdfFile = Pdf::loadView($viewName, compact('comprobante', 'episode', 'statement', 'readableText', 'qrCode'));
 
         return $pdfFile->output();
     }
 
-    private function formatAmount(float $amount): string
+    /*
+     * URL oficial de verificación del CFDI (Anexo 20). El QR del PDF debe
+     * apuntar aquí: id = UUID del timbre, re/rr = RFC emisor/receptor,
+     * tt = total del comprobante, fe = últimos 8 caracteres del Sello del
+     * emisor (Comprobante@Sello).
+     */
+    private function buildSatVerificationUrl(array $comprobante): string
     {
-        return number_format($amount, 2, '.', '');
+        $sello = (string) ($comprobante['Sello'] ?? '');
+
+        return 'https://verificacfdi.facturaelectronica.sat.gob.mx/default.aspx?'.http_build_query([
+            'id' => $comprobante['Complemento']['TimbreFiscalDigital']['UUID'] ?? '',
+            're' => $comprobante['Emisor']['Rfc'] ?? '',
+            'rr' => $comprobante['Receptor']['Rfc'] ?? '',
+            'tt' => $comprobante['Total'] ?? '',
+            'fe' => substr($sello, -8),
+        ]);
     }
 }

@@ -98,8 +98,13 @@ return [
      | "invoices_files_path" es la carpeta dentro del storage donde se
      | almacenaran los archivos y facturas de la librería.
      |
+     | IMPORTANTE: los CFDI contienen datos fiscales y personales (RFC,
+     | nombres, conceptos). El default es el disco privado "local"; usa
+     | "public" solo si entiendes que los archivos quedarán accesibles por
+     | URL pública mediante storage:link.
+     |
      */
-    'filesystem_disk' => 'public',
+    'filesystem_disk' => 'local',
     'invoices_files_path' => 'sat-documents/invoices',
 
     /*

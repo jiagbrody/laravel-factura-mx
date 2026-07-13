@@ -7,34 +7,46 @@ namespace JiagBrody\LaravelFacturaMx\Actions;
 use Illuminate\Support\Facades\DB;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceDocumentTypeEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceStatusEnum;
+use JiagBrody\LaravelFacturaMx\Enums\InvoiceTypeEnum;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCfdi;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceDocument;
 use JiagBrody\LaravelFacturaMx\Repositories\InvoiceDocument\DocumentRepository;
+use JiagBrody\LaravelFacturaMx\Sat\Helper\ConvertXmlContentToObjectHelper;
+use JiagBrody\LaravelFacturaMx\Sat\Helper\GeneratePdfDocumentFromXmlObjectForIngresoHelper;
+use JiagBrody\LaravelFacturaMx\Services\Document\DocumentService;
 
+/**
+ * Única implementación del post-timbrado: marca la factura como vigente,
+ * registra el CFDI (UUID), guarda el XML timbrado, genera el PDF legible y
+ * elimina los documentos de borrador. La invoca StampInvoiceBuilder cuando
+ * el PAC confirma el timbrado; el app anfitrión NO debe llamarla por
+ * separado.
+ */
 class UpdateRecordsWhenStampingRevenueInvoiceAction
 {
     public function __invoke(
         Invoice $invoice,
         string $uuid,
         string $xml,
-        ?string $fileName
+        ?string $fileName = null
     ): void {
         DB::transaction(function () use ($invoice, $uuid, $xml, $fileName) {
             $this->updateInvoice(invoice: $invoice);
             $this->createCfdi(invoice: $invoice, uuid: $uuid);
-            $this->generateDocuments(invoice: $invoice, xmlContent: $xml, fileName: $fileName);
+            $xmlDocument = $this->createXmlDocument(invoice: $invoice, xmlContent: $xml, fileName: $fileName);
+            $this->createPdfDocument(invoice: $invoice, xmlDocument: $xmlDocument, xmlContent: $xml);
             $this->deleteDraftDocuments(invoice: $invoice);
         });
     }
 
-    public function updateInvoice(Invoice $invoice): void
+    private function updateInvoice(Invoice $invoice): void
     {
         $invoice->invoice_status_id = InvoiceStatusEnum::VIGENT->value;
         $invoice->save();
     }
 
-    public function createCfdi($invoice, $uuid): void
+    private function createCfdi(Invoice $invoice, string $uuid): void
     {
         $invoiceCfdi = new InvoiceCfdi;
         $invoiceCfdi->user_id = auth()->id();
@@ -45,19 +57,33 @@ class UpdateRecordsWhenStampingRevenueInvoiceAction
         $invoice->refresh();
     }
 
-    public function generateDocuments(Invoice $invoice, $xmlContent, $fileName): void
+    private function createXmlDocument(Invoice $invoice, string $xmlContent, ?string $fileName): InvoiceDocument
     {
-        (new DocumentRepository)->create(
+        return (new DocumentRepository)->create(
             relationshipModel: $invoice->invoiceCfdi->getMorphClass(),
             relationshipId: $invoice->invoiceCfdi->id,
             documentTypeId: InvoiceDocumentTypeEnum::XML_FILE->value,
-            fileName: ($fileName === null) ? 'invoice-'.$invoice->id.'-cfdi-'.$invoice->invoiceCfdi->id.'-'.$invoice->invoiceCfdi->uuid : $fileName,
-            filePath: 'files/cfdis',
+            fileName: $fileName ?? 'invoice-'.$invoice->id.'-cfdi-'.$invoice->invoiceCfdi->id.'-'.$invoice->invoiceCfdi->uuid,
+            filePath: (string) config('jiagbrody-laravel-factura-mx.invoices_files_path', 'sat-documents/invoices'),
             mimeType: InvoiceDocumentTypeEnum::XML_FILE->getMimeType(),
             extension: InvoiceDocumentTypeEnum::XML_FILE->getExtension(),
-            storage: 'public',
+            storage: (string) config('jiagbrody-laravel-factura-mx.filesystem_disk', 'local'),
             fileContent: $xmlContent,
         );
+    }
+
+    private function createPdfDocument(Invoice $invoice, InvoiceDocument $xmlDocument, string $xmlContent): void
+    {
+        // La vista actual del PDF está diseñada para ingreso/egreso; para
+        // otros tipos de comprobante no se genera PDF (por ahora).
+        if (! in_array((int) $invoice->invoice_type_id, [InvoiceTypeEnum::INGRESO->value, InvoiceTypeEnum::EGRESO->value], true)) {
+            return;
+        }
+
+        $comprobante = ConvertXmlContentToObjectHelper::make($xmlContent, true);
+        $pdfContent = (new GeneratePdfDocumentFromXmlObjectForIngresoHelper)($comprobante);
+
+        (new DocumentService)->createPdfDocumentFromXmlFile($xmlDocument, $pdfContent);
     }
 
     private function deleteDraftDocuments(Invoice $invoice): void

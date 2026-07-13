@@ -6,6 +6,11 @@ parameters:
 			path: src/Actions/UpdateRecordsWhenStampingRevenueInvoiceAction.php
 
 		-
+			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\Invoice\\:\\:\\$invoice_type_id\\.$#"
+			count: 1
+			path: src/Actions/UpdateRecordsWhenStampingRevenueInvoiceAction.php
+
+		-
 			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceCfdi\\:\\:\\$invoice_id\\.$#"
 			count: 1
 			path: src/Actions/UpdateRecordsWhenStampingRevenueInvoiceAction.php
@@ -241,7 +246,7 @@ parameters:
 			path: src/Sat/Create/Helpers/SaveCreateHelper.php
 
 		-
-			message: "#^Method JiagBrody\\\\LaravelFacturaMx\\\\Sat\\\\Helper\\\\GeneratePdfDocumentFromXmlObjectForIngresoHelper\\:\\:formatAmount\\(\\) is unused\\.$#"
+			message: "#^Call to method Illuminate\\\\Contracts\\\\View\\\\Factory\\:\\:exists\\(\\) with 'jiagbrody\\-laravel…' will always evaluate to false\\.$#"
 			count: 1
 			path: src/Sat/Helper/GeneratePdfDocumentFromXmlObjectForIngresoHelper.php
 
