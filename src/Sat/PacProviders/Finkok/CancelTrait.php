@@ -4,126 +4,86 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok;
 
-use Exception;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceCfdiCancelTypeEnum;
+use JiagBrody\LaravelFacturaMx\Exceptions\InvoiceNotStampedException;
+use JiagBrody\LaravelFacturaMx\Exceptions\PacUnexpectedResponseException;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceIncident;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacCancelResponse;
-use JiagBrody\LaravelFacturaMx\Services\SaveSoapRequestResponseLogService;
-use SoapClient;
+use stdClass;
 
 trait CancelTrait
 {
-    private InvoiceCfdiCancelTypeEnum $cfdiCancelTypeEnum;
-
-    private ?string $replace_uuid;
-
-    protected PacCancelResponse $cancelResponse;
-
-    private function cancel(InvoiceCfdiCancelTypeEnum $cancelType, ?string $replacementUUID = ''): PacCancelResponse
+    private function cancel(InvoiceCfdiCancelTypeEnum $cancelType, ?string $replacementUUID = null): PacCancelResponse
     {
-        $this->cfdiCancelTypeEnum = $cancelType;
-        $this->replace_uuid = $replacementUUID;
-        $this->cancelResponse = new PacCancelResponse;
-
-        $this->processSignCancel();
-
-        // Verificación de cancelación
-        // $this->get_receipt();
-
-        return $this->cancelResponse;
-
-        // UPDATE 2022-09-27: SE VA A DEJAR DE USAR ESTE METODO YA QUE VEO COMPLICADO MANTENER ALGO QUE EN EL DEMO DEL SAT NO VA A FUNCIONAR.
-        // AUNQUE EN PRODUCCION LO IDEAL ES USAR "cancelSignature".
-    }
-
-    public function get_receipt(): void
-    {
-        $params = [
-            'username' => $this->usernameFinkok,
-            'password' => $this->passwordFinkok,
-            'taxpayer_id' => $this->invoiceCompanyHelper->rfc,
-            'uuid' => $this->invoice->invoiceCfdi->uuid,
-            'type' => 'C',
-        ];
-
-        try {
-            $client = new SoapClient($this->cancelUrlFinkok, ['trace' => 1]);
-            $response = $client->__soapCall('get_receipt', [$params]);
-            // dd($client->__getLastRequest(), $client->__getLastResponse());
-        } catch (Exception $e) {
-            abort(422, $e->getMessage());
+        if ($this->invoice->invoiceCfdi === null) {
+            throw InvoiceNotStampedException::forOperation('cancelar');
         }
-    }
 
-    private function processSignCancel(): void
-    {
         $uuidsCollect = collect(['UUID' => $this->invoice->invoiceCfdi->uuid]);
-        $uuidsCollect->put('Motivo', $this->cfdiCancelTypeEnum->getSatId());
-        if ($this->cfdiCancelTypeEnum === InvoiceCfdiCancelTypeEnum::NEW_WITH_ERRORS_RELATED) {
-            $uuidsCollect->put('FolioSustitucion', $this->replace_uuid);
+        $uuidsCollect->put('Motivo', $cancelType->getSatId());
+        if ($cancelType === InvoiceCfdiCancelTypeEnum::NEW_WITH_ERRORS_RELATED) {
+            $uuidsCollect->put('FolioSustitucion', $replacementUUID);
         }
-        $addons = ['UUID' => $uuidsCollect->toArray()];
 
         $params = [
-            'UUIDS' => $addons,
+            'UUIDS' => ['UUID' => $uuidsCollect->toArray()],
             'username' => $this->usernameFinkok,
             'password' => $this->passwordFinkok,
             'taxpayer_id' => $this->invoiceCompanyHelper->rfc,
             'serial' => $this->invoiceCompanyHelper->serialNumber,
         ];
 
-        try {
-            $client = new SoapClient($this->cancelUrlFinkok, ['trace' => 1]);
-            $response = $client->__soapCall('sign_cancel', [$params]);
-            // dd($client->__getLastRequest(), $client->__getLastResponse());
+        $response = $this->soapCaller()->call($this->cancelUrlFinkok, 'sign_cancel', $params, 'cfdi_finkok_sign_cancel');
 
-            (new SaveSoapRequestResponseLogService)->make($client, 'Finkok:sign_cancel', 'cfdi_finkok_sign_cancel');
-
-            $this->setResponsePac($response->sign_cancelResult);
-        } catch (Exception $e) {
-            abort(422, $e->getMessage());
+        if (! isset($response->sign_cancelResult)) {
+            throw PacUnexpectedResponseException::missingNode('sign_cancel', 'sign_cancelResult');
         }
+
+        return $this->buildCancelResponse($response->sign_cancelResult);
     }
 
-    private function setResponsePac($cancelResult): void
+    private function buildCancelResponse(stdClass $cancelResult): PacCancelResponse
     {
-        $folio = $cancelResult->Folios->Folio;
-
-        if (! isset($folio)) {
-            abort(422, $cancelResult->CodEstatus);
+        // Se envía un solo UUID, pero el nodo puede llegar como array.
+        $folio = $cancelResult->Folios->Folio ?? null;
+        if (is_array($folio)) {
+            $folio = $folio[0] ?? null;
         }
 
-        $this->cancelResponse->setUUID($folio->UUID);
-        $this->cancelResponse->setEstatusUUID($folio->EstatusUUID);
-
-        if ($folio->EstatusUUID === '201') {
-            $this->cancelResponse->setCheckProcess(true);
-            $this->cancelResponse->setAcuse($cancelResult->Acuse);
-            $this->cancelResponse->setEstatusCancelacion('Petición de cancelación realizada exitosamente');
-
-            return;
+        if ($folio === null) {
+            throw PacUnexpectedResponseException::withStatus('sign_cancel', (string) ($cancelResult->CodEstatus ?? 'sin CodEstatus'));
         }
 
-        if ($folio->EstatusUUID === '202') {
-            $this->cancelResponse->setCheckProcess(true);
-            $this->cancelResponse->setEstatusCancelacion('UUID previamente cancelado');
+        $uuid = (string) ($folio->UUID ?? '');
+        $estatusUUID = (string) ($folio->EstatusUUID ?? '');
 
-            return;
+        if ($estatusUUID === '201') {
+            return PacCancelResponse::accepted(uuid: $uuid, acuse: (string) ($cancelResult->Acuse ?? ''));
         }
 
-        $this->cancelResponse->setEstatusCancelacion($folio->EstatusCancelacion);
-        $this->cancelResponse->setCheckProcess(false);
-        $this->saveErrorCancel($this->cancelResponse, $folio);
+        if ($estatusUUID === '202') {
+            return PacCancelResponse::previouslyCancelled(uuid: $uuid);
+        }
+
+        $response = PacCancelResponse::rejected(
+            uuid: $uuid,
+            estatusUUID: $estatusUUID,
+            estatusCancelacion: (string) ($folio->EstatusCancelacion ?? ''),
+        );
+
+        $this->saveCancelIncident($response, $folio);
+
+        return $response;
     }
 
-    private function saveErrorCancel(PacCancelResponse $response, $folio): void
+    private function saveCancelIncident(PacCancelResponse $response, stdClass $folio): void
     {
         $invoiceIncident = new InvoiceIncident;
         $invoiceIncident->user_id = auth()->id();
         $invoiceIncident->invoice_id = $this->invoice->id;
         $invoiceIncident->supplier = 'Finkok';
-        $invoiceIncident->code = $this->cancelResponse->estatusCancelacion;
-        $invoiceIncident->message = $this->cancelResponse->estatusUUID;
+        $invoiceIncident->code = $response->estatusUUID;
+        $invoiceIncident->message = $response->estatusCancelacion;
         $invoiceIncident->additional_details = json_encode($folio);
         $invoiceIncident->save();
     }

@@ -331,6 +331,16 @@ parameters:
 			path: src/Sat/PacProviders/Finkok/ExampleData/FinkokTestDataResponse.php
 
 		-
+			message: "#^Cannot instantiate class JiagBrody\\\\LaravelFacturaMx\\\\Sat\\\\PacProviders\\\\PacStampResponse via private constructor JiagBrody\\\\LaravelFacturaMx\\\\Sat\\\\PacProviders\\\\PacStampResponse\\:\\:__construct\\(\\)\\.$#"
+			count: 1
+			path: src/Sat/PacProviders/Finkok/ExampleData/FinkokTestDataResponse.php
+
+		-
+			message: "#^Class JiagBrody\\\\LaravelFacturaMx\\\\Sat\\\\PacProviders\\\\PacStampResponse constructor invoked with 0 parameters, 7 required\\.$#"
+			count: 1
+			path: src/Sat/PacProviders/Finkok/ExampleData/FinkokTestDataResponse.php
+
+		-
 			message: "#^Class JiagBrody\\\\LaravelFacturaMx\\\\Sat\\\\PacProviders\\\\Finkok\\\\ExampleData\\\\FinkokTestDataSuccess has an uninitialized readonly property \\$CodEstatus\\. Assign it in the constructor\\.$#"
 			count: 1
 			path: src/Sat/PacProviders/Finkok/ExampleData/FinkokTestDataSuccess.php
@@ -402,11 +412,16 @@ parameters:
 
 		-
 			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceCfdi\\:\\:\\$uuid\\.$#"
-			count: 5
+			count: 4
 			path: src/Sat/PacProviders/Finkok/FinkokPac.php
 
 		-
 			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceCompany\\:\\:\\$rfc\\.$#"
+			count: 1
+			path: src/Sat/PacProviders/Finkok/FinkokPac.php
+
+		-
+			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$storage\\.$#"
 			count: 1
 			path: src/Sat/PacProviders/Finkok/FinkokPac.php
 
@@ -438,11 +453,6 @@ parameters:
 		-
 			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceIncident\\:\\:\\$user_id\\.$#"
 			count: 2
-			path: src/Sat/PacProviders/Finkok/FinkokPac.php
-
-		-
-			message: "#^Access to an undefined property object\\:\\:\\$xml\\.$#"
-			count: 1
 			path: src/Sat/PacProviders/Finkok/FinkokPac.php
 
 		-

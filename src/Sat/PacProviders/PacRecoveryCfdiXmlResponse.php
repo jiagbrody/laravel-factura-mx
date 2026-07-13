@@ -1,26 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders;
 
+/**
+ * Resultado inmutable de la recuperación de un XML previamente timbrado.
+ */
 final class PacRecoveryCfdiXmlResponse
 {
-    private bool $checkProcess;
+    private function __construct(
+        private readonly bool $checkProcess,
+        private readonly string $xml,
+    ) {}
 
-    private string $xml;
-
-    public function setCheckProcess(bool $checkProcess): void
+    public static function found(string $xml): self
     {
-        $this->checkProcess = $checkProcess;
+        return new self(checkProcess: true, xml: $xml);
+    }
+
+    public static function notFound(): self
+    {
+        return new self(checkProcess: false, xml: '');
     }
 
     public function getCheckProcess(): bool
     {
         return $this->checkProcess;
-    }
-
-    public function setXml(string $xml): void
-    {
-        $this->xml = $xml;
     }
 
     public function getXml(): string

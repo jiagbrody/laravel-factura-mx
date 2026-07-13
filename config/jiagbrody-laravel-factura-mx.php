@@ -143,10 +143,34 @@ return [
 
     'pac_environment_production' => false,
     'pac_chosen' => 'finkok',
+
+    /*
+     | "pac_soap_timeout_seconds": tiempo máximo (conexión y respuesta) para
+     | cada llamada SOAP al PAC. Sin esto, un PAC colgado bloquea el proceso
+     | PHP indefinidamente.
+     |
+     | "urls": opcional. El paquete ya incluye las URLs oficiales de Finkok
+     | para ambos entornos; solo declara estas claves si necesitas apuntar a
+     | otros endpoints (p. ej. si Finkok los cambia antes de actualizar el
+     | paquete). Claves soportadas: stamp, cancel, utilities.
+     */
+    'pac_soap_timeout_seconds' => env('FACTURA_MX_PAC_TIMEOUT', 30),
     'pac_providers' => [
         'finkok' => [
             'user' => env('FACTURA_MX_FINKOK_USER'),
             'password' => env('FACTURA_MX_FINKOK_PASSWORD'),
+            // 'urls' => [
+            //     'production' => [
+            //         'stamp' => 'https://facturacion.finkok.com/servicios/soap/stamp.wsdl',
+            //         'cancel' => 'https://facturacion.finkok.com/servicios/soap/cancel.wsdl',
+            //         'utilities' => 'https://facturacion.finkok.com/servicios/soap/utilities.wsdl',
+            //     ],
+            //     'development' => [
+            //         'stamp' => 'https://demo-facturacion.finkok.com/servicios/soap/stamp.wsdl',
+            //         'cancel' => 'https://demo-facturacion.finkok.com/servicios/soap/cancel.wsdl',
+            //         'utilities' => 'https://demo-facturacion.finkok.com/servicios/soap/utilities.wsdl',
+            //     ],
+            // ],
         ],
     ],
 

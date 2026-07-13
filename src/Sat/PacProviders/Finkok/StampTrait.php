@@ -4,79 +4,78 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok;
 
+use JiagBrody\LaravelFacturaMx\Exceptions\InvoiceAlreadyStampedException;
+use JiagBrody\LaravelFacturaMx\Exceptions\InvoiceDocumentMissingException;
+use JiagBrody\LaravelFacturaMx\Exceptions\PacUnexpectedResponseException;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceIncident;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStampResponse;
-use JiagBrody\LaravelFacturaMx\Services\Document\DocumentService;
-use JiagBrody\LaravelFacturaMx\Services\SaveSoapRequestResponseLogService;
-use SoapClient;
+use JiagBrody\LaravelFacturaMx\Services\Document\Helpers as DocumentHelpers;
+use stdClass;
 
 trait StampTrait
 {
-    /**
-     * @throws \Exception
-     */
     private function stamp(): PacStampResponse
     {
         $this->detectLogicErrorInStamp();
 
-        $xmlFile = $this->invoice->xmlInvoiceDocument;
-
-        $documentService = new DocumentService;
-        $draftXmlDocument = $documentService->helpers::obtainExistingDocumentFile($xmlFile);
-
         $params = [
-            'xml' => $draftXmlDocument,
+            'xml' => $this->obtainDraftXmlContent(),
             'username' => $this->usernameFinkok,
             'password' => $this->passwordFinkok,
         ];
 
-        try {
-            $client = new SoapClient($this->stampUrlFinkok, ['trace' => 1]);
-            $response = $client->__soapCall('stamp', [$params]);
+        $response = $this->soapCaller()->call($this->stampUrlFinkok, 'stamp', $params, 'cfdi_finkok_stamp');
 
-            if (! isset($response->stampResult)) {
-                throw new \Exception('El pac no devuelve: "stampResult"');
-            }
-
-            (new SaveSoapRequestResponseLogService)->make($client, 'Finkok:stamp', 'cfdi_finkok_stamp');
-
-            return $this->setStampResponse($response);
-
-        } catch (\SoapFault $e) {
-            throw new \Exception('Fallo en el timbrado por un error del servicio SOAP al proveedor PAC. error: '.$e->getMessage().' error detallado: '.$e->getTraceAsString());
+        if (! isset($response->stampResult)) {
+            throw PacUnexpectedResponseException::missingNode('stamp', 'stampResult');
         }
+
+        return $this->buildStampResponse($response->stampResult);
     }
 
-    private function setStampResponse($pacResponse): PacStampResponse
+    private function obtainDraftXmlContent(): string
     {
-        $result = $pacResponse->stampResult;
+        $xmlFile = $this->invoice->xmlInvoiceDocument;
 
-        $response = new PacStampResponse;
-        $response->setUuid($result->UUID ?? '');
-        $response->setCodEstatus($result->CodEstatus ?? '');
-
-        // TIMBRADO
-        if (isset($result->CodEstatus) && (($result->CodEstatus === 'Comprobante timbrado satisfactoriamente') || ($result->CodEstatus === 'Comprobante timbrado previamente'))) {
-            $response->setCheckProcess(true);
-            $response->setXml($result->xml);
-
-            return $response;
+        if ($xmlFile === null) {
+            throw new InvoiceDocumentMissingException('La factura no tiene XML de borrador registrado; genera el CFDI antes de enviarlo a timbrar.');
         }
 
-        // EXISTING INCIDENCE
-        // El WS de Finkok devuelve un objeto cuando hay una sola incidencia y
-        // un array cuando hay varias; también puede no incluir el nodo.
+        $content = DocumentHelpers::obtainExistingDocumentFile($xmlFile);
+
+        if ($content === null) {
+            throw new InvoiceDocumentMissingException('El XML de borrador está registrado pero el archivo no existe en el disco "'.$xmlFile->storage.'".');
+        }
+
+        return $content;
+    }
+
+    private function buildStampResponse(stdClass $result): PacStampResponse
+    {
+        $codEstatus = (string) ($result->CodEstatus ?? '');
+
+        // TIMBRADO ("timbrado previamente" regresa el mismo CFDI: es idempotente).
+        if (in_array($codEstatus, ['Comprobante timbrado satisfactoriamente', 'Comprobante timbrado previamente'], true)) {
+            return PacStampResponse::stamped(
+                uuid: (string) ($result->UUID ?? ''),
+                codEstatus: $codEstatus,
+                xml: (string) ($result->xml ?? ''),
+            );
+        }
+
+        // INCIDENCIAS: Finkok devuelve un objeto cuando hay una sola, un array
+        // cuando hay varias, y puede omitir el nodo por completo.
         $incidencias = $result->Incidencias->Incidencia ?? null;
         $incidencias = is_array($incidencias) ? array_values($incidencias) : array_filter([$incidencias]);
 
-        $response->setCheckProcess(false);
-
         if ($incidencias === []) {
-            $response->setIncidenciaIdIncidencia('');
-            $response->setIncidenciaCodigoError('');
-            $response->setIncidenciaMensaje((string) ($result->CodEstatus ?? 'El PAC rechazó el timbrado sin reportar incidencias.'));
-
-            return $response;
+            return PacStampResponse::rejected(
+                codEstatus: $codEstatus,
+                incidenciaIdIncidencia: '',
+                incidenciaCodigoError: '',
+                incidenciaMensaje: $codEstatus !== '' ? $codEstatus : 'El PAC rechazó el timbrado sin reportar incidencias.',
+                uuid: (string) ($result->UUID ?? ''),
+            );
         }
 
         foreach ($incidencias as $incidencia) {
@@ -92,20 +91,19 @@ trait StampTrait
             $message .= ' (y '.(count($incidencias) - 1).' incidencia(s) más registradas en invoice_incidents)';
         }
 
-        $response->setIncidenciaIdIncidencia((string) ($primera->IdIncidencia ?? ''));
-        $response->setIncidenciaMensaje($message);
-        $response->setIncidenciaCodigoError((string) ($primera->CodigoError ?? ''));
-
-        return $response;
+        return PacStampResponse::rejected(
+            codEstatus: $codEstatus,
+            incidenciaIdIncidencia: (string) ($primera->IdIncidencia ?? ''),
+            incidenciaCodigoError: (string) ($primera->CodigoError ?? ''),
+            incidenciaMensaje: $message,
+            uuid: (string) ($result->UUID ?? ''),
+        );
     }
 
     private function detectLogicErrorInStamp(): void
     {
-        // OJO: la relación se llama "invoiceCfdi"; con "$this->invoice->cfdi"
-        // Eloquent devolvía null siempre y este guard nunca se activaba,
-        // permitiendo timbrar dos veces la misma factura.
         if ($this->invoice->invoiceCfdi) {
-            throw new \Exception('Esta factura ya se encuentra timbrada (UUID: '.$this->invoice->invoiceCfdi->uuid.').');
+            throw InvoiceAlreadyStampedException::withUuid((string) $this->invoice->invoiceCfdi->uuid);
         }
     }
 

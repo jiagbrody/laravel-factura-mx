@@ -4,25 +4,52 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders;
 
+/**
+ * Resultado inmutable del timbrado. Se construye con los constructores
+ * nombrados stamped()/rejected(), por lo que todos los getters son seguros
+ * en cualquier estado (los campos que no aplican regresan cadena vacía).
+ */
 final class PacStampResponse
 {
-    private bool $checkProcess;
+    private function __construct(
+        private readonly bool $checkProcess,
+        private readonly string $uuid,
+        private readonly string $codEstatus,
+        private readonly string $xml,
+        private readonly string $incidenciaIdIncidencia,
+        private readonly string $incidenciaCodigoError,
+        private readonly string $incidenciaMensaje,
+    ) {}
 
-    private string $xml;
-
-    private string $uuid;
-
-    private string $codEstatus;
-
-    private string $incidenciaIdIncidencia;
-
-    private string $incidenciaCodigoError;
-
-    private string $incidenciaMensaje;
-
-    public function setCheckProcess(bool $checkProcess): void
+    public static function stamped(string $uuid, string $codEstatus, string $xml): self
     {
-        $this->checkProcess = $checkProcess;
+        return new self(
+            checkProcess: true,
+            uuid: $uuid,
+            codEstatus: $codEstatus,
+            xml: $xml,
+            incidenciaIdIncidencia: '',
+            incidenciaCodigoError: '',
+            incidenciaMensaje: '',
+        );
+    }
+
+    public static function rejected(
+        string $codEstatus,
+        string $incidenciaIdIncidencia,
+        string $incidenciaCodigoError,
+        string $incidenciaMensaje,
+        string $uuid = '',
+    ): self {
+        return new self(
+            checkProcess: false,
+            uuid: $uuid,
+            codEstatus: $codEstatus,
+            xml: '',
+            incidenciaIdIncidencia: $incidenciaIdIncidencia,
+            incidenciaCodigoError: $incidenciaCodigoError,
+            incidenciaMensaje: $incidenciaMensaje,
+        );
     }
 
     public function getCheckProcess(): bool
@@ -30,29 +57,9 @@ final class PacStampResponse
         return $this->checkProcess;
     }
 
-    public function setXml(string $xml): void
-    {
-        $this->xml = $xml;
-    }
-
-    public function getXml(): string
-    {
-        return $this->xml;
-    }
-
-    public function setUuid(string $uuid): void
-    {
-        $this->uuid = $uuid;
-    }
-
     public function getUuid(): string
     {
         return $this->uuid;
-    }
-
-    public function setCodEstatus(string $codEstatus): void
-    {
-        $this->codEstatus = $codEstatus;
     }
 
     public function getCodEstatus(): string
@@ -60,9 +67,14 @@ final class PacStampResponse
         return $this->codEstatus;
     }
 
-    public function setIncidenciaCodigoError(string $incidenciaCodigoError): void
+    public function getXml(): string
     {
-        $this->incidenciaCodigoError = $incidenciaCodigoError;
+        return $this->xml;
+    }
+
+    public function getIncidenciaIdIncidencia(): string
+    {
+        return $this->incidenciaIdIncidencia;
     }
 
     public function getIncidenciaCodigoError(): string
@@ -70,23 +82,8 @@ final class PacStampResponse
         return $this->incidenciaCodigoError;
     }
 
-    public function setIncidenciaMensaje(string $incidenciaMensaje): void
-    {
-        $this->incidenciaMensaje = $incidenciaMensaje;
-    }
-
     public function getIncidenciaMensaje(): string
     {
         return $this->incidenciaMensaje;
-    }
-
-    public function setIncidenciaIdIncidencia(string $incidenciaIdIncidencia): void
-    {
-        $this->incidenciaIdIncidencia = $incidenciaIdIncidencia;
-    }
-
-    public function getIncidenciaIdIncidencia(): string
-    {
-        return $this->incidenciaIdIncidencia;
     }
 }

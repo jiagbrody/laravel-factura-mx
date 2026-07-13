@@ -6,27 +6,48 @@ namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders;
 
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceStatusEnum;
 
-class PacStatusResponse
+/**
+ * Resultado inmutable de la consulta de estatus del CFDI ante el SAT.
+ *
+ * invoiceStatusEnum es null cuando el estado del SAT no corresponde a ningún
+ * estatus local ("No Encontrado", respuestas intermedias, etc.): en ese caso
+ * NO debe modificarse el estatus de la factura; revisa el campo "estado".
+ */
+final class PacStatusResponse
 {
-    public bool $checkProcess;
+    private function __construct(
+        public readonly bool $checkProcess,
+        public readonly string $estado,
+        public readonly string $esCancelable,
+        public readonly string $codigoEstatus,
+        public readonly string $estatusCancelacion,
+        public readonly string $validacionEFOS,
+        public readonly string $detallesValidacionEFOS,
+        public readonly ?InvoiceStatusEnum $invoiceStatusEnum,
+    ) {}
 
-    public InvoiceStatusEnum $invoiceStatusEnum;
-
-    public string $detallesValidacionEFOS;
-
-    public string $validacionEFOS;
-
-    public string $esCancelable;
-
-    public string $codigoEstatus;
-
-    public string $estado;
-
-    public string $estatusCancelacion;
-
-    public function setCheckProcess(bool $checkProcess): void
-    {
-        $this->checkProcess = $checkProcess;
+    public static function fromSat(
+        string $estado,
+        string $esCancelable,
+        string $codigoEstatus,
+        string $estatusCancelacion,
+        string $validacionEFOS,
+        string $detallesValidacionEFOS,
+    ): self {
+        return new self(
+            checkProcess: true,
+            estado: $estado,
+            esCancelable: $esCancelable,
+            codigoEstatus: $codigoEstatus,
+            estatusCancelacion: $estatusCancelacion,
+            validacionEFOS: $validacionEFOS,
+            detallesValidacionEFOS: $detallesValidacionEFOS,
+            invoiceStatusEnum: match ($estado) {
+                'Vigente' => InvoiceStatusEnum::VIGENT,
+                'Cancelado' => InvoiceStatusEnum::CANCELED,
+                default => null,
+            },
+        );
     }
 
     public function getCheckProcess(): bool
@@ -34,43 +55,8 @@ class PacStatusResponse
         return $this->checkProcess;
     }
 
-    public function setInvoiceStatusEnum(InvoiceStatusEnum $invoiceStatusEnum): void
-    {
-        $this->invoiceStatusEnum = $invoiceStatusEnum;
-    }
-
-    public function getInvoiceStatusEnum(): InvoiceStatusEnum
+    public function getInvoiceStatusEnum(): ?InvoiceStatusEnum
     {
         return $this->invoiceStatusEnum;
-    }
-
-    public function setCodigoEstatus(string $codigoEstatus): void
-    {
-        $this->codigoEstatus = $codigoEstatus;
-    }
-
-    public function setDetallesValidacionEFOS(string $detallesValidacionEFOS): void
-    {
-        $this->detallesValidacionEFOS = $detallesValidacionEFOS;
-    }
-
-    public function setEsCancelable(string $esCancelable): void
-    {
-        $this->esCancelable = $esCancelable;
-    }
-
-    public function setEstado(string $estado): void
-    {
-        $this->estado = $estado;
-    }
-
-    public function setEstatusCancelacion(string $estatusCancelacion): void
-    {
-        $this->estatusCancelacion = $estatusCancelacion;
-    }
-
-    public function setValidacionEFOS(string $validacionEFOS): void
-    {
-        $this->validacionEFOS = $validacionEFOS;
     }
 }

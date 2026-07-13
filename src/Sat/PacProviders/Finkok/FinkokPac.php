@@ -4,22 +4,19 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok;
 
+use JiagBrody\LaravelFacturaMx\Enums\InvoiceCfdiCancelTypeEnum;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok\ExampleData\FinkokTestDataResponse;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacCancelResponse;
+use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacRecoveryCfdiXmlResponse;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStampResponse;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStatusResponse;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\ProviderPacInterface;
 
-// use PhpCfdi\Finkok\FinkokEnvironment;
-// use PhpCfdi\Finkok\FinkokSettings;
-// use PhpCfdi\Finkok\QuickFinkok;
-
 /*
  * https://wiki.finkok.com/doku.php?id=Inicio
- * https://wiki.finkok.com/doku.php?id=php&s[]=response&s[]=client&s[]=soapcall&s[]=sign_cancel&s[]=params
  * https://wiki.finkok.com/doku.php?id=cfdi40
  */
 
@@ -27,13 +24,29 @@ class FinkokPac implements ProviderPacInterface
 {
     use CancelTrait, StampTrait, StatusTrait, XmlStampedTrait;
 
+    /**
+     * URLs oficiales de Finkok por entorno. Pueden sobreescribirse desde
+     * config "pac_providers.finkok.urls.{production|development}" sin tocar
+     * código (por ejemplo, si Finkok publica nuevos endpoints).
+     */
+    private const DEFAULT_URLS = [
+        'production' => [
+            'stamp' => 'https://facturacion.finkok.com/servicios/soap/stamp.wsdl',
+            'cancel' => 'https://facturacion.finkok.com/servicios/soap/cancel.wsdl',
+            'utilities' => 'https://facturacion.finkok.com/servicios/soap/utilities.wsdl',
+        ],
+        'development' => [
+            'stamp' => 'https://demo-facturacion.finkok.com/servicios/soap/stamp.wsdl',
+            'cancel' => 'https://demo-facturacion.finkok.com/servicios/soap/cancel.wsdl',
+            'utilities' => 'https://demo-facturacion.finkok.com/servicios/soap/utilities.wsdl',
+        ],
+    ];
+
     public readonly InvoiceCompanyHelper $invoiceCompanyHelper;
 
     public string $receptorRfc;
 
-    public float $total;
-
-    protected string $pacEnvironment;
+    public string $total;
 
     protected string $usernameFinkok;
 
@@ -47,31 +60,20 @@ class FinkokPac implements ProviderPacInterface
 
     protected string $utilitiesUrlFinkok;
 
-    protected PacStampResponse $response;
-
     public function __construct(protected Invoice $invoice)
     {
-        $this->response = new PacStampResponse;
         $this->usernameFinkok = (string) config('jiagbrody-laravel-factura-mx.pac_providers.finkok.user');
         $this->passwordFinkok = (string) config('jiagbrody-laravel-factura-mx.pac_providers.finkok.password');
 
-        if (config('jiagbrody-laravel-factura-mx.pac_environment_production')) {
-            $this->pacEnvironment = 'production';
-            $this->stampUrlFinkok = '';
-            $this->cancelUrlFinkok = '';
-            $this->statusUrlFinkok = '';
-            $this->utilitiesUrlFinkok = '';
-        } else {
-            $this->pacEnvironment = 'development';
-            $this->stampUrlFinkok = 'https://demo-facturacion.finkok.com/servicios/soap/stamp.wsdl';
-            $this->cancelUrlFinkok = 'https://demo-facturacion.finkok.com/servicios/soap/cancel.wsdl';
-            $this->statusUrlFinkok = 'https://demo-facturacion.finkok.com/servicios/soap/cancel.wsdl';
-            $this->utilitiesUrlFinkok = 'https://demo-facturacion.finkok.com/servicios/soap/utilities.wsdl';
-        }
+        $environment = config('jiagbrody-laravel-factura-mx.pac_environment_production') ? 'production' : 'development';
+        $configuredUrls = (array) config('jiagbrody-laravel-factura-mx.pac_providers.finkok.urls.'.$environment, []);
 
-        // $settings = new FinkokSettings($this->usernameFinkok, $this->passwordFinkok,
-        // FinkokEnvironment::makeDevelopment());
-        // $this->quickFinkok = new QuickFinkok($settings);
+        $this->stampUrlFinkok = (string) ($configuredUrls['stamp'] ?? self::DEFAULT_URLS[$environment]['stamp']);
+        $this->cancelUrlFinkok = (string) ($configuredUrls['cancel'] ?? self::DEFAULT_URLS[$environment]['cancel']);
+        $this->utilitiesUrlFinkok = (string) ($configuredUrls['utilities'] ?? self::DEFAULT_URLS[$environment]['utilities']);
+
+        // El método get_sat_status vive en el web service de cancelación de Finkok.
+        $this->statusUrlFinkok = $this->cancelUrlFinkok;
     }
 
     public function setInvoiceCompanyHelper(InvoiceCompany $company): void
@@ -84,9 +86,13 @@ class FinkokPac implements ProviderPacInterface
         $this->receptorRfc = $receptorRfc;
     }
 
-    public function setTotal(float $total): void
+    /**
+     * El servicio de consulta del SAT compara el total contra el impreso en
+     * el CFDI; debe enviarse el string exacto del comprobante (p. ej. "1234.50").
+     */
+    public function setTotal(float|string $total): void
     {
-        $this->total = $total;
+        $this->total = is_float($total) ? number_format($total, 2, '.', '') : $total;
     }
 
     public function getStampTestData(): FinkokTestDataResponse
@@ -94,12 +100,15 @@ class FinkokPac implements ProviderPacInterface
         return new FinkokTestDataResponse;
     }
 
+    protected function soapCaller(): FinkokSoapCaller
+    {
+        return new FinkokSoapCaller((int) config('jiagbrody-laravel-factura-mx.pac_soap_timeout_seconds', 30));
+    }
+
     /*
      * Timbrar factura.
      *
      * https://wiki.finkok.com/doku.php?id=wsdl_stamp
-     * https://wiki.finkok.com/doku.php?id=metodo_quick_stamp
-     * https://wiki.finkok.com/doku.php?id=php#consumir_metodo_quick_stamp_del_web_service_de_timbrado_en_php
      * Validador de Cfdi: https://validador.finkok.com
      */
     public function stampInvoice(): PacStampResponse
@@ -108,27 +117,22 @@ class FinkokPac implements ProviderPacInterface
     }
 
     /**
-     * Solicitud de cancelar factura.
-     * $type = 01, 02, 03, 04
+     * Solicitud de cancelar factura ($type = 01, 02, 03, 04).
      *
-     * "Cancel_signature" siempre da error 205, ya que nunca funciona en ambiente DEMO por parte del SAT.
-     * Asi que uso "sign_cancel" este método está simulado en Finkok en ambiente DEMO.
-     * https://wiki.integracion.finkok.com/home/webservices/ws_cancelacion/sign_cancel
+     * "Cancel_signature" siempre da error 205 en ambiente DEMO por parte del SAT,
+     * así que se usa "sign_cancel", que sí está simulado en el DEMO de Finkok.
      * https://wiki.finkok.com/doku.php?id=sign_cancel2022
-     * https://wiki.finkok.com/doku.php?id=php#consumir_web_service_de_cancel_signature
      * https://wiki.finkok.com/doku.php?id=errores-cancelacion
      */
-    public function cancelInvoice($cfdiCancelTypeEnum, $replacementUUID = null): PacCancelResponse
+    public function cancelInvoice(InvoiceCfdiCancelTypeEnum $cfdiCancelTypeEnum, ?string $replacementUUID = null): PacCancelResponse
     {
         return $this->cancel($cfdiCancelTypeEnum, $replacementUUID);
     }
 
     /*
-     * Checar estatus de la factura que se hizo solicitud de cancelar.
+     * Checar estatus de la factura ante el SAT.
      *
      * https://wiki.finkok.com/doku.php?id=get_sat_status
-     * https://wiki.finkok.com/doku.php?id=status_efos
-     * https://wiki.finkok.com/doku.php?id=php#consumir_metodo_get_sat_status_del_web_service_de_cancelacion_en_php
      */
     public function statusInvoice(): PacStatusResponse
     {
@@ -136,11 +140,11 @@ class FinkokPac implements ProviderPacInterface
     }
 
     /*
-     * Devuelve un XML previamente timbrado (El tiempo de resguardo para rescatarlo es menor a 3 meses).
+     * Devuelve un XML previamente timbrado (el tiempo de resguardo para rescatarlo es menor a 3 meses).
      *
      * https://wiki.finkok.com/en/home/webservices/utilerias/get_xml
      */
-    public function getXmlStamped()
+    public function getXmlStamped(): PacRecoveryCfdiXmlResponse
     {
         return $this->getXmlStampedCfdiSat();
     }
