@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders;
 
-readonly class PacCancelResponse
+class PacCancelResponse
 {
     public bool $checkProcess;
 

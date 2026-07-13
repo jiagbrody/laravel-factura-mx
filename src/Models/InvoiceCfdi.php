@@ -28,7 +28,7 @@ class InvoiceCfdi extends Model
 
     public function invoiceCfdiCancelReceipts(): HasMany
     {
-        return $this->hasMany(invoiceCfdiCancelReceipt::class);
+        return $this->hasMany(InvoiceCfdiCancelReceipt::class);
     }
 
     public function user(): BelongsTo

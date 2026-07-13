@@ -13,7 +13,7 @@ use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ImpuestoTrasladoAtributos;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData\ReceptorAtributos;
 use ReflectionProperty;
 
-readonly class AttributeAssembly
+class AttributeAssembly
 {
     protected ComprobanteAtributos $comprobanteAtributos;
 

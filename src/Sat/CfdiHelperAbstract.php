@@ -116,7 +116,7 @@ abstract class CfdiHelperAbstract
         return $this;
     }
 
-    public function getAttributeAssembly(): ComprobanteAtributos
+    public function getAttributeAssembly(): AttributeAssembly
     {
         return $this->attributeAssembly;
     }

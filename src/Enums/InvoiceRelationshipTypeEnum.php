@@ -3,6 +3,8 @@
 namespace JiagBrody\LaravelFacturaMx\Enums;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use JiagBrody\LaravelFacturaMx\Models\InvoiceRelationshipType;
 
 enum InvoiceRelationshipTypeEnum: int
 {
@@ -14,7 +16,10 @@ enum InvoiceRelationshipTypeEnum: int
     case FACTURA_GENERADA_TRASLADOS = 6;
     case CFDI_POR_APLICACION_DE_ANTICIPO = 7;
 
-    public static function getCatalog(): Collection {}
+    public static function getCatalog(): Collection
+    {
+        return DB::table((new InvoiceRelationshipType)->getTable())->get(['id', 'name']);
+    }
 
     public function getSatId(): string
     {

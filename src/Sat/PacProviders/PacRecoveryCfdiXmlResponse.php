@@ -2,7 +2,7 @@
 
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders;
 
-final readonly class PacRecoveryCfdiXmlResponse
+final class PacRecoveryCfdiXmlResponse
 {
     private bool $checkProcess;
 

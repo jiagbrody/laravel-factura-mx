@@ -6,7 +6,7 @@ namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders;
 
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceStatusEnum;
 
-readonly class PacStatusResponse
+class PacStatusResponse
 {
     public bool $checkProcess;
 

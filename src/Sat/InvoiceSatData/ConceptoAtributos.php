@@ -37,7 +37,7 @@ use Illuminate\Support\Collection;
     ]
 */
 
-final readonly class ConceptoAtributos
+final class ConceptoAtributos
 {
     use AtributosHelperTrait;
 

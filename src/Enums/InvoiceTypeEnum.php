@@ -51,6 +51,7 @@ enum InvoiceTypeEnum: int
             'T' => self::TRASLADO,
             'N' => self::NOMINA,
             'P' => self::PAGO,
+            default => throw new \ValueError('TipoDeComprobante desconocido: "'.$satCode.'". Valores válidos: I, E, T, N, P.'),
         };
     }
 }

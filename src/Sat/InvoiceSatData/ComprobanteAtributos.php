@@ -6,7 +6,7 @@ namespace JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData;
 
 use CfdiUtils\Elements\Cfdi40\Comprobante;
 
-final readonly class ComprobanteAtributos
+final class ComprobanteAtributos
 {
     use AtributosHelperTrait;
 

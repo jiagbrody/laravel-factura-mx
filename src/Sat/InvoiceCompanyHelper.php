@@ -42,7 +42,5 @@ class InvoiceCompanyHelper
         $this->keyPath = $folder.$invoiceCompany->key_path;
         $this->passPhrase = $invoiceCompany->pass_phrase;
         $this->serialNumber = $invoiceCompany->serial_number;
-
-        return $this;
     }
 }

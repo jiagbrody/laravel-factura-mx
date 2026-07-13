@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\InvoiceSatData;
 
-final readonly class EmisorAtributos
+final class EmisorAtributos
 {
     use AtributosHelperTrait;
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders;
 
-final readonly class PacStampResponse
+final class PacStampResponse
 {
     private bool $checkProcess;
 

@@ -6,7 +6,7 @@ use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok\FinkokPac;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStatusResponse;
 
-final readonly class StatusInvoiceBuilder
+final class StatusInvoiceBuilder
 {
     protected Invoice $invoice;
 

@@ -30,7 +30,7 @@ use Illuminate\Support\Collection;
     ]
 */
 
-final readonly class CfdiRelacionadosAtributos
+final class CfdiRelacionadosAtributos
 {
     use AtributosHelperTrait;
 
