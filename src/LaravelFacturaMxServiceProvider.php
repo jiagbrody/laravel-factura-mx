@@ -17,8 +17,7 @@ class LaravelFacturaMxServiceProvider extends PackageServiceProvider
         $package
             ->name('jiagbrody-laravel-factura-mx')
             ->hasConfigFile()
-            ->hasViews()
-            ->hasRoutes('web');
+            ->hasViews();
         // Nota: Si usas hasMigrations, Spatie las busca automáticamente
         // en database/migrations de tu paquete.
     }
@@ -37,10 +36,5 @@ class LaravelFacturaMxServiceProvider extends PackageServiceProvider
     {
         // Aquí cargas lo que Spatie no maneja por convención
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-
-        // Publicaciones personalizadas
-        $this->publishes([
-            __DIR__.'/../resources/js/Pages/jiagbrody-laravel-factura-mx' => resource_path('js/Pages/jiagbrody-laravel-factura-mx'),
-        ], 'jiagbrody-laravel-factura-mx-inertia-views');
     }
 }
