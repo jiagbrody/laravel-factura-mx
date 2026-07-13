@@ -17,10 +17,10 @@ use JiagBrody\LaravelFacturaMx\Services\Document\DocumentService;
 
 class LaravelFacturaMx
 {
-    public function __construct()
-    {
-        date_default_timezone_set(config('jiagbrody-laravel-factura-mx.default_timezone'));
-    }
+    // OJO: este constructor ejecutaba date_default_timezone_set(), mutando la
+    // zona horaria de TODO el proceso PHP del app anfitrión en cada
+    // instanciación. Las fechas del paquete ahora usan la zona configurada
+    // ("default_timezone") de forma explícita donde se generan.
 
     public function documentService(): DocumentService
     {

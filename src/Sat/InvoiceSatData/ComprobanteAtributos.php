@@ -51,10 +51,14 @@ final class ComprobanteAtributos
     public function __construct()
     {
         $this->Version = '4.0';
-        // SE OPTO POR MODIFICAR LA FECHA: CUANDO SE QUIERE GENERAR UN FOLIO DE FACTURA INDEPENDIENTEMENTE SI ESTE FALLA AL TIMBRAR
-        // AL EDITAR SE OBTIENEN TODOS LOS DATOS DEL XML BORRADOR Y SE MANTIENE LA FECHA DE FACTURACIÓN, ESTÁ TENDRIA
-        // QUE SER NO MAYOR A 72 HORAS.
-        // $this->Fecha = date('Y-m-d\\TH:i:s');
+
+        // La Fecha del CFDI debe expresarse en la hora local del lugar de
+        // expedición (ventana SAT de 72 h). Se usa la zona configurada del
+        // paquete — NO la zona global de PHP del app anfitrión, que puede ser
+        // UTC y produciría una Fecha "en el futuro" para el SAT. Puede
+        // sobreescribirse con setFecha().
+        $timezone = new \DateTimeZone((string) config('jiagbrody-laravel-factura-mx.default_timezone', 'America/Mexico_City'));
+        $this->Fecha = (new \DateTimeImmutable('now', $timezone))->format('Y-m-d\TH:i:s');
     }
 
     // public function setVersion(string $Version): void
