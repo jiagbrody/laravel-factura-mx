@@ -34,7 +34,24 @@ trait StampTrait
             throw PacUnexpectedResponseException::missingNode('stamp', 'stampResult');
         }
 
-        return $this->buildStampResponse($response->stampResult);
+        $result = $response->stampResult;
+
+        // "Comprobante timbrado previamente" (incidencia 307): el servicio
+        // "stamp" NO devuelve aquí el UUID fiscal ni el XML — su campo UUID
+        // trae el WorkProcessId interno de Finkok. El resultado original del
+        // timbrado se recupera con la operación "stamped" (mismos parámetros).
+        // https://wiki.finkok.com/doku.php?id=stamped
+        if ((string) ($result->CodEstatus ?? '') === 'Comprobante timbrado previamente') {
+            $stampedResponse = $this->soapCaller()->call($this->stampUrlFinkok, 'stamped', $params, 'cfdi_finkok_stamped');
+
+            if (! isset($stampedResponse->stampedResult)) {
+                throw PacUnexpectedResponseException::missingNode('stamped', 'stampedResult');
+            }
+
+            $result = $stampedResponse->stampedResult;
+        }
+
+        return $this->buildStampResponse($result);
     }
 
     private function obtainDraftXmlContent(): string
@@ -63,8 +80,8 @@ trait StampTrait
             $uuid = (string) ($result->UUID ?? '');
             $xml = (string) ($result->xml ?? '');
 
-            // "Timbrado previamente" puede llegar SIN el XML; se recupera del
-            // PAC (get_xml) para no reportar un timbrado exitoso sin archivo.
+            // Último recurso si el resultado llegó sin XML: recuperarlo por
+            // UUID con el servicio de utilerías (get_xml).
             if ($xml === '' && $uuid !== '') {
                 try {
                     $recovery = $this->recoverStampedXmlByUuid($uuid);
