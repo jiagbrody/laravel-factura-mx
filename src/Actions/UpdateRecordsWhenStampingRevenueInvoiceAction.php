@@ -74,6 +74,12 @@ class UpdateRecordsWhenStampingRevenueInvoiceAction
 
     private function createPdfDocument(Invoice $invoice, InvoiceDocument $xmlDocument, string $xmlContent): void
     {
+        // El host puede ser dueño de su propio PDF (vista y datos propios);
+        // en ese caso el paquete no genera ninguno.
+        if (! config('jiagbrody-laravel-factura-mx.generate_pdf_on_stamp', true)) {
+            return;
+        }
+
         // La vista actual del PDF está diseñada para ingreso/egreso; para
         // otros tipos de comprobante no se genera PDF (por ahora).
         if (! in_array((int) $invoice->invoice_type_id, [InvoiceTypeEnum::INGRESO->value, InvoiceTypeEnum::EGRESO->value], true)) {

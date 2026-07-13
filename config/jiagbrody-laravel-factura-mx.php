@@ -141,6 +141,23 @@ return [
 
     /*
      |--------------------------------------------------------------------------
+     | Generación del PDF al timbrar
+     |--------------------------------------------------------------------------
+     |
+     | Si es true, al timbrar (ingreso/egreso) el paquete genera el PDF legible
+     | con su vista genérica "jiagbrody-laravel-factura-mx::pdf.invoices.invoice_ingreso"
+     | (personalizable publicándola en resources/views/vendor/jiagbrody-laravel-factura-mx/,
+     | respetando las variables: comprobante, episode, statement, readableText, qrCode).
+     |
+     | Ponlo en false si tu aplicación genera su propio PDF con vista y datos
+     | propios: el paquete guardará solo el XML timbrado y tu app conserva el
+     | control total del documento legible.
+     |
+     */
+    'generate_pdf_on_stamp' => true,
+
+    /*
+     |--------------------------------------------------------------------------
      | Proveedores de PACS
      |--------------------------------------------------------------------------
      |

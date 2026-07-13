@@ -246,11 +246,6 @@ parameters:
 			path: src/Sat/Create/Helpers/SaveCreateHelper.php
 
 		-
-			message: "#^Call to method Illuminate\\\\Contracts\\\\View\\\\Factory\\:\\:exists\\(\\) with 'jiagbrody\\-laravel…' will always evaluate to false\\.$#"
-			count: 1
-			path: src/Sat/Helper/GeneratePdfDocumentFromXmlObjectForIngresoHelper.php
-
-		-
 			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceCompany\\:\\:\\$certificate_path\\.$#"
 			count: 1
 			path: src/Sat/InvoiceCompanyHelper.php
