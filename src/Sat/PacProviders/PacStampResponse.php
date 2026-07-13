@@ -89,10 +89,4 @@ final readonly class PacStampResponse
     {
         return $this->incidenciaIdIncidencia;
     }
-
-    public function setFullResponse($pacResponse)
-    {
-
-        return $result;
-    }
 }

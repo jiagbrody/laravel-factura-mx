@@ -58,25 +58,6 @@ class UpdateRecordsWhenStampingRevenueInvoiceAction
             storage: 'public',
             fileContent: $xmlContent,
         );
-
-        // $xml = (new XmlFileSatHelperBuilder($invoice))
-        //     ->updateModel($invoice->cfdi)
-        //     ->updatePath()
-        //     ->updateFileName('invoice-' . $invoice->id . '-' . $invoice->cfdi->uuid)
-        //     ->generate($xmlContent);
-
-        // (new PdfFileSatHelperBuilder())
-        //     ->setInvoiceCfdiType($invoice->invoice_cfdi_type_id)
-        //     ->setXmlContent($xmlContent)
-        //     ->setXmlDocument($xml)
-        //     ->build();
-
-        // BORRO LOS DOCUMENTOS DE BORRADOR.
-        // if ($invoice->documents()->exists()) {
-        //     $invoice->documents()->each(function ($document) {
-        //         (new DocumentDestroyService($document))->make();
-        //     });
-        // }
     }
 
     private function deleteDraftDocuments(Invoice $invoice): void
