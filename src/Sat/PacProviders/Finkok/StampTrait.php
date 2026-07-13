@@ -7,6 +7,7 @@ namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok;
 use JiagBrody\LaravelFacturaMx\Exceptions\InvoiceAlreadyStampedException;
 use JiagBrody\LaravelFacturaMx\Exceptions\InvoiceDocumentMissingException;
 use JiagBrody\LaravelFacturaMx\Exceptions\PacUnexpectedResponseException;
+use JiagBrody\LaravelFacturaMx\Exceptions\StaleCfdiDraftException;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceIncident;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStampResponse;
 use JiagBrody\LaravelFacturaMx\Services\Document\Helpers as DocumentHelpers;
@@ -18,8 +19,11 @@ trait StampTrait
     {
         $this->detectLogicErrorInStamp();
 
+        $draftXmlContent = $this->obtainDraftXmlContent();
+        $this->assertDraftIsNotStale($draftXmlContent);
+
         $params = [
-            'xml' => $this->obtainDraftXmlContent(),
+            'xml' => $draftXmlContent,
             'username' => $this->usernameFinkok,
             'password' => $this->passwordFinkok,
         ];
@@ -104,6 +108,41 @@ trait StampTrait
     {
         if ($this->invoice->invoiceCfdi) {
             throw InvoiceAlreadyStampedException::withUuid((string) $this->invoice->invoiceCfdi->uuid);
+        }
+    }
+
+    /**
+     * El SAT rechaza CFDI cuya Fecha sea más antigua que 72 horas. Detectarlo
+     * antes de enviar evita quemar el intento; configurable (y desactivable
+     * con 0) vía "stamp_draft_max_age_hours".
+     */
+    private function assertDraftIsNotStale(string $xmlContent): void
+    {
+        $maxAgeHours = (int) config('jiagbrody-laravel-factura-mx.stamp_draft_max_age_hours', 71);
+        if ($maxAgeHours <= 0) {
+            return;
+        }
+
+        $document = new \DOMDocument;
+        if (@$document->loadXML($xmlContent) === false || $document->documentElement === null) {
+            return; // XML ilegible: que el PAC reporte el problema real.
+        }
+
+        $fecha = $document->documentElement->getAttribute('Fecha');
+        if ($fecha === '') {
+            return;
+        }
+
+        $timezone = new \DateTimeZone((string) config('jiagbrody-laravel-factura-mx.default_timezone', 'America/Mexico_City'));
+        $fechaCfdi = \DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s', $fecha, $timezone);
+        if ($fechaCfdi === false) {
+            return;
+        }
+
+        $ageInHours = ((new \DateTimeImmutable('now', $timezone))->getTimestamp() - $fechaCfdi->getTimestamp()) / 3600;
+
+        if ($ageInHours > $maxAgeHours) {
+            throw StaleCfdiDraftException::forFecha($fecha, $maxAgeHours);
         }
     }
 

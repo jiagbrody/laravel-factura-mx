@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JiagBrody\LaravelFacturaMx\Sat\Create\Helpers;
 
+use JiagBrody\LaravelFacturaMx\Exceptions\CfdiPreValidationException;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 use JiagBrody\LaravelFacturaMx\Sat\CfdiHelperAbstract;
 use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
@@ -21,6 +24,18 @@ class GenericCreator extends CfdiHelperAbstract
         $this->creatorCfdi->addSumasConceptos(null, 2);
         $this->creatorCfdi->moveSatDefinitionsToComprobante();
         $this->creatorCfdi->addSello($this->credential->privateKey()->pem(), $this->credential->privateKey()->passPhrase());
+
+        // Validación local (XSD + reglas SAT de cfdiutils) antes de guardar el
+        // borrador: cada CFDI malformado que llega al PAC quema un intento de
+        // timbrado y registra una incidencia evitable. Requiere los recursos
+        // XSLT/XSD del SAT en "sat_local_resource_path" (se descargan solos la
+        // primera vez). Desactivable con pre_validate_cfdi = false.
+        if (config('jiagbrody-laravel-factura-mx.pre_validate_cfdi', true)) {
+            $findings = $this->creatorCfdi->validate();
+            if ($findings->hasErrors()) {
+                throw CfdiPreValidationException::fromAsserts($findings);
+            }
+        }
 
         return new CreateBuild(
             xmlContent: $this->creatorCfdi->asXml(),

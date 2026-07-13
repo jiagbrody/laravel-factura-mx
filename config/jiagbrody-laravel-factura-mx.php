@@ -121,6 +121,26 @@ return [
 
     /*
      |--------------------------------------------------------------------------
+     | Reglas de negocio del timbrado
+     |--------------------------------------------------------------------------
+     |
+     | "pre_validate_cfdi": valida el CFDI localmente (XSD + reglas SAT vía
+     | cfdiutils) al construirlo, ANTES de guardarlo/enviarlo al PAC. Requiere
+     | los recursos del SAT en "sat_local_resource_path" (se descargan
+     | automáticamente la primera vez). Ponlo en false si la validación local
+     | reporta falsos positivos que el PAC sí acepta.
+     |
+     | "stamp_draft_max_age_hours": edad máxima (en horas, medida sobre la
+     | Fecha del comprobante) que puede tener un borrador para enviarse a
+     | timbrar. El SAT rechaza CFDI con Fecha anterior a 72 horas; el default
+     | de 71 deja margen. Usa 0 para desactivar el guard.
+     |
+     */
+    'pre_validate_cfdi' => true,
+    'stamp_draft_max_age_hours' => 71,
+
+    /*
+     |--------------------------------------------------------------------------
      | Proveedores de PACS
      |--------------------------------------------------------------------------
      |
