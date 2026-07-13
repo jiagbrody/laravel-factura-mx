@@ -141,20 +141,31 @@ return [
 
     /*
      |--------------------------------------------------------------------------
-     | Generación del PDF al timbrar
+     | Persistencia y documentos al timbrar
      |--------------------------------------------------------------------------
      |
-     | Si es true, al timbrar (ingreso/egreso) el paquete genera el PDF legible
-     | con su vista genérica "jiagbrody-laravel-factura-mx::pdf.invoices.invoice_ingreso"
-     | (personalizable publicándola en resources/views/vendor/jiagbrody-laravel-factura-mx/,
-     | respetando las variables: comprobante, episode, statement, readableText, qrCode).
+     | "persist_stamp_result": si es true (default), al confirmar el PAC el
+     | timbrado, el paquete persiste todo en la misma llamada a build():
+     | estatus vigente, registro del CFDI/UUID, XML timbrado, PDF y limpieza
+     | de borradores. Ponlo en false si tu aplicación tiene su PROPIA
+     | orquestación de persistencia (transacciones, candados, alertas, manejo
+     | de archivos propio): build() solo regresará el PacStampResponse y tu
+     | app decide qué guardar y cuándo.
      |
-     | Ponlo en false si tu aplicación genera su propio PDF con vista y datos
-     | propios: el paquete guardará solo el XML timbrado y tu app conserva el
-     | control total del documento legible.
+     | "generate_pdf_on_stamp": aplica solo cuando persist_stamp_result=true.
+     | Si es true, el paquete genera el PDF legible al timbrar (ingreso y
+     | egreso). Ponlo en false si tu app genera su propio PDF.
+     |
+     | "pdf_invoice_view": vista Blade usada para el PDF. Para personalizarla,
+     | copia la vista default del paquete con otro nombre, modifícala
+     | respetando el contrato de variables (comprobante, episode, statement,
+     | readableText, qrCode) y apunta esta clave a tu vista
+     | (p. ej. 'pdf.mi-factura').
      |
      */
+    'persist_stamp_result' => true,
     'generate_pdf_on_stamp' => true,
+    'pdf_invoice_view' => 'jiagbrody-laravel-factura-mx::pdf.invoices.invoice_ingreso',
 
     /*
      |--------------------------------------------------------------------------

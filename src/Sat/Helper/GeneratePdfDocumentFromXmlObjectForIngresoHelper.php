@@ -29,13 +29,15 @@ final class GeneratePdfDocumentFromXmlObjectForIngresoHelper
             decimalLabel: 'centavos'
         );
 
-        // Siempre se usa la vista genérica del paquete. Para personalizarla,
-        // publícala en resources/views/vendor/jiagbrody-laravel-factura-mx/
-        // respetando este contrato de variables: comprobante, episode,
-        // statement, readableText, qrCode. Si el app anfitrión genera su
-        // propio PDF (con vista y datos propios), desactiva el del paquete
-        // con generate_pdf_on_stamp = false.
-        $pdfFile = Pdf::loadView('jiagbrody-laravel-factura-mx::pdf.invoices.invoice_ingreso', compact('comprobante', 'episode', 'statement', 'readableText', 'qrCode'));
+        // Por default se usa la vista genérica del paquete. Para una vista
+        // personalizada: copia la default con otro nombre, modifícala
+        // respetando el contrato de variables (comprobante, episode,
+        // statement, readableText, qrCode) y apunta "pdf_invoice_view" a ella.
+        // Si el app anfitrión genera su propio PDF con datos propios,
+        // desactiva el del paquete con generate_pdf_on_stamp = false.
+        $viewName = (string) config('jiagbrody-laravel-factura-mx.pdf_invoice_view', 'jiagbrody-laravel-factura-mx::pdf.invoices.invoice_ingreso');
+
+        $pdfFile = Pdf::loadView($viewName, compact('comprobante', 'episode', 'statement', 'readableText', 'qrCode'));
 
         return $pdfFile->output();
     }

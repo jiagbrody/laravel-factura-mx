@@ -60,11 +60,22 @@ trait StampTrait
 
         // TIMBRADO ("timbrado previamente" regresa el mismo CFDI: es idempotente).
         if (in_array($codEstatus, ['Comprobante timbrado satisfactoriamente', 'Comprobante timbrado previamente'], true)) {
-            return PacStampResponse::stamped(
-                uuid: (string) ($result->UUID ?? ''),
-                codEstatus: $codEstatus,
-                xml: (string) ($result->xml ?? ''),
-            );
+            $uuid = (string) ($result->UUID ?? '');
+            $xml = (string) ($result->xml ?? '');
+
+            // "Timbrado previamente" puede llegar SIN el XML; se recupera del
+            // PAC (get_xml) para no reportar un timbrado exitoso sin archivo.
+            if ($xml === '' && $uuid !== '') {
+                try {
+                    $recovery = $this->recoverStampedXmlByUuid($uuid);
+                    $xml = $recovery->getCheckProcess() ? $recovery->getXml() : '';
+                } catch (\Throwable) {
+                    // El intercambio queda en el log SOAP; quien persista
+                    // decidirá cómo fallar con un mensaje claro.
+                }
+            }
+
+            return PacStampResponse::stamped(uuid: $uuid, codEstatus: $codEstatus, xml: $xml);
         }
 
         // INCIDENCIAS: Finkok devuelve un objeto cuando hay una sola, un array

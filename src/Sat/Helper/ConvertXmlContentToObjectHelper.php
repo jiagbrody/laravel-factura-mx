@@ -23,9 +23,13 @@ final class ConvertXmlContentToObjectHelper
 
     public static function make(string $xmlContent, $associative = null): array|object
     {
+        if (trim($xmlContent) === '') {
+            throw new FacturaMxException('El contenido XML del CFDI está vacío; no hay nada que convertir.');
+        }
+
         try {
             $json = JsonConverter::convertToJson($xmlContent);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             throw new FacturaMxException('No se pudo convertir el XML del CFDI a JSON: '.$e->getMessage(), 0, $e);
         }
 

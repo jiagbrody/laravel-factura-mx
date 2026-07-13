@@ -15,11 +15,21 @@ trait XmlStampedTrait
             throw InvoiceNotStampedException::forOperation('recuperar el XML timbrado');
         }
 
+        return $this->recoverStampedXmlByUuid((string) $this->invoice->invoiceCfdi->uuid);
+    }
+
+    /**
+     * Recupera el XML timbrado por UUID directamente del PAC. No depende de
+     * que el CFDI esté registrado localmente: también se usa cuando el PAC
+     * responde "timbrado previamente" sin incluir el XML.
+     */
+    private function recoverStampedXmlByUuid(string $uuid): PacRecoveryCfdiXmlResponse
+    {
         $params = [
             'username' => $this->usernameFinkok,
             'password' => $this->passwordFinkok,
             'taxpayer_id' => $this->invoiceCompanyHelper->rfc,
-            'uuid' => $this->invoice->invoiceCfdi->uuid,
+            'uuid' => $uuid,
             'invoice_type' => 'I', // Finkok solo acepta 'I' (CFDI) o 'R' (retenciones). https://wiki.finkok.com/en/home/webservices/utilerias/get_xml
         ];
 

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceDocumentTypeEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceStatusEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceTypeEnum;
+use JiagBrody\LaravelFacturaMx\Exceptions\FacturaMxException;
 use JiagBrody\LaravelFacturaMx\Models\Invoice;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCfdi;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceDocument;
@@ -31,6 +32,10 @@ class UpdateRecordsWhenStampingRevenueInvoiceAction
         string $xml,
         ?string $fileName = null
     ): void {
+        if (trim($xml) === '') {
+            throw new FacturaMxException('El PAC confirmó el timbrado (UUID: '.$uuid.') pero no devolvió el XML y tampoco fue posible recuperarlo con get_xml; no se persistió nada localmente. Recupera el XML con LaravelFacturaMx::RecoveryCfdiXmlFile() o desde el portal del PAC.');
+        }
+
         DB::transaction(function () use ($invoice, $uuid, $xml, $fileName) {
             $this->updateInvoice(invoice: $invoice);
             $this->createCfdi(invoice: $invoice, uuid: $uuid);
