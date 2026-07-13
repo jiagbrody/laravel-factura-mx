@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace JiagBrody\LaravelFacturaMx\Repositories\InvoiceDocument;
 
 use Illuminate\Support\Facades\Storage;
+use JiagBrody\LaravelFacturaMx\Exceptions\FacturaMxException;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceDocument;
 
 final readonly class UpdateDocument
@@ -36,7 +37,7 @@ final readonly class UpdateDocument
         $this->invoiceDocument->mime_type = $mimeType;
         $this->invoiceDocument->extension = $extension;
         $this->invoiceDocument->storage = $storage;
-        $this->invoiceDocument->documentable->type = $relationshipModel;
+        $this->invoiceDocument->documentable_type = $relationshipModel;
         $this->invoiceDocument->documentable_id = $relationshipId;
         $this->invoiceDocument->save();
     }
@@ -48,7 +49,7 @@ final readonly class UpdateDocument
     {
         // NOTA: SI EXISTE UN ARCHIVO CON EL MISMO NOMBRE Y NO TIENE INSTRUCCIÓN DE SOBREESCRIBIR, MARCA ERROR.
         if (Storage::disk($this->invoiceDocument->storage)->exists($this->invoiceDocument->file) && $this->overwriteFileOnDisk === false) {
-            abort('403', 'The file already exists and the instruction is not to overwrite it.');
+            throw new FacturaMxException('El archivo "'.$this->invoiceDocument->file.'" ya existe y la instrucción es no sobreescribirlo (overwriteFileOnDisk = false).');
         }
 
         // Guardar el archivo en el disco y verificar el resultado.

@@ -121,12 +121,12 @@ parameters:
 			path: src/Repositories/InvoiceDocument/DeleteDocument.php
 
 		-
-			message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$type\\.$#"
+			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$documentable_id\\.$#"
 			count: 1
 			path: src/Repositories/InvoiceDocument/UpdateDocument.php
 
 		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$documentable_id\\.$#"
+			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$documentable_type\\.$#"
 			count: 1
 			path: src/Repositories/InvoiceDocument/UpdateDocument.php
 
