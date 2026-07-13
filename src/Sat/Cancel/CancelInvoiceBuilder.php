@@ -72,7 +72,9 @@ final class CancelInvoiceBuilder
     {
         $this->cancelResponse = $this->pacProvider->cancelInvoice(cfdiCancelTypeEnum: $this->cancelTypeEnum, replacementUUID: $this->replacementUUID);
 
-        if ($this->cancelResponse->checkProcess) {
+        // Sin hasAcuse() el caso "UUID previamente cancelado" (202) fatalizaba
+        // al leer una propiedad sin inicializar; ahí no hay acuse que guardar.
+        if ($this->cancelResponse->checkProcess && $this->cancelResponse->hasAcuse()) {
             (new UpdateRecordsIfTheInvoiceHasBeenSentByThePacToCancelAction)->make(
                 invoiceCfdi: $this->invoice->invoiceCfdi,
                 cancelTypeEnum: $this->cancelTypeEnum,

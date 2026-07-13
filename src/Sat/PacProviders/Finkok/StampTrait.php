@@ -64,25 +64,48 @@ trait StampTrait
         }
 
         // EXISTING INCIDENCE
-        $incidencia = $result->Incidencias->Incidencia;
-        $this->saveIncident($incidencia);
+        // El WS de Finkok devuelve un objeto cuando hay una sola incidencia y
+        // un array cuando hay varias; también puede no incluir el nodo.
+        $incidencias = $result->Incidencias->Incidencia ?? null;
+        $incidencias = is_array($incidencias) ? array_values($incidencias) : array_filter([$incidencias]);
 
         $response->setCheckProcess(false);
-        $response->setIncidenciaIdIncidencia($incidencia->IdIncidencia);
-        $message = $incidencia->MensajeIncidencia;
-        if ($incidencia->MensajeIncidencia) {
-            $message .= ' - '.$incidencia->ExtraInfo;
+
+        if ($incidencias === []) {
+            $response->setIncidenciaIdIncidencia('');
+            $response->setIncidenciaCodigoError('');
+            $response->setIncidenciaMensaje((string) ($result->CodEstatus ?? 'El PAC rechazó el timbrado sin reportar incidencias.'));
+
+            return $response;
         }
+
+        foreach ($incidencias as $incidencia) {
+            $this->saveIncident($incidencia);
+        }
+
+        $primera = $incidencias[0];
+        $message = (string) ($primera->MensajeIncidencia ?? '');
+        if (isset($primera->ExtraInfo) && $primera->ExtraInfo) {
+            $message .= ' - '.$primera->ExtraInfo;
+        }
+        if (count($incidencias) > 1) {
+            $message .= ' (y '.(count($incidencias) - 1).' incidencia(s) más registradas en invoice_incidents)';
+        }
+
+        $response->setIncidenciaIdIncidencia((string) ($primera->IdIncidencia ?? ''));
         $response->setIncidenciaMensaje($message);
-        $response->setIncidenciaCodigoError($incidencia->CodigoError);
+        $response->setIncidenciaCodigoError((string) ($primera->CodigoError ?? ''));
 
         return $response;
     }
 
     private function detectLogicErrorInStamp(): void
     {
-        if ($this->invoice->cfdi) {
-            throw new \Exception('Esta factura ya se encuentra timbrada.');
+        // OJO: la relación se llama "invoiceCfdi"; con "$this->invoice->cfdi"
+        // Eloquent devolvía null siempre y este guard nunca se activaba,
+        // permitiendo timbrar dos veces la misma factura.
+        if ($this->invoice->invoiceCfdi) {
+            throw new \Exception('Esta factura ya se encuentra timbrada (UUID: '.$this->invoice->invoiceCfdi->uuid.').');
         }
     }
 
@@ -95,8 +118,8 @@ trait StampTrait
         $invoiceIncident->user_id = auth()->id();
         $invoiceIncident->invoice_id = $this->invoice->id;
         $invoiceIncident->supplier = 'Finkok';
-        $invoiceIncident->code = $incident->CodigoError;
-        $invoiceIncident->message = $incident->MensajeIncidencia;
+        $invoiceIncident->code = (string) ($incident->CodigoError ?? '');
+        $invoiceIncident->message = (string) ($incident->MensajeIncidencia ?? '');
         $invoiceIncident->additional_details = json_encode($incident);
         $invoiceIncident->save();
     }

@@ -47,4 +47,13 @@ readonly class PacCancelResponse
     {
         $this->acuse = $acuse;
     }
+
+    /**
+     * El SAT no devuelve acuse cuando el UUID ya estaba cancelado
+     * (EstatusUUID 202), por lo que la propiedad puede quedar sin inicializar.
+     */
+    public function hasAcuse(): bool
+    {
+        return isset($this->acuse);
+    }
 }
