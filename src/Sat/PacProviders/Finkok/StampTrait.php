@@ -168,8 +168,14 @@ trait StampTrait
 
     private function detectLogicErrorInStamp(): void
     {
-        if ($this->invoice->invoiceCfdi) {
-            throw InvoiceAlreadyStampedException::withUuid((string) $this->invoice->invoiceCfdi->uuid);
+        // Se consulta con ->invoiceCfdi()->first() y NO con la propiedad
+        // ->invoiceCfdi: acceder a la propiedad cachearía null en la instancia
+        // del app anfitrión, y si este crea el CFDI después del timbrado, sus
+        // lecturas posteriores de la relación seguirían viendo el null viejo.
+        $existingCfdi = $this->invoice->invoiceCfdi()->first();
+
+        if ($existingCfdi) {
+            throw InvoiceAlreadyStampedException::withUuid((string) $existingCfdi->uuid);
         }
     }
 
