@@ -9,6 +9,8 @@ Paquete de Laravel para la facturación electrónica en México (CFDI **4.0**): 
 
 La documentación está en español porque es el idioma natural de los tecnicismos del SAT (Anexo 20).
 
+📖 **[Mapa funcional de la librería](docs/mapa-funcional.md)** — todo lo que hace y con qué método: ciclo de vida del CFDI, las 8 áreas de funcionalidad, matriz de cobertura por tipo de comprobante, excepciones y configuración.
+
 ## Características
 
 - Construcción fluida del CFDI 4.0 (ingreso, egreso/nota de crédito y complemento de pago) sobre [`eclipxe/cfdiutils`](https://github.com/eclipxe13/CfdiUtils).
