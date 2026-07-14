@@ -14,8 +14,7 @@
       originales vía `stamped` (error 307), sin duplicar — ✓ 13/jul (factura 2)
 - [x] **Cancelar motivo 02** (con errores, sin relación) — ✓ 14/jul (factura 1: sign_cancel 201
       + acuse persistido; UI pasa a «en espera del SAT» y tras consultar estatus → Cancelado)
-- [ ] **Cancelar motivo 01** (con errores, con relación) — requiere timbrar primero la
-      factura **sustituta** y cancelar la original con su `FolioSustitucion`
+- [x] **Cancelar motivo 01** (con errores, con relación) — ✓ 14/jul, ver bloque «Sustitución»
 - [x] **Cancelar motivo 03** (no se llevó a cabo la operación) — ✓ 14/jul (factura 2 honorarios:
       sign_cancel Motivo=03 → 201 + acuse; estatus SAT → Cancelado). HALLAZGO en plataforma:
       `CreateCancelAction` no tenía rama para motivo 03 («Tipo de cancelación no soportado», error
@@ -54,8 +53,16 @@
 
 ## Sustitución (flujo completo)
 
-- [ ] Timbrar factura B que **sustituye** a factura A (relación 04) → tras timbrar B, la
-      plataforma cancela A con motivo 01 y FolioSustitucion = UUID de B (acción Mode-01)
+- [x] Timbrar factura B que **sustituye** a factura A (relación 04) → tras timbrar B, la
+      plataforma cancela A con motivo 01 y FolioSustitucion = UUID de B (acción Mode-01) — ✓ 14/jul
+      (A=363EFB19… factura 4, B=67FE1B05… factura 5: XML de B con CfdiRelacionados 04→A;
+      sign_cancel de A con Motivo=01 + FolioSustitucion=B → 201; estatus SAT de A → Cancelado;
+      la cuenta permanece facturada por B). HALLAZGOS en plataforma (fixes SIN commitear): la
+      pre-cancelación no desbloqueaba la cuenta (quedaba BILLED/inmutable — el desbloqueo vivía
+      en el sistema viejo borrado en 45defb51); el guard anti-duplicados de facturación no
+      exceptuaba la vigente con pre-cancelación pendiente; y al confirmarse la cancelación de A,
+      BillingCancelIngreso reabría la cuenta ya facturada por B (se agregó guard cuando
+      replacement_invoice_id ya está enlazado).
 
 ## Transversales / resiliencia (varios ya cubiertos por tests de contrato)
 
