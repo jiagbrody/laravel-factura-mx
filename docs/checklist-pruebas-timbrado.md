@@ -16,7 +16,12 @@
       + acuse persistido; UI pasa a «en espera del SAT» y tras consultar estatus → Cancelado)
 - [ ] **Cancelar motivo 01** (con errores, con relación) — requiere timbrar primero la
       factura **sustituta** y cancelar la original con su `FolioSustitucion`
-- [ ] **Cancelar motivo 03** (no se llevó a cabo la operación)
+- [x] **Cancelar motivo 03** (no se llevó a cabo la operación) — ✓ 14/jul (factura 2 honorarios:
+      sign_cancel Motivo=03 → 201 + acuse; estatus SAT → Cancelado). HALLAZGO en plataforma:
+      `CreateCancelAction` no tenía rama para motivo 03 («Tipo de cancelación no soportado», error
+      legible en UI) y la UI tenía deshabilitados los motivos 1/3/4 (`disable-by-ids`); se corrigió
+      en la plataforma (motivo 03 = cancelación directa; UI habilita 1/2/3) — fix SIN commitear,
+      pendiente de revisión.
 - [x] **Reintentar cancelación** de una ya cancelada → 202 idempotente, sin error ni acuse duplicado
       — ✓ 14/jul con matiz: el DEMO re-simula 201 con el MISMO acuse (no devuelve 202), por lo que
       el reintento en vivo duplica el registro de acuse si se salta el candado de la plataforma
