@@ -17,9 +17,11 @@
       factura **sustituta** y cancelar la original con su `FolioSustitucion`
 - [ ] **Cancelar motivo 03** (no se llevó a cabo la operación)
 - [ ] **Reintentar cancelación** de una ya cancelada → 202 idempotente, sin error ni acuse duplicado
-- [ ] **Consultar estatus** tras timbrar → «Vigente» (y datos EsCancelable/EFOS coherentes)
+- [x] **Consultar estatus** tras timbrar → «Vigente» (y datos EsCancelable/EFOS coherentes) — ✓ 14/jul
+      (factura 1: Vigente, «Cancelable sin aceptación»; EFOS 100 es respuesta enlatada del demo)
 - [ ] **Consultar estatus** tras cancelar → transición hasta «Cancelado»
-- [ ] **PDF de la plataforma** correcto (cabeceras, complementoData, QR del SAT escaneable)
+- [x] **PDF de la plataforma** correcto (cabeceras, complementoData, QR del SAT escaneable) — ✓ 14/jul
+      (factura 1: QR decodificado → verificacfdi con id/re/rr/tt/fe correctos)
 
 ## Egreso (nota de crédito)
 
