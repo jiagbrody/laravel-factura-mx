@@ -6,6 +6,7 @@ namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok;
 
 use JiagBrody\LaravelFacturaMx\Exceptions\InvoiceAlreadyStampedException;
 use JiagBrody\LaravelFacturaMx\Exceptions\InvoiceDocumentMissingException;
+use JiagBrody\LaravelFacturaMx\Exceptions\PacStampInProgressException;
 use JiagBrody\LaravelFacturaMx\Exceptions\PacUnexpectedResponseException;
 use JiagBrody\LaravelFacturaMx\Exceptions\StaleCfdiDraftException;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceIncident;
@@ -34,14 +35,39 @@ trait StampTrait
             throw PacUnexpectedResponseException::missingNode('stamp', 'stampResult');
         }
 
-        $result = $response->stampResult;
+        return $this->buildStampResponse($this->resolveFinalStampResult($response->stampResult, $params));
+    }
 
-        // "Comprobante timbrado previamente" (incidencia 307): el servicio
-        // "stamp" NO devuelve aquí el UUID fiscal ni el XML — su campo UUID
-        // trae el WorkProcessId interno de Finkok. El resultado original del
-        // timbrado se recupera con la operación "stamped" (mismos parámetros).
-        // https://wiki.finkok.com/doku.php?id=stamped
-        if ((string) ($result->CodEstatus ?? '') === 'Comprobante timbrado previamente') {
+    /**
+     * Resuelve los estados NO finales del servicio "stamp" consultando la
+     * operación "stamped" (mismos parámetros):
+     *
+     * - "Comprobante timbrado previamente" (incidencia 307): stamp no incluye
+     *   el UUID fiscal ni el XML (su campo UUID trae el WorkProcessId);
+     *   "stamped" devuelve el resultado original completo.
+     * - "Comprobante recibido satisfactoriamente" SIN xml: el comprobante está
+     *   en la cola asíncrona del PAC; se consulta "stamped" hasta obtener el
+     *   resultado final (CON xml significa timbrado completado).
+     *
+     * https://wiki.finkok.com/doku.php?id=stamped
+     */
+    private function resolveFinalStampResult(stdClass $result, array $params): stdClass
+    {
+        $maxAttempts = 5;
+
+        for ($attempts = 0; $attempts < $maxAttempts; $attempts++) {
+            $codEstatus = (string) ($result->CodEstatus ?? '');
+            $needsStampedLookup = $codEstatus === 'Comprobante timbrado previamente'
+                || ($codEstatus === 'Comprobante recibido satisfactoriamente' && (string) ($result->xml ?? '') === '');
+
+            if (! $needsStampedLookup) {
+                return $result;
+            }
+
+            if ($attempts > 0) {
+                sleep(2); // dar tiempo a la cola asíncrona antes de reconsultar
+            }
+
             $stampedResponse = $this->soapCaller()->call($this->stampUrlFinkok, 'stamped', $params, 'cfdi_finkok_stamped');
 
             if (! isset($stampedResponse->stampedResult)) {
@@ -51,7 +77,7 @@ trait StampTrait
             $result = $stampedResponse->stampedResult;
         }
 
-        return $this->buildStampResponse($result);
+        throw PacStampInProgressException::afterAttempts($maxAttempts);
     }
 
     private function obtainDraftXmlContent(): string
@@ -75,8 +101,16 @@ trait StampTrait
     {
         $codEstatus = (string) ($result->CodEstatus ?? '');
 
-        // TIMBRADO ("timbrado previamente" regresa el mismo CFDI: es idempotente).
-        if (in_array($codEstatus, ['Comprobante timbrado satisfactoriamente', 'Comprobante timbrado previamente'], true)) {
+        // TIMBRADO. "Comprobante recibido satisfactoriamente" llega aquí solo
+        // con XML incluido (respuesta de "stamped" ya completada); sin XML se
+        // resuelve antes en resolveFinalStampResult().
+        $successStatuses = [
+            'Comprobante timbrado satisfactoriamente',
+            'Comprobante timbrado previamente',
+            'Comprobante recibido satisfactoriamente',
+        ];
+
+        if (in_array($codEstatus, $successStatuses, true)) {
             $uuid = (string) ($result->UUID ?? '');
             $xml = (string) ($result->xml ?? '');
 
