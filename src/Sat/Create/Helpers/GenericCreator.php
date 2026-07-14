@@ -19,7 +19,16 @@ class GenericCreator extends CfdiHelperAbstract
         parent::__construct();
     }
 
-    public function build(): CreateBuild
+    /**
+     * Sella y arma el CFDI.
+     *
+     * @param  bool|null  $validate  Anula la validación local para ESTA llamada:
+     *                               pásalo en false para builds provisionales
+     *                               (p. ej. vistas previas con datos incompletos
+     *                               que el usuario completará después). Con null
+     *                               (default) manda el config "pre_validate_cfdi".
+     */
+    public function build(?bool $validate = null): CreateBuild
     {
         $this->creatorCfdi->addSumasConceptos(null, 2);
         $this->creatorCfdi->moveSatDefinitionsToComprobante();
@@ -29,8 +38,10 @@ class GenericCreator extends CfdiHelperAbstract
         // borrador: cada CFDI malformado que llega al PAC quema un intento de
         // timbrado y registra una incidencia evitable. Requiere los recursos
         // XSLT/XSD del SAT en "sat_local_resource_path" (se descargan solos la
-        // primera vez). Desactivable con pre_validate_cfdi = false.
-        if (config('jiagbrody-laravel-factura-mx.pre_validate_cfdi', true)) {
+        // primera vez).
+        $shouldValidate = $validate ?? (bool) config('jiagbrody-laravel-factura-mx.pre_validate_cfdi', true);
+
+        if ($shouldValidate) {
             $findings = $this->creatorCfdi->validate();
             if ($findings->hasErrors()) {
                 throw CfdiPreValidationException::fromAsserts($findings);

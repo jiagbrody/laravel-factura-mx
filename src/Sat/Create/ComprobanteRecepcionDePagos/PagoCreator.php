@@ -7,6 +7,7 @@ namespace JiagBrody\LaravelFacturaMx\Sat\Create\ComprobanteRecepcionDePagos;
 use CfdiUtils\Elements\Pagos20\Pago;
 use CfdiUtils\Elements\Pagos20\Pagos;
 use CfdiUtils\SumasPagos20\PagosWriter;
+use JiagBrody\LaravelFacturaMx\Exceptions\CfdiPreValidationException;
 use JiagBrody\LaravelFacturaMx\Facades\LaravelFacturaMx;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCfdi;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
@@ -82,7 +83,14 @@ class PagoCreator extends CfdiHelperAbstract
         $this->attributeAssembly->setComplementoRecepcionDePagos($formData);
     }
 
-    public function build(): CreateBuild
+    /**
+     * Sella y arma el CFDI con su complemento de pagos.
+     *
+     * @param  bool|null  $validate  Anula la validación local para ESTA llamada
+     *                               (false = build provisional, p. ej. vista
+     *                               previa). Con null manda "pre_validate_cfdi".
+     */
+    public function build(?bool $validate = null): CreateBuild
     {
         // add calculated values to pagos (totales, pagos montos y pagos impuestos)
         PagosWriter::calculateAndPut($this->complementoPagos);
@@ -94,11 +102,16 @@ class PagoCreator extends CfdiHelperAbstract
         $this->creatorCfdi->moveSatDefinitionsToComprobante();
         $this->creatorCfdi->addSello($this->credential->privateKey()->pem(), $this->credential->privateKey()->passPhrase());
 
-        // perform validations, it should not have any error nor warnings
-        $findings = $this->creatorCfdi->validate();
-        // if ($findings->hasErrors()) {
-        //     dd($findings);
-        // }
+        // Validación local (misma política que GenericCreator: antes ejecutaba
+        // validate() ignorando el resultado, ahora sí rechaza errores).
+        $shouldValidate = $validate ?? (bool) config('jiagbrody-laravel-factura-mx.pre_validate_cfdi', true);
+
+        if ($shouldValidate) {
+            $findings = $this->creatorCfdi->validate();
+            if ($findings->hasErrors()) {
+                throw CfdiPreValidationException::fromAsserts($findings);
+            }
+        }
 
         return new CreateBuild(
             xmlContent: $this->creatorCfdi->asXml(),
