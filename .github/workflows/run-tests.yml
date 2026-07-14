@@ -11,7 +11,9 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [ 8.2, 8.3 ]
+        # 8.4 es la versión del entorno de desarrollo real; 8.2/8.3 cubren el
+        # contrato público del paquete ("php": "^8.2" en composer.json).
+        php: [ 8.2, 8.3, 8.4 ]
 
     name: PHP${{ matrix.php }}
 
