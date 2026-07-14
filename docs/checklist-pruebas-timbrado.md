@@ -36,11 +36,15 @@
 
 ## Egreso (nota de crédito)
 
-- [ ] **Vista previa** (build provisional)
+- [x] **Vista previa** (build provisional) — ✓ 14/jul (NC-PR 1 «devolución parcial» $221 sobre
+      factura I-PR 4: tipo E, CFDI relacionado tipo 01 → UUID origen, conceptos y totales correctos)
 - [x] **Timbrar** nota de crédito ligada a su factura origen (TipoRelacion) — ✓ 14/jul
-- [ ] **Saldos**: la cuenta fiscal refleja la nota (lógica de la plataforma)
-- [ ] **Cancelar** nota de crédito (motivo 02)
-- [ ] **Consultar estatus** de la nota
+      (re-verificado: NC-PR 1 UUID 74571430…, relación tipo 01 persistida)
+- [x] **Saldos**: la cuenta fiscal refleja la nota (lógica de la plataforma) — ✓ 14/jul
+      (statement-financials: movimiento «Devolución parcial NOTA DE CRÉDITO −$221» en el historial
+      fiscal de la subcuenta; obs.: el «Facturado» global no la resta, queda como movimiento)
+- [x] **Cancelar** nota de crédito (motivo 02) — ✓ 14/jul (sign_cancel Motivo=02 → 201 + acuse)
+- [x] **Consultar estatus** de la nota — ✓ 14/jul (Vigente → Cancelado sin aceptación; badge sincronizado)
 
 ## Pago (REP 2.0)
 
