@@ -65,7 +65,11 @@ trait StampTrait
             }
 
             if ($attempts > 0) {
-                sleep(2); // dar tiempo a la cola asíncrona antes de reconsultar
+                // Dar tiempo a la cola asíncrona antes de reconsultar.
+                $delaySeconds = (int) config('jiagbrody-laravel-factura-mx.stamped_poll_delay_seconds', 2);
+                if ($delaySeconds > 0) {
+                    sleep($delaySeconds);
+                }
             }
 
             $stampedResponse = $this->soapCaller()->call($this->stampUrlFinkok, 'stamped', $params, 'cfdi_finkok_stamped');

@@ -7,6 +7,7 @@ namespace JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok;
 use Illuminate\Support\Facades\Log;
 use JiagBrody\LaravelFacturaMx\Exceptions\PacConnectionException;
 use JiagBrody\LaravelFacturaMx\Exceptions\PacUnexpectedResponseException;
+use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacSoapCallerInterface;
 use SoapClient;
 use SoapFault;
 use stdClass;
@@ -16,7 +17,7 @@ use stdClass;
  * request/response (también cuando la llamada falla) y redacción de la
  * contraseña del PAC antes de escribir al log.
  */
-final class FinkokSoapCaller
+final class FinkokSoapCaller implements PacSoapCallerInterface
 {
     public function __construct(private readonly int $timeoutSeconds) {}
 

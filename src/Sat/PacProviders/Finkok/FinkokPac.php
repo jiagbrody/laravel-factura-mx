@@ -11,6 +11,7 @@ use JiagBrody\LaravelFacturaMx\Sat\InvoiceCompanyHelper;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\Finkok\ExampleData\FinkokTestDataResponse;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacCancelResponse;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacRecoveryCfdiXmlResponse;
+use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacSoapCallerInterface;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStampResponse;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\PacStatusResponse;
 use JiagBrody\LaravelFacturaMx\Sat\PacProviders\ProviderPacInterface;
@@ -60,6 +61,8 @@ class FinkokPac implements ProviderPacInterface
 
     protected string $utilitiesUrlFinkok;
 
+    private ?PacSoapCallerInterface $soapCallerOverride = null;
+
     public function __construct(protected Invoice $invoice)
     {
         $this->usernameFinkok = (string) config('jiagbrody-laravel-factura-mx.pac_providers.finkok.user');
@@ -100,9 +103,18 @@ class FinkokPac implements ProviderPacInterface
         return new FinkokTestDataResponse;
     }
 
-    protected function soapCaller(): FinkokSoapCaller
+    /**
+     * Permite inyectar un transporte SOAP alternativo (tests de contrato).
+     */
+    public function setSoapCaller(PacSoapCallerInterface $soapCaller): void
     {
-        return new FinkokSoapCaller((int) config('jiagbrody-laravel-factura-mx.pac_soap_timeout_seconds', 30));
+        $this->soapCallerOverride = $soapCaller;
+    }
+
+    protected function soapCaller(): PacSoapCallerInterface
+    {
+        return $this->soapCallerOverride
+            ?? new FinkokSoapCaller((int) config('jiagbrody-laravel-factura-mx.pac_soap_timeout_seconds', 30));
     }
 
     /*
