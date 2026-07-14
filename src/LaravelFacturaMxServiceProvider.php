@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace JiagBrody\LaravelFacturaMx;
 
-use Illuminate\Database\Eloquent\Relations\Relation;
-use JiagBrody\LaravelFacturaMx\Models\Invoice;
-use JiagBrody\LaravelFacturaMx\Models\InvoiceCfdi;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -27,15 +24,12 @@ class LaravelFacturaMxServiceProvider extends PackageServiceProvider
         // en database/migrations de tu paquete.
     }
 
-    public function registeringPackage(): void
-    {
-        // Registramos el mapa en la fase de registro para que esté
-        // disponible incluso antes del arranque (booting)
-        Relation::enforceMorphMap([
-            'invoice' => Invoice::class,
-            'invoiceCfdi' => InvoiceCfdi::class,
-        ]);
-    }
+    // NOTA: el paquete NO registra un morph map. enforceMorphMap() es global:
+    // obligaría a TODOS los modelos del app anfitrión a declarar alias, y las
+    // instalaciones existentes ya persisten los morphs con el nombre completo
+    // de la clase (comportamiento default de Laravel). Si el host quiere
+    // alias, puede declararlos él mismo — con la migración de datos
+    // correspondiente para los registros previos.
 
     public function packageBooted(): void
     {
