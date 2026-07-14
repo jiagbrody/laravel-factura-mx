@@ -8,9 +8,26 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
+/**
+ * @property int $id
+ * @property int $invoice_document_type_id
+ * @property string $documentable_type
+ * @property int $documentable_id
+ * @property string $file_name
+ * @property string $file_path
+ * @property string $mime_type
+ * @property string $extension
+ * @property string $storage
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read string $file
+ * @property-read string $public_url
+ * @property-read string $location_root
+ */
 class InvoiceDocument extends Model
 {
     use HasFactory;

@@ -11,7 +11,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property int $id
+ * @property int|null $user_id
+ * @property int $invoice_id
+ * @property string $uuid
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ */
 class InvoiceCfdi extends Model
 {
     use HasFactory;

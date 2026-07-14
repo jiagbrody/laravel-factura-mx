@@ -1,36 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\Invoice\\:\\:\\$invoice_status_id\\.$#"
-			count: 1
-			path: src/Actions/UpdateRecordsWhenStampingRevenueInvoiceAction.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\Invoice\\:\\:\\$invoice_type_id\\.$#"
-			count: 1
-			path: src/Actions/UpdateRecordsWhenStampingRevenueInvoiceAction.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceCfdi\\:\\:\\$invoice_id\\.$#"
-			count: 1
-			path: src/Actions/UpdateRecordsWhenStampingRevenueInvoiceAction.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceCfdi\\:\\:\\$user_id\\.$#"
-			count: 1
-			path: src/Actions/UpdateRecordsWhenStampingRevenueInvoiceAction.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceCfdi\\:\\:\\$uuid\\.$#"
-			count: 2
-			path: src/Actions/UpdateRecordsWhenStampingRevenueInvoiceAction.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\Invoice\\:\\:\\$created_at\\.$#"
-			count: 4
-			path: src/Models/Invoice.php
-
-		-
 			message: "#^Class JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceComplementLocalTax not found\\.$#"
 			count: 1
 			path: src/Models/Invoice.php
@@ -44,126 +14,6 @@ parameters:
 			message: "#^Call to an undefined method JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceCfdiType\\:\\:hasMany\\(\\)\\.$#"
 			count: 1
 			path: src/Models/InvoiceCfdiType.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$extension\\.$#"
-			count: 1
-			path: src/Models/InvoiceDocument.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$file_name\\.$#"
-			count: 1
-			path: src/Models/InvoiceDocument.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$file_path\\.$#"
-			count: 1
-			path: src/Models/InvoiceDocument.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$storage\\.$#"
-			count: 3
-			path: src/Models/InvoiceDocument.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceRelationship\\:\\:\\$created_at\\.$#"
-			count: 4
-			path: src/Models/InvoiceRelationship.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceRelationshipType\\:\\:\\$created_at\\.$#"
-			count: 4
-			path: src/Models/InvoiceRelationshipType.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$documentable_id\\.$#"
-			count: 1
-			path: src/Repositories/InvoiceDocument/CreateDocument.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$documentable_type\\.$#"
-			count: 1
-			path: src/Repositories/InvoiceDocument/CreateDocument.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$extension\\.$#"
-			count: 1
-			path: src/Repositories/InvoiceDocument/CreateDocument.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$file_name\\.$#"
-			count: 1
-			path: src/Repositories/InvoiceDocument/CreateDocument.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$file_path\\.$#"
-			count: 1
-			path: src/Repositories/InvoiceDocument/CreateDocument.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$invoice_document_type_id\\.$#"
-			count: 1
-			path: src/Repositories/InvoiceDocument/CreateDocument.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$mime_type\\.$#"
-			count: 1
-			path: src/Repositories/InvoiceDocument/CreateDocument.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$storage\\.$#"
-			count: 2
-			path: src/Repositories/InvoiceDocument/CreateDocument.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$storage\\.$#"
-			count: 2
-			path: src/Repositories/InvoiceDocument/DeleteDocument.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$documentable_id\\.$#"
-			count: 1
-			path: src/Repositories/InvoiceDocument/UpdateDocument.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$documentable_type\\.$#"
-			count: 1
-			path: src/Repositories/InvoiceDocument/UpdateDocument.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$extension\\.$#"
-			count: 1
-			path: src/Repositories/InvoiceDocument/UpdateDocument.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$file_name\\.$#"
-			count: 1
-			path: src/Repositories/InvoiceDocument/UpdateDocument.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$file_path\\.$#"
-			count: 1
-			path: src/Repositories/InvoiceDocument/UpdateDocument.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$invoice_document_type_id\\.$#"
-			count: 1
-			path: src/Repositories/InvoiceDocument/UpdateDocument.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$mime_type\\.$#"
-			count: 1
-			path: src/Repositories/InvoiceDocument/UpdateDocument.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$storage\\.$#"
-			count: 3
-			path: src/Repositories/InvoiceDocument/UpdateDocument.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceCfdi\\:\\:\\$uuid\\.$#"
-			count: 2
-			path: src/Sat/Cancel/CancelInvoiceBuilder.php
 
 		-
 			message: "#^Class JiagBrody\\\\LaravelFacturaMx\\\\Sat\\\\Cancel\\\\CancelInvoiceBuilder has an uninitialized readonly property \\$cancelResponse\\. Assign it in the constructor\\.$#"
@@ -196,89 +46,9 @@ parameters:
 			path: src/Sat/Create/ComprobanteRecepcionDePagos/PagoCreator.php
 
 		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\Invoice\\:\\:\\$folio\\.$#"
+			message: "#^Property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\Invoice\\:\\:\\$invoice_date \\(Illuminate\\\\Support\\\\Carbon\\|null\\) does not accept string\\.$#"
 			count: 1
 			path: src/Sat/Create/Helpers/SaveCreateHelper.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\Invoice\\:\\:\\$invoice_company_id\\.$#"
-			count: 1
-			path: src/Sat/Create/Helpers/SaveCreateHelper.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\Invoice\\:\\:\\$invoice_date\\.$#"
-			count: 1
-			path: src/Sat/Create/Helpers/SaveCreateHelper.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\Invoice\\:\\:\\$invoice_status_id\\.$#"
-			count: 1
-			path: src/Sat/Create/Helpers/SaveCreateHelper.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\Invoice\\:\\:\\$invoice_type_id\\.$#"
-			count: 1
-			path: src/Sat/Create/Helpers/SaveCreateHelper.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\Invoice\\:\\:\\$rfc_emisor\\.$#"
-			count: 1
-			path: src/Sat/Create/Helpers/SaveCreateHelper.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\Invoice\\:\\:\\$rfc_receptor\\.$#"
-			count: 1
-			path: src/Sat/Create/Helpers/SaveCreateHelper.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\Invoice\\:\\:\\$serie\\.$#"
-			count: 1
-			path: src/Sat/Create/Helpers/SaveCreateHelper.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\Invoice\\:\\:\\$user_id\\.$#"
-			count: 1
-			path: src/Sat/Create/Helpers/SaveCreateHelper.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\Invoice\\:\\:\\$version\\.$#"
-			count: 1
-			path: src/Sat/Create/Helpers/SaveCreateHelper.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceCompany\\:\\:\\$certificate_path\\.$#"
-			count: 1
-			path: src/Sat/InvoiceCompanyHelper.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceCompany\\:\\:\\$key_path\\.$#"
-			count: 1
-			path: src/Sat/InvoiceCompanyHelper.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceCompany\\:\\:\\$nombre\\.$#"
-			count: 1
-			path: src/Sat/InvoiceCompanyHelper.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceCompany\\:\\:\\$pass_phrase\\.$#"
-			count: 1
-			path: src/Sat/InvoiceCompanyHelper.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceCompany\\:\\:\\$regimen_fiscal\\.$#"
-			count: 1
-			path: src/Sat/InvoiceCompanyHelper.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceCompany\\:\\:\\$rfc\\.$#"
-			count: 1
-			path: src/Sat/InvoiceCompanyHelper.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceCompany\\:\\:\\$serial_number\\.$#"
-			count: 1
-			path: src/Sat/InvoiceCompanyHelper.php
 
 		-
 			message: "#^Argument of an invalid type JiagBrody\\\\LaravelFacturaMx\\\\Sat\\\\InvoiceSatData\\\\CfdiRelacionadosAtributos supplied for foreach, only iterables are supported\\.$#"
@@ -411,51 +181,6 @@ parameters:
 			path: src/Sat/PacProviders/Finkok/ExampleData/FinkokTestDataSuccess.php
 
 		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceCfdi\\:\\:\\$uuid\\.$#"
-			count: 4
-			path: src/Sat/PacProviders/Finkok/FinkokPac.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceCompany\\:\\:\\$rfc\\.$#"
-			count: 1
-			path: src/Sat/PacProviders/Finkok/FinkokPac.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$storage\\.$#"
-			count: 1
-			path: src/Sat/PacProviders/Finkok/FinkokPac.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceIncident\\:\\:\\$additional_details\\.$#"
-			count: 2
-			path: src/Sat/PacProviders/Finkok/FinkokPac.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceIncident\\:\\:\\$code\\.$#"
-			count: 2
-			path: src/Sat/PacProviders/Finkok/FinkokPac.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceIncident\\:\\:\\$invoice_id\\.$#"
-			count: 2
-			path: src/Sat/PacProviders/Finkok/FinkokPac.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceIncident\\:\\:\\$message\\.$#"
-			count: 2
-			path: src/Sat/PacProviders/Finkok/FinkokPac.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceIncident\\:\\:\\$supplier\\.$#"
-			count: 2
-			path: src/Sat/PacProviders/Finkok/FinkokPac.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceIncident\\:\\:\\$user_id\\.$#"
-			count: 2
-			path: src/Sat/PacProviders/Finkok/FinkokPac.php
-
-		-
 			message: "#^Class JiagBrody\\\\LaravelFacturaMx\\\\Sat\\\\PacProviders\\\\Finkok\\\\FinkokPac has an uninitialized readonly property \\$invoiceCompanyHelper\\. Assign it in the constructor\\.$#"
 			count: 1
 			path: src/Sat/PacProviders/Finkok/FinkokPac.php
@@ -464,41 +189,6 @@ parameters:
 			message: "#^Readonly property JiagBrody\\\\LaravelFacturaMx\\\\Sat\\\\PacProviders\\\\Finkok\\\\FinkokPac\\:\\:\\$invoiceCompanyHelper is assigned outside of the constructor\\.$#"
 			count: 1
 			path: src/Sat/PacProviders/Finkok/FinkokPac.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$documentable_id\\.$#"
-			count: 2
-			path: src/Services/Document/DocumentService.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$documentable_type\\.$#"
-			count: 2
-			path: src/Services/Document/DocumentService.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$extension\\.$#"
-			count: 1
-			path: src/Services/Document/DocumentService.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$file_name\\.$#"
-			count: 2
-			path: src/Services/Document/DocumentService.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$file_path\\.$#"
-			count: 2
-			path: src/Services/Document/DocumentService.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$mime_type\\.$#"
-			count: 1
-			path: src/Services/Document/DocumentService.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$storage\\.$#"
-			count: 2
-			path: src/Services/Document/DocumentService.php
 
 		-
 			message: "#^Class JiagBrody\\\\LaravelFacturaMx\\\\Services\\\\Document\\\\DocumentService has an uninitialized readonly property \\$hasCfdi\\. Assign it in the constructor\\.$#"
@@ -519,8 +209,3 @@ parameters:
 			message: "#^Readonly property JiagBrody\\\\LaravelFacturaMx\\\\Services\\\\Document\\\\DocumentService\\:\\:\\$hasCfdiCanceled is assigned outside of the constructor\\.$#"
 			count: 1
 			path: src/Services/Document/DocumentService.php
-
-		-
-			message: "#^Access to an undefined property JiagBrody\\\\LaravelFacturaMx\\\\Models\\\\InvoiceDocument\\:\\:\\$storage\\.$#"
-			count: 2
-			path: src/Services/Document/Helpers.php

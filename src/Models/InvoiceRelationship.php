@@ -4,8 +4,18 @@ namespace JiagBrody\LaravelFacturaMx\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use JiagBrody\LaravelFacturaMx\Helpers\AddReadableDatesHelperTrait;
 
+/**
+ * @property int $id
+ * @property int $origin_invoice_id
+ * @property int $related_invoice_id
+ * @property int $invoice_relationship_type_id
+ * @property Carbon|null $relationship_date
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ */
 class InvoiceRelationship extends Model
 {
     use AddReadableDatesHelperTrait, HasFactory;
