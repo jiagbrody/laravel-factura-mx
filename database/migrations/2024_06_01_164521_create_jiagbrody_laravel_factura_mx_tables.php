@@ -10,7 +10,6 @@ use JiagBrody\LaravelFacturaMx\Enums\InvoiceStatusEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceTaxTypeEnum;
 use JiagBrody\LaravelFacturaMx\Enums\InvoiceTypeEnum;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceCfdiCancelType;
-use JiagBrody\LaravelFacturaMx\Models\InvoiceCompany;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceDocumentType;
 use JiagBrody\LaravelFacturaMx\Models\InvoicePaymentType;
 use JiagBrody\LaravelFacturaMx\Models\InvoiceStatus;
@@ -240,31 +239,10 @@ return new class extends Migration
             $table->index(['supplier', 'code']);
         });
 
-        // include('./database/seeders/include_inserts_to_tables.php');
-        InvoiceCompany::insert([
-            [
-                'name' => 'Emisor 1',
-                'rfc' => 'EKU9003173C9',
-                'nombre' => 'ESCUELA KEMPER URGATE',
-                'domicilio_fiscal' => '21855',
-                'regimen_fiscal' => '601',
-                'certificate_path' => '/csd_eku9003173c9_20190617131829/CSD_Sucursal_1_EKU9003173C9_20230517_223850.cer',
-                'key_path' => '/csd_eku9003173c9_20190617131829/CSD_Sucursal_1_EKU9003173C9_20230517_223850.key',
-                'pass_phrase' => '12345678a',
-                'serial_number' => '30001000000400002434',
-            ],
-            [
-                'name' => 'Emisor 2',
-                'rfc' => 'IIA040805DZ4',
-                'nombre' => 'INDISTRIA ILUMINADORA DE ALMACENES',
-                'domicilio_fiscal' => '63900',
-                'regimen_fiscal' => '601',
-                'certificate_path' => '/csd_iia040805dz4_20190617133200/CSD_Sucursal_1_IIA040805DZ4_20230518_062510.cer',
-                'key_path' => '/csd_iia040805dz4_20190617133200/CSD_Sucursal_1_IIA040805DZ4_20230518_062510.key',
-                'pass_phrase' => '12345678a',
-                'serial_number' => '30001000000400002447',
-            ],
-        ]);
+        // NOTA: aquí se sembraban dos emisores de PRUEBA del SAT (EKU9003173C9
+        // e IIA040805DZ4). Se eliminó: una instalación de producción no debe
+        // nacer con emisores de prueba. Para desarrollo, créalos con
+        // InvoiceCompany::factory() o un seeder propio del app anfitrión.
 
         InvoiceType::insertOrIgnore([
             ['id' => InvoiceTypeEnum::INGRESO->value, 'name' => InvoiceTypeEnum::INGRESO->getName(), 'created_at' => now(), 'updated_at' => now()],
