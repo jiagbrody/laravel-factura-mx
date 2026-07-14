@@ -57,7 +57,7 @@ return new class extends Migration
 
         Schema::create($tableNames['invoices'], function (Blueprint $table) use ($tableNames) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('user_id')->nullable()->index();
             $table->unsignedBigInteger('invoice_type_id')->comment('Tipo de comprobante del SAT (ingreso, egreso, traslado...)');
             $table->unsignedBigInteger('invoice_company_id')->comment('A que empresa se le factura (emisor)');
             $table->unsignedBigInteger('invoice_status_id')->comment('estatus de la factura (vigente, cancelado, etc)');
@@ -202,7 +202,7 @@ return new class extends Migration
 
         Schema::create($tableNames['invoice_cfdis'], function (Blueprint $table) use ($tableNames) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('user_id')->nullable()->index();
             $table->unsignedBigInteger('invoice_id');
             // The production server supports up to MariaDb 10.6, which is a real shame since it currently supports 11.8. We use the CloudWays.com manager.
             // $table->uuid();
@@ -227,7 +227,7 @@ return new class extends Migration
 
         Schema::create($tableNames['invoice_incidents'], function (Blueprint $table) use ($tableNames) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('user_id')->nullable()->index();
             $table->unsignedBigInteger('invoice_id');
             $table->string('supplier');
             $table->string('code');
