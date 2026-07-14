@@ -12,14 +12,21 @@
 - [x] **Timbrar PPD** — ✓ 14/jul
 - [x] **Reintento de timbrado** de una factura ya timbrada en el PAC → recupera UUID/XML
       originales vía `stamped` (error 307), sin duplicar — ✓ 13/jul (factura 2)
-- [ ] **Cancelar motivo 02** (con errores, sin relación)
+- [x] **Cancelar motivo 02** (con errores, sin relación) — ✓ 14/jul (factura 1: sign_cancel 201
+      + acuse persistido; UI pasa a «en espera del SAT» y tras consultar estatus → Cancelado)
 - [ ] **Cancelar motivo 01** (con errores, con relación) — requiere timbrar primero la
       factura **sustituta** y cancelar la original con su `FolioSustitucion`
 - [ ] **Cancelar motivo 03** (no se llevó a cabo la operación)
-- [ ] **Reintentar cancelación** de una ya cancelada → 202 idempotente, sin error ni acuse duplicado
+- [x] **Reintentar cancelación** de una ya cancelada → 202 idempotente, sin error ni acuse duplicado
+      — ✓ 14/jul con matiz: el DEMO re-simula 201 con el MISMO acuse (no devuelve 202), por lo que
+      el reintento en vivo duplica el registro de acuse si se salta el candado de la plataforma
+      (`hasCancellationInProcess`, que en flujos reales lo impide). El 202 productivo queda fijado
+      por el test de contrato «202 previamente cancelado es éxito idempotente sin acuse».
 - [x] **Consultar estatus** tras timbrar → «Vigente» (y datos EsCancelable/EFOS coherentes) — ✓ 14/jul
       (factura 1: Vigente, «Cancelable sin aceptación»; EFOS 100 es respuesta enlatada del demo)
-- [ ] **Consultar estatus** tras cancelar → transición hasta «Cancelado»
+- [x] **Consultar estatus** tras cancelar → transición hasta «Cancelado» — ✓ 14/jul (factura 1:
+      Estado=Cancelado, EstatusCancelacion=«Cancelado sin aceptación»; la plataforma sincroniza el
+      badge a Cancelado y oculta el botón de cancelar)
 - [x] **PDF de la plataforma** correcto (cabeceras, complementoData, QR del SAT escaneable) — ✓ 14/jul
       (factura 1: QR decodificado → verificacfdi con id/re/rr/tt/fe correctos)
 
