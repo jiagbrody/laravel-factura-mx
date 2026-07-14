@@ -40,6 +40,8 @@ estatus hasta ver «Cancelado».
 - **Cierre**
   - `->build()` — **valida localmente** (XSD + reglas SAT vía cfdiutils, toggle `pre_validate_cfdi`)
     y **sella con el CSD**; lanza `CfdiPreValidationException` con la lista de errores si no pasa
+  - `->build(validate: false)` — build **provisional** sin validación local, para vistas previas
+    con datos aún incompletos (p. ej. receptor pendiente); el build final sí debe validar
   - `->createNewInvoice()` — persiste el borrador (estatus BORRADOR)
 
 ## 2 · Timbrar — `LaravelFacturaMx::invoiceStamper($invoice)->build()`
