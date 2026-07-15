@@ -48,12 +48,24 @@
 
 ## Pago (REP 2.0)
 
-- [ ] **Vista previa / edición** del recibo (build provisional)
-- [ ] **Timbrar REP** de un pago a factura PPD (un documento relacionado)
-- [ ] **REP con parcialidades** (número de parcialidad y saldos DR correctos)
-- [ ] **REP con varios documentos relacionados** (si el flujo lo permite)
-- [ ] **Cancelar REP**
-- [ ] **Saldos**: la cuenta fiscal refleja el pago (lógica de la plataforma)
+- [x] **Vista previa / edición** del recibo (build provisional) — ✓ 14/jul (wizard 3 pasos +
+      toggle «Ver comprobante»: P-PR, total 0, CP01, concepto 84111506/ACT, complemento completo;
+      obs. cosmética: Moneda/TipoComprobante «No definido» y $NaN en columnas del concepto)
+- [x] **Timbrar REP** de un pago a factura PPD (un documento relacionado) — ✓ 14/jul
+      (P-PR 1 $500 → I-PR 2: NumParcialidad 1, SaldoAnt 1512 → Insoluto 1012, IVA DR/P desglosado)
+- [x] **REP con parcialidades** (número de parcialidad y saldos DR correctos) — ✓ 14/jul
+      (P-PR 2 $512: NumParcialidad 2, SaldoAnt 1012 → Insoluto 500; encadenado correcto)
+- [~] **REP con varios documentos relacionados** — el flujo SÍ lo permite (paso 3 asigna el monto
+      a N facturas pendientes del receptor) pero no se ejercitó end-to-end: solo había una PPD del
+      emisor Hospital en la BD de prueba
+- [x] **Cancelar REP** — ✓ 14/jul (candado «escalera» rechaza cancelar la parcialidad 1 con mensaje
+      claro; primer intento sobre P-PR 2 → 205 del demo por UUID recién timbrado, registrado en
+      invoice_incidents sin crear solicitud; reintento → 201 → estatus Cancelado)
+- [x] **Saldos**: la cuenta fiscal refleja el pago (lógica de la plataforma) — ✓ 14/jul
+      (invoice_balances: 1512→1012→500 y restauración a 1012 al cancelar; statement-financials
+      muestra «Pagos PPD (REP)»). HALLAZGO/fix de plataforma SIN commitear: al cancelar una NC,
+      BillingCancelEgreso recalculaba unpaid_balance sin restar pue_payment y una PUE pagada
+      renacía con insoluto fantasma.
 
 ## Sustitución (flujo completo)
 
