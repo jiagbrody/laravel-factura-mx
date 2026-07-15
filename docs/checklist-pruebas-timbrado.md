@@ -87,10 +87,19 @@
 - [x] Recuperación de XML: `get_xml` falla → fallback `stamped` con el borrador — ✓ 14/jul
       (factura 2, archivos regenerados)
 - [x] Logs SOAP en `storage/logs/cfdi_finkok_*.log` con contraseña redactada — ✓ 13/jul
-- [ ] Incidencia del PAC visible en la UI y registrada en `invoice_incidents`
-- [ ] Borrador fuera de la ventana de 72 h → rechazo claro con `StaleCfdiDraftException`
-      (truco para probar: baja `stamp_draft_max_age_hours` a 1 y usa un borrador de ayer)
-- [ ] Timbrado con credenciales inválidas → error de PAC legible (no pantalla blanca)
+- [x] Incidencia del PAC visible en la UI y registrada en `invoice_incidents` — ✓ 14/jul
+      (timbrado con error 300: panel «Último error del proveedor de timbrado» en la factura +
+      fila en invoice_incidents con JSON completo; también quedó registrado el 205 de cancelación.
+      Obs.: para errores de CANCELACIÓN el flash es genérico «Ocurrió un error al cancelar» —
+      convendría propagar el mensaje del PAC)
+- [x] Borrador fuera de la ventana de 72 h → rechazo claro con `StaleCfdiDraftException` — ✓ 14/jul
+      (borrador con Fecha envejecida a −4 días + timbrado directo del paquete → excepción con
+      mensaje claro SIN llamar al PAC; el retimbrado de la plataforma regenera Fecha/sello y
+      recupera — el modal además explica la ventana de 72 h, aunque su copy dice «Complemento
+      de Pago» en facturas de ingreso)
+- [x] Timbrado con credenciales inválidas → error de PAC legible (no pantalla blanca) — ✓ 14/jul
+      (password inválida → factura queda en Borrador con panel «El usuario o contraseña son
+      inválidos»; al restaurar credenciales el retimbrado dejó la factura Vigente)
 
 ## Para producción (cuando llegue el día)
 
