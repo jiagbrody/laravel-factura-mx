@@ -2,6 +2,24 @@
 
 All notable changes to `laravel-factura-mx` will be documented in this file.
 
+## v2.1.0 - 2026-07-14
+
+### Añadido
+
+- `build(validate: false)` en `GenericCreator` y `PagoCreator`: permite construir CFDI
+  **provisionales** sin validación local para esa llamada (p. ej. vistas previas con el
+  receptor aún incompleto). Con `null` (default) manda el config `pre_validate_cfdi`.
+- Tests de contrato para cancelación (`sign_cancel`: 201 con acuse, 202 idempotente,
+  rechazo con incidente, motivo 01 con FolioSustitucion) y consulta de estatus
+  (`get_sat_status`: mapeo Vigente/Cancelado/desconocido y campos EFOS), construidos con
+  respuestas reales grabadas del demo de Finkok.
+
+### Cambiado
+
+- `PagoCreator::build()` ahora aplica la validación local de verdad: antes ejecutaba
+  `validate()` e ignoraba el resultado; ahora los errores lanzan `CfdiPreValidationException`
+  igual que el creator genérico (misma bandera/config para omitirla).
+
 ## v2.0.0 - 2026-07-14
 
 Reescritura mayor del núcleo del paquete (CFDI 4.0). Cambios con ruptura respecto a la línea 0.x.
